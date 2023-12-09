@@ -1,3 +1,5 @@
+import { ThemeProvider } from "@/components/providers"
+import { Toaster } from "@/components/ui/toaster"
 import "@/styles/globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
@@ -19,7 +21,17 @@ export default function RootLayout({
     <>
       <ClerkProvider>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+            <Toaster />
+          </body>
         </html>
       </ClerkProvider>
     </>
