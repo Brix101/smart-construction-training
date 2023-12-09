@@ -13,9 +13,9 @@ export default async function getCourses() {
       url: "https://youtu.be/21uLZk-t-jM",
     },
     {
-      id: "VTm5I_46jqM",
+      id: "wasK4iW051I",
       title: "Part 2 - About Road Assembly and Sub-assembly",
-      url: "https://youtu.be/VTm5I_46jqM",
+      url: "https://youtu.be/wasK4iW051I",
     },
     {
       id: "VTm5I_46jqM",
