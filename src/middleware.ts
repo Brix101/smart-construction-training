@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server"
-// import { type UserRole } from "@/types"
+import { type UserRole } from "@/types"
 import { authMiddleware, clerkClient } from "@clerk/nextjs"
+import { NextResponse } from "next/server"
 
 export default authMiddleware({
   // Public routes are routes that don't require authentication
@@ -33,13 +33,13 @@ export default authMiddleware({
     }
 
     // If the user doesn't have a role, set it to user
-    // if (!user.privateMetadata.role) {
-    //   await clerkClient.users.updateUserMetadata(auth.userId, {
-    //     privateMetadata: {
-    //       role: "user" satisfies UserRole,
-    //     },
-    //   })
-    // }
+    if (!user.privateMetadata.role) {
+      await clerkClient.users.updateUserMetadata(auth.userId, {
+        privateMetadata: {
+          role: "user" satisfies UserRole,
+        },
+      })
+    }
   },
 })
 
