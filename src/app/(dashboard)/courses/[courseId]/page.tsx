@@ -30,11 +30,11 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
       />
       <PageHeader>
         <PageHeaderHeading>{course?.title}</PageHeaderHeading>
-        <ul className="pt-5">
-          <PageHeaderDescription size="sm">
-            {course?.materials?.map((material, index) => {
-              return (
-                <li key={index}>
+        <ul className="space-y-2 pt-5">
+          {course?.materials?.map((material, index) => {
+            return (
+              <li key={index}>
+                <PageHeaderDescription size="sm">
                   <Link
                     className={cn(
                       buttonVariants({
@@ -44,12 +44,12 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
                     href={material.url}
                     target="_blank"
                   >
-                    Material link {index + 1}
+                    {material.name ?? `Material link ${index + 1}`}
                   </Link>
-                </li>
-              )
-            })}
-          </PageHeaderDescription>
+                </PageHeaderDescription>
+              </li>
+            )
+          })}
         </ul>
       </PageHeader>
     </div>
