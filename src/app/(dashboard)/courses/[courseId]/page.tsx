@@ -30,8 +30,8 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
       />
       <PageHeader>
         <PageHeaderHeading>{course?.title}</PageHeaderHeading>
-        <PageHeaderDescription size="sm">
-          <ul className="pt-5">
+        <ul className="pt-5">
+          <PageHeaderDescription size="sm">
             {course?.materials?.map((material, index) => {
               return (
                 <li key={index}>
@@ -49,8 +49,8 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
                 </li>
               )
             })}
-          </ul>
-        </PageHeaderDescription>
+          </PageHeaderDescription>
+        </ul>
       </PageHeader>
     </div>
   )
