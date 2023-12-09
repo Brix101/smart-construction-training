@@ -8,6 +8,9 @@ export default async function getCourses() {
       url: "https://youtu.be/P6gTAB0dohA",
       materials: [
         {
+          url: "https://globalkomatsu.box.com/s/47scm04mir5fhugotyax3nklj951xcgd",
+        },
+        {
           url: "https://globalkomatsu.box.com/s/4e2di9akhz2e40nl8pgc06u49lrdzp7y",
         },
       ],

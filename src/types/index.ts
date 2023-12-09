@@ -32,15 +32,16 @@ export type MainNavItem = NavItemWithOptionalChildren
 
 export type SidebarNavItem = NavItemWithChildren
 
+export type Material = {
+  name?: string
+  url: string
+}
+
 export type Course = {
   id: string
   title: string
   url: string
-  materials?: [
-    {
-      url: string
-    },
-  ]
+  materials?: Array<Material>
 }
 
 export interface SSOCallbackProps {
