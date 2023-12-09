@@ -1,3 +1,4 @@
+import getCourses from "@/app/_action/getCourses"
 import { getUserEmail } from "@/lib/utils"
 import type { User } from "@clerk/nextjs/server"
 import { ExitIcon } from "@radix-ui/react-icons"
@@ -13,20 +14,31 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
+import { MainNav } from "./main-nav"
+import { MobileNav } from "./mobile-nav"
 
 interface SiteHeaderProps {
   user: User | null
 }
 
-export function SiteHeader({ user }: SiteHeaderProps) {
+export async function SiteHeader({ user }: SiteHeaderProps) {
   const initials = `${user?.firstName?.charAt(0) ?? ""} ${
     user?.lastName?.charAt(0) ?? ""
   }`
   const email = getUserEmail(user)
+  const courses = await getCourses()
+
+  const navItems = courses.map(course => ({
+    ...course,
+    href: `/courses/${course.id}`,
+    items: [],
+  }))
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
+        <MainNav />
+        <MobileNav sidebarNavItems={navItems} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
             {user ? (
