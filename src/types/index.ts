@@ -36,6 +36,11 @@ export type Course = {
   id: string
   title: string
   url: string
+  materials?: [
+    {
+      url: string
+    },
+  ]
 }
 
 export interface SSOCallbackProps {
