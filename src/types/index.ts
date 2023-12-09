@@ -1,4 +1,5 @@
 import type { Icons } from "@/components/icons"
+import { HandleOAuthCallbackParams } from "@clerk/types"
 
 export interface NavItem {
   title: string
@@ -35,4 +36,8 @@ export type Course = {
   id: string
   title: string
   url: string
+}
+
+export interface SSOCallbackProps {
+  searchParams: HandleOAuthCallbackParams
 }
