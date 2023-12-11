@@ -22,11 +22,11 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
   return (
     <div className="flex flex-col space-y-10 pb-10">
       <iframe
-        className="h-[calc(100vh-5rem)] w-full"
+        className="aspect-video"
         src={`https://www.youtube.com/embed/${params.courseId}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-        title="Embedded youtube"
+        title={course?.title ?? "Embedded youtube"}
       />
       <PageHeader>
         <PageHeaderHeading>{course?.title}</PageHeaderHeading>
