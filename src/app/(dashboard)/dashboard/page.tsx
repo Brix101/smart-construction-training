@@ -1,3 +1,3 @@
 export default async function DasdhboardPage() {
-  return <>Dasdhboard</>
+  return <>Dasdhboard Page</>
 }
