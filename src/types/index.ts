@@ -35,6 +35,7 @@ export type MainNavItem = NavItemWithOptionalChildren
 export type SidebarNavItem = NavItemWithChildren
 
 export type UserRole = z.infer<typeof userPrivateMetadataSchema.shape.role>
+export type PrivateMetadata = z.infer<typeof userPrivateMetadataSchema>
 
 export type Material = {
   name?: string
