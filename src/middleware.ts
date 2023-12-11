@@ -1,3 +1,4 @@
+import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { type UserRole } from "@/types"
 import { authMiddleware, clerkClient } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
@@ -39,6 +40,23 @@ export default authMiddleware({
           role: "user" satisfies UserRole,
         },
       })
+    }
+
+    const privateMetadata = userPrivateMetadataSchema.safeParse(
+      user.privateMetadata,
+    )
+
+    // Protect dashboard from ordinary user
+    if (privateMetadata.success) {
+      if (
+        req.nextUrl.pathname.includes("dashboard") &&
+        !privateMetadata.data.role.includes("admin")
+      ) {
+        url.pathname = "/"
+        return NextResponse.redirect(url)
+        // throw new Error("User unauthorized!")
+        // return new NextResponse(null, { status: 403 })
+      }
     }
   },
 })

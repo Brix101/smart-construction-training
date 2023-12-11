@@ -1,13 +1,15 @@
 import getCourses from "@/app/_action/getCourses"
 import { getUserEmail } from "@/lib/utils"
 import type { User } from "@clerk/nextjs/server"
-import { ExitIcon } from "@radix-ui/react-icons"
+import { DashboardIcon, ExitIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
+import { Icons } from "../icons"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button, buttonVariants } from "../ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -33,6 +35,8 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
     href: `/courses/${course.id}`,
     items: [],
   }))
+
+  const role = (user?.privateMetadata.role as String) ?? ""
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -69,36 +73,38 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {/* <DropdownMenuGroup> */}
-                  {/* <DropdownMenuItem asChild>
-                      <Link href="/dashboard/stores">
-                        <DashboardIcon
-                          className="mr-2 h-4 w-4"
-                          aria-hidden="true"
-                        />
-                        Dashboard
-                        <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
-                      </Link>
-                    </DropdownMenuItem>
+                  <DropdownMenuGroup>
+                    {role.includes("admin") ? (
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard">
+                          <DashboardIcon
+                            className="mr-2 h-4 w-4"
+                            aria-hidden="true"
+                          />
+                          Dashboard
+                          <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+                        </Link>
+                      </DropdownMenuItem>
+                    ) : undefined}
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/billing">
+                      <Link href="/">
                         <Icons.credit
                           className="mr-2 h-4 w-4"
                           aria-hidden="true"
                         />
-                        Billing
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                        Courses
+                        <DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
+                    {/*  <DropdownMenuItem asChild>
                       <Link href="/dashboard/account">
                         <GearIcon className="mr-2 h-4 w-4" aria-hidden="true" />
                         Settings
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                       </Link>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem>*/}
                   </DropdownMenuGroup>
-                  <DropdownMenuSeparator /> */}
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/signout">
                       <ExitIcon className="mr-2 h-4 w-4" aria-hidden="true" />
