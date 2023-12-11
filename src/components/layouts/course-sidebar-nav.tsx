@@ -3,25 +3,29 @@
 import type { SidebarNavItem } from "@/types"
 import { ChevronLeftIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { useSelectedLayoutSegment } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 
-import { Icons } from "@/components/icons"
+import { Icons } from "../icons"
 
 export interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
   items: SidebarNavItem[]
 }
 
-export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
-  const segment = useSelectedLayoutSegment()
+export function CourseSidebarNav({
+  items,
+  className,
+  ...props
+}: SidebarNavProps) {
+  const pathname = usePathname()
 
   if (!items?.length) return null
 
   return (
     <div className={cn("flex w-full flex-col gap-2", className)} {...props}>
       {items.map((item, index) => {
-        const Icon = item.icon ? Icons[item.icon] : ChevronLeftIcon
+        const _Icon = item.icon ? Icons[item.icon] : ChevronLeftIcon
 
         return item.href ? (
           <Link
@@ -34,13 +38,14 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
             <span
               className={cn(
                 "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
-                item.href.includes(String(segment))
+                // item.href.includes(String(segment))
+                item.href.includes(pathname)
                   ? "bg-muted font-medium text-foreground"
                   : "text-muted-foreground",
                 item.disabled && "pointer-events-none opacity-60",
               )}
             >
-              <Icon className="mr-2 h-4 w-4" aria-hidden="true" />
+              {/* <Icon className="mr-2 h-4 w-4" aria-hidden="true" /> */}
               <span>{item.title}</span>
             </span>
           </Link>

@@ -1,4 +1,4 @@
-import { CourseSidebarNav } from "@/components/layouts/sidebar-nav"
+import { CourseSidebarNav } from "@/components/layouts/course-sidebar-nav"
 import { SiteHeader } from "@/components/layouts/site-header"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { currentUser } from "@clerk/nextjs"
