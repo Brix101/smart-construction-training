@@ -22,7 +22,7 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
   return (
     <div className="flex flex-col space-y-10 pb-10">
       <iframe
-        className="aspect-video"
+        className="mt-10 aspect-video"
         src={`https://www.youtube.com/embed/${params.courseId}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

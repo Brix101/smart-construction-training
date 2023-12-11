@@ -10,12 +10,10 @@ export default async function Home() {
   return (
     <>
       <SiteHeader user={user} />
-      <main className="container flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {courses.map(course => {
-            return <CourseCard key={course.id} course={course} />
-          })}
-        </div>
+      <main className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {courses.map(course => {
+          return <CourseCard key={course.id} course={course} />
+        })}
       </main>
     </>
   )
