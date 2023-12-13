@@ -1,1 +1,1 @@
-# SMTC
+# SCTC
