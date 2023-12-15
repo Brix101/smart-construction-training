@@ -76,7 +76,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                   <DropdownMenuGroup>
                     {role.includes("admin") ? (
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard">
+                        <Link href="/dashboard/courses">
                           <DashboardIcon
                             className="mr-2 h-4 w-4"
                             aria-hidden="true"

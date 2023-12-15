@@ -1,4 +1,5 @@
 import { AvatarIcon, ImageIcon } from "@radix-ui/react-icons"
+import { LibrarySquare, UsersIcon } from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -94,6 +95,8 @@ export const Icons = {
       <line x1="2" x2="22" y1="10" y2="10" />
     </svg>
   ),
+  library: LibrarySquare,
+  users: UsersIcon,
   avatar: AvatarIcon,
   placeholder: ImageIcon,
 }
