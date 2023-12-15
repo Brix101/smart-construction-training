@@ -5,12 +5,9 @@ import * as React from "react"
 
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { User } from "@clerk/nextjs/server"
+import { OmitedUser } from "@/types"
 
-type AwaitedUser = Pick<
-  User,
-  "id" | "firstName" | "lastName" | "emailAddresses"
->
+type AwaitedUser = Pick<OmitedUser, "id" | "firstName" | "lastName" | "email">
 
 interface UsersTableShellProps {
   transaction: Promise<{
@@ -37,6 +34,12 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
         accessorKey: "lastName",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Last Name" />
+        ),
+      },
+      {
+        accessorKey: "email",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Email" />
         ),
       },
     ],

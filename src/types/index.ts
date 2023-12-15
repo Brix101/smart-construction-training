@@ -1,5 +1,6 @@
 import type { Icons } from "@/components/icons"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
+import { User } from "@clerk/nextjs/server"
 import { HandleOAuthCallbackParams } from "@clerk/types"
 import * as z from "zod"
 
@@ -71,4 +72,11 @@ export interface DataTableFilterableColumn<TData>
 
 export type FileWithPreview = File & {
   preview: string
+}
+
+export type OmitedUser = Omit<
+  User,
+  "emailAddresses" | "externalAccounts" | "primaryEmailAddressId"
+> & {
+  email: string
 }

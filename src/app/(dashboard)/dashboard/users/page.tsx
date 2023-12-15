@@ -11,8 +11,8 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { UsersTableShell } from "@/components/shells/users-table-shell"
 import { dashboardTopicsSearchParamsSchema } from "@/lib/validations/params"
+import { OmitedUser } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
-import { User } from "@clerk/nextjs/server"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -43,10 +43,19 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const count = await clerkClient.users.getCount()
   const items = (await clerkClient.users.getUserList({ limit, offset })).map(
     user => {
-      const { emailAddresses, externalAccounts, ...userWithoutSensitiveInfo } =
-        user
+      const {
+        emailAddresses,
+        primaryEmailAddressId,
+        externalAccounts,
+        id,
+        ...userWithoutSensitiveInfo
+      } = user
 
-      return userWithoutSensitiveInfo as User
+      const email =
+        emailAddresses.find(email => email.id === primaryEmailAddressId)
+          ?.emailAddress ?? ""
+
+      return { ...userWithoutSensitiveInfo, email } as OmitedUser
     },
   )
 
