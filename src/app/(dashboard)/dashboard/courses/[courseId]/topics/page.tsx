@@ -33,7 +33,7 @@ export default async function TopicsPage({
   const courseId = Number(params.courseId)
 
   // Parse search params using zod schema
-  const { page, per_page, sort, name, from, to } =
+  const { page, per_page, sort, name } =
     dashboardTopicsSearchParamsSchema.parse(searchParams)
 
   const course = await db.query.courses.findFirst({
