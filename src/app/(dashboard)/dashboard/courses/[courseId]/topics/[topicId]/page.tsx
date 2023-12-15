@@ -33,7 +33,6 @@ export default async function UpdateTopicPage({
 }: UpdateTopicPageProps) {
   const courseId = Number(params.courseId)
   const topicId = Number(params.topicId)
-  console.log("++++++++++++++", params)
 
   const topic = await db.query.topics.findFirst({
     where: and(eq(topics.id, topicId), eq(topics.courseId, courseId)),
