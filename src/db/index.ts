@@ -6,10 +6,10 @@ import { drizzle as pgDrizzle } from "drizzle-orm/node-postgres"
 import * as schema from "./schema"
 
 const pool = new Pool({
-  connectionString: env.DATABASE_URL ?? "",
+  connectionString: env.DATABASE_URL,
 })
-const connection = neon(env.DATABASE_URL!)
 
 export const dbPool = pgDrizzle(pool)
 
+const connection = neon(env.DATABASE_URL!)
 export const db = drizzle(connection, { schema })
