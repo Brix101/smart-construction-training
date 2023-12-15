@@ -1,7 +1,7 @@
-import { db } from "@/db"
-import { courses, type Topic } from "@/db/schema"
+import { db, dbPool } from "@/db"
+import { courses, topics, type Topic } from "@/db/schema"
 import { env } from "@/env.mjs"
-import { eq } from "drizzle-orm"
+import { and, asc, desc, eq, like, sql } from "drizzle-orm"
 import { type Metadata } from "next"
 import { unstable_noStore as noStore } from "next/cache"
 import { notFound } from "next/navigation"
@@ -66,64 +66,51 @@ export default async function TopicsPage({
   // Transaction is used to ensure both queries are executed in a single transaction
   noStore()
 
-  //   const transaction = db.transaction(async tx => {
-  //     const items = await tx
-  //       .select({
-  //         id: topics.id,
-  //         name: topics.name,
-  //         urlId: topics.urlId,
-  //         videoLink: topics.videoLink,
-  //         createdAt: topics.createdAt,
-  //       })
-  //       .from(topics)
-  //       .limit(limit)
-  //       .offset(offset)
-  //       .where(
-  //         and(
-  //           eq(topics.courseId, courseId),
-  //           // Filter by name
-  //           name ? like(topics.name, `%${name}%`) : undefined,
-  //         ),
-  //       )
-  //       .orderBy(
-  //         column && column in topics
-  //           ? order === "asc"
-  //             ? asc(topics[column])
-  //             : desc(topics[column])
-  //           : desc(topics.createdAt),
-  //       )
+  const transaction = dbPool.transaction(async tx => {
+    const items = await tx
+      .select({
+        id: topics.id,
+        name: topics.name,
+        urlId: topics.urlId,
+        videoLink: topics.videoLink,
+        createdAt: topics.createdAt,
+      })
+      .from(topics)
+      .limit(limit)
+      .offset(offset)
+      .where(
+        and(
+          eq(topics.courseId, courseId),
+          // Filter by name
+          name ? like(topics.name, `%${name}%`) : undefined,
+        ),
+      )
+      .orderBy(
+        column && column in topics
+          ? order === "asc"
+            ? asc(topics[column])
+            : desc(topics[column])
+          : desc(topics.createdAt),
+      )
 
-  //     const count = await tx
-  //       .select({
-  //         count: sql<number>`count(${topics.id})`,
-  //       })
-  //       .from(topics)
-  //       .where(
-  //         and(
-  //           eq(topics.courseId, courseId),
-  //           // Filter by name
-  //           name ? like(topics.name, `%${name}%`) : undefined,
-  //         ),
-  //       )
-  //       .then(res => res[0]?.count ?? 0)
+    const count = await tx
+      .select({
+        count: sql<number>`count(${topics.id})`,
+      })
+      .from(topics)
+      .where(
+        and(
+          eq(topics.courseId, courseId),
+          // Filter by name
+          name ? like(topics.name, `%${name}%`) : undefined,
+        ),
+      )
+      .then(res => res[0]?.count ?? 0)
 
-  //     return {
-  //       items,
-  //       count,
-  //     }
-  //   })
-
-  const emptyTransaction: Promise<{
-    items: {
-      id: number
-      name: string | null
-      urlId: string | null
-      videoLink: string | null
-      createdAt: Date | null
-    }[]
-    count: number
-  }> = new Promise(resolve => {
-    resolve({ items: [], count: 0 })
+    return {
+      items,
+      count,
+    }
   })
 
   return (
@@ -138,7 +125,7 @@ export default async function TopicsPage({
         }
       >
         <TopicsTableShell
-          transaction={emptyTransaction}
+          transaction={transaction}
           limit={limit}
           courseId={courseId}
         />
