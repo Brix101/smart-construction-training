@@ -8,10 +8,7 @@ export default async function getCourses() {
       url: "https://youtu.be/P6gTAB0dohA",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/47scm04mir5fhugotyax3nklj951xcgd",
-        },
-        {
-          url: "https://globalkomatsu.box.com/s/4e2di9akhz2e40nl8pgc06u49lrdzp7y",
+          url: "https://globalkomatsu.box.com/s/2066c5i19tns117d5vkndgpehgpd9vl7",
         },
       ],
     },
@@ -21,7 +18,7 @@ export default async function getCourses() {
       url: "https://youtu.be/21uLZk-t-jM",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn",
         },
       ],
     },
@@ -31,7 +28,7 @@ export default async function getCourses() {
       url: "https://youtu.be/wasK4iW051I",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/0p7upoch69624kg6fwf030joej8vdv16",
         },
       ],
     },
@@ -41,7 +38,7 @@ export default async function getCourses() {
       url: "https://youtu.be/VTm5I_46jqM",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/1hzrwtvw7eymof0s43xwtb1ev8fkd879",
         },
       ],
     },
@@ -51,7 +48,7 @@ export default async function getCourses() {
       url: "https://youtu.be/2RLunaf-Wko",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/g9994okjasv6t5uddgueuvj3q96050ai",
         },
       ],
     },
@@ -61,7 +58,7 @@ export default async function getCourses() {
       url: "https://youtu.be/Ra3OJYW1LWA",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/uqf0nun2wjteffjn39mrodarrmgbtt4k",
         },
       ],
     },
@@ -71,7 +68,7 @@ export default async function getCourses() {
       url: "https://youtu.be/tdVZs4M5dS8",
       materials: [
         {
-          url: "https://globalkomatsu.box.com/s/josiabsf9kvwhew5atycp3p75ri6q0lv",
+          url: "https://globalkomatsu.box.com/s/njvy5kvu996vsoq79qco1z0w5h2eodfa",
         },
       ],
     },

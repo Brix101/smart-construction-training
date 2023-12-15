@@ -38,13 +38,15 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
                   <Link
                     className={cn(
                       buttonVariants({
+                        size: "sm",
                         variant: "default",
                       }),
                     )}
                     href={material.url}
                     target="_blank"
                   >
-                    {material.name ?? `Material link ${index + 1}`}
+                    {material.name ??
+                      `Download training materials and intructions here!`}
                   </Link>
                 </PageHeaderDescription>
               </li>
