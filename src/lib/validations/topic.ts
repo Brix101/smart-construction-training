@@ -11,3 +11,11 @@ export const getTopicSchema = z.object({
   id: z.number(),
   courseId: z.number(),
 })
+
+export const getTopicsSchema = z.object({
+  limit: z.number().default(10),
+  offset: z.number().default(0),
+  sort: z.string().optional().nullable(),
+  store_ids: z.string().optional().nullable(),
+  active: z.string().optional().nullable(),
+})
