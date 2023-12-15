@@ -68,3 +68,7 @@ export interface DataTableFilterableColumn<TData>
   extends DataTableSearchableColumn<TData> {
   options: Option[]
 }
+
+export type FileWithPreview = File & {
+  preview: string
+}
