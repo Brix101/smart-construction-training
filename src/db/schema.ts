@@ -14,8 +14,8 @@ export const courses = pgTable("courses", {
   name: varchar("name", { length: 256 }),
   description: text("description"),
   active: boolean("active").notNull().default(false),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
 export type Course = typeof courses.$inferSelect
@@ -34,8 +34,8 @@ export const topics = pgTable("topics", {
   courseId: integer("course_id")
     .references(() => courses.id, { onDelete: "cascade" })
     .notNull(),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
 export type Topic = typeof topics.$inferSelect
@@ -56,6 +56,8 @@ export const materials = pgTable("materials", {
   topicId: integer("topic_id")
     .references(() => topics.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
 export type Material = typeof materials.$inferSelect
