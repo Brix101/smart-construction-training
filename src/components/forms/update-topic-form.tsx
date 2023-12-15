@@ -22,6 +22,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { checkTopic, deleteTopic, updateTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
+import { FileWithPreview } from "@/types"
+import Image from "next/image"
+import { Zoom } from "../zoom-image"
 
 interface UpdateTopicFormProps {
   topic: Topic
@@ -31,25 +34,21 @@ type Inputs = z.infer<typeof topicSchema>
 
 export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   const router = useRouter()
-  //   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
+  const [thumbnailPreview, setThumbnailPreview] =
+    React.useState<FileWithPreview | null>(null)
   const [isPending, startTransition] = React.useTransition()
 
-  //   React.useEffect(() => {
-  //     if (topic.urlId) {
-  //       setFiles(
-  //         topic.images.map(image => {
-  //           const file = new File([], image.name, {
-  //             type: "image",
-  //           })
-  //           const fileWithPreview = Object.assign(file, {
-  //             preview: image.url,
-  //           })
-
-  //           return fileWithPreview
-  //         }),
-  //       )
-  //     }
-  //   }, [topic])
+  React.useEffect(() => {
+    if (topic.urlId) {
+      const file = new File([], topic.name ?? "file name", {
+        type: "image",
+      })
+      const fileWithPreview = Object.assign(file, {
+        preview: `https://img.youtube.com/vi/${topic.urlId}/maxresdefault.jpg`,
+      })
+      setThumbnailPreview(fileWithPreview)
+    }
+  }, [topic])
 
   const form = useForm<Inputs>({
     resolver: zodResolver(topicSchema),
@@ -133,6 +132,19 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           </FormControl>
           <FormMessage />
         </FormItem>
+        <div className="flex items-center gap-2">
+          {thumbnailPreview ? (
+            <Zoom>
+              <Image
+                src={thumbnailPreview.preview}
+                alt={thumbnailPreview.name}
+                className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                width={640}
+                height={480}
+              />
+            </Zoom>
+          ) : undefined}
+        </div>
 
         <div className="flex space-x-2">
           <Button disabled={isPending}>

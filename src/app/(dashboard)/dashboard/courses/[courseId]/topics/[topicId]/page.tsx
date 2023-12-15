@@ -54,7 +54,7 @@ export default async function UpdateTopicPage({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <UpdateTopicForm topic={topic} />{" "}
+        <UpdateTopicForm topic={topic} />
       </CardContent>
     </Card>
   )
