@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/providers"
 import { Toaster } from "@/components/ui/toaster"
 import "@/styles/globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
+import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 
@@ -31,6 +32,7 @@ export default function RootLayout({
               {children}
             </ThemeProvider>
             <Toaster />
+            <Analytics />{" "}
           </body>
         </html>
       </ClerkProvider>
