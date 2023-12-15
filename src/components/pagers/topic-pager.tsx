@@ -7,7 +7,7 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
-import { getPreviousTopicId } from "@/lib/fetchers/topic"
+import { getNextTopicId, getPreviousTopicId } from "@/lib/fetchers/topic"
 
 interface TopicPagerProps {
   topic: Topic
