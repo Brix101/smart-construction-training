@@ -50,7 +50,7 @@ export default async function UpdatecoursePage({
 
   return (
     <div className="space-y-10">
-      <Card as="section">
+      <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update your course</CardTitle>
           <CardDescription>
