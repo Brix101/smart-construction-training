@@ -44,7 +44,7 @@ export function TopicCard({
         </CardHeader>
         <span className="sr-only">{topic.title}</span>
       </Link>
-      <Link href={`/course/${topic.id}`} tabIndex={-1}>
+      <Link href={`/courses/${topic.id}`} tabIndex={-1}>
         <CardContent className="space-y-1.5 p-4">
           <CardTitle className="line-clamp-1">{topic.title}</CardTitle>
         </CardContent>
