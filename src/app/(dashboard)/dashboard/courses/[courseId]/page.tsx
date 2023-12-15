@@ -87,7 +87,7 @@ export default async function UpdatecoursePage({
                 defaultValue={course.description ?? ""}
               />
             </div>
-            <div className="xs:flex-row flex flex-col gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <LoadingButton>
                 Update course
                 <span className="sr-only">Update course</span>
