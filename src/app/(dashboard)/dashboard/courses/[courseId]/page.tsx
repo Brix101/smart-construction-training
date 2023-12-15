@@ -72,7 +72,7 @@ export default async function UpdatecoursePage({
                 minLength={3}
                 maxLength={50}
                 placeholder="Type course name here."
-                defaultValue={course.name}
+                defaultValue={course.name ?? ""}
               />
             </div>
             <div className="grid gap-2.5">
