@@ -50,11 +50,10 @@ export function TopicPager({ topic }: TopicPagerProps) {
         onClick={() => {
           startTransition(async () => {
             try {
-              const nextTopicId = 0
-              //  await getNextTopicId({
-              //   id: topic.id,
-              //   courseId: topic.courseId,
-              // })
+              const nextTopicId = await getNextTopicId({
+                id: topic.id,
+                courseId: topic.courseId,
+              })
               router.push(
                 `/dashboard/courses/${topic.courseId}/topics/${nextTopicId}`,
               )
