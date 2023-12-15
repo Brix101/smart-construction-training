@@ -53,6 +53,26 @@ export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
   revalidatePath(`/dashboard/courses/${input.courseId}/topics.`)
 }
 
+const extendedTopicSchemaWithId = extendedTopicSchema.extend({
+  id: z.number(),
+})
+
+export async function updateTopic(
+  input: z.infer<typeof extendedTopicSchemaWithId>,
+) {
+  const topic = await db.query.topics.findFirst({
+    where: and(eq(topics.id, input.id), eq(topics.courseId, input.courseId)),
+  })
+
+  if (!topic) {
+    throw new Error("Topic not found.")
+  }
+
+  await db.update(topics).set(input).where(eq(topics.id, input.id))
+
+  revalidatePath(`/dashboard/courses/${input.courseId}/topics/${input.id}`)
+}
+
 export async function deleteTopic(rawInput: z.infer<typeof getTopicSchema>) {
   const input = getTopicSchema.parse(rawInput)
 
