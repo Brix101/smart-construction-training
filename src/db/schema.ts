@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import {
+  boolean,
   integer,
   pgTable,
   serial,
@@ -12,6 +13,7 @@ export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
   description: text("description"),
+  active: boolean("active").notNull().default(false),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 })
