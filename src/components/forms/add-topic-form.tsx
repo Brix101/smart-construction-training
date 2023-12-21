@@ -7,7 +7,7 @@ import { toast } from "sonner"
 import { type z } from "zod"
 
 import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { addTopic, checkTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
+import Link from "next/link"
 
 interface AddTopicFormProps {
   courseId: number
@@ -128,21 +129,32 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
             </FormItem>
           )}
         />
-
-        <Button
-          onClick={() => void form.trigger(["name", "urlId", "videoLink"])}
-          className="w-fit"
-          disabled={isPending}
-        >
-          {isPending && (
-            <Icons.spinner
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
-          )}
-          Add Topic
-          <span className="sr-only">Add Topic</span>
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            onClick={() => void form.trigger(["name", "urlId", "videoLink"])}
+            className="w-fit"
+            disabled={isPending}
+          >
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Add Topic
+            <span className="sr-only">Add Topic</span>
+          </Button>
+          <Link
+            aria-label="Cancel"
+            href={`/dashboard/courses/${courseId}/topics`}
+            className={buttonVariants({
+              variant: "destructive",
+            })}
+          >
+            Cancel
+            <span className="sr-only">Cancel</span>
+          </Link>
+        </div>
       </form>
     </Form>
   )
