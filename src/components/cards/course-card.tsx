@@ -44,7 +44,7 @@ export function CourseCard({ course, href }: CourseCardProps) {
           <CardDescription className="line-clamp-1">
             {course.description?.length
               ? course.description
-              : `Explore ${course.name} products`}
+              : `Explore ${course.name}`}
           </CardDescription>
         </CardHeader>
       </Card>
