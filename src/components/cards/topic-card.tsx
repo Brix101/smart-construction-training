@@ -6,35 +6,31 @@ import * as React from "react"
 
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Topic } from "@/db/schema"
 import { cn } from "@/lib/utils"
-import { Course } from "@/types"
 
 interface CourseCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  topic: Course
-  variant?: "default" | "switchable"
-  isAddedToCart?: boolean
-  onSwitch?: () => Promise<void>
+  topic: Topic
+  href: string
 }
 
 export function TopicCard({
   topic,
-  variant = "default",
-  isAddedToCart = false,
-  onSwitch,
+  href,
   className,
   ...props
 }: CourseCardProps) {
   return (
-    <Card
-      className={cn("h-full w-full overflow-hidden rounded-sm", className)}
-      {...props}
-    >
-      <Link aria-label={topic.title} href={`/courses/${topic.id}`}>
+    <Link href={href}>
+      <Card
+        className={cn("h-full w-full overflow-hidden rounded-sm", className)}
+        {...props}
+      >
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={4 / 3}>
             <Image
-              src={`https://img.youtube.com/vi/${topic.id}/hqdefault.jpg`}
-              alt={topic.title}
+              src={`https://img.youtube.com/vi/${topic.urlId}/hqdefault.jpg`}
+              alt={topic.name}
               className="object-cover"
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               fill
@@ -42,13 +38,11 @@ export function TopicCard({
             />
           </AspectRatio>
         </CardHeader>
-        <span className="sr-only">{topic.title}</span>
-      </Link>
-      <Link href={`/courses/${topic.id}`} tabIndex={-1}>
+        <span className="sr-only">{topic.name}</span>
         <CardContent className="space-y-1.5 p-4">
-          <CardTitle className="line-clamp-1">{topic.title}</CardTitle>
+          <CardTitle className="line-clamp-1">{topic.name}</CardTitle>
         </CardContent>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   )
 }

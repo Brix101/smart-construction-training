@@ -4,13 +4,13 @@ import { courses } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { notFound } from "next/navigation"
 
-interface UpdateCoursePageProps {
+interface UpdateTopicPageProps {
   params: {
     courseId: string
   }
 }
 
-export default async function CoursePage({ params }: UpdateCoursePageProps) {
+export default async function TopicPage({ params }: UpdateTopicPageProps) {
   const courseId = Number(params.courseId)
 
   const course = await db.query.courses.findFirst({
@@ -19,11 +19,13 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
       topics: true,
     },
   })
+
   if (!course) {
     notFound()
   }
+
   return (
-    <div className="container grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {course.topics.map(topic => {
         return (
           <TopicCard
