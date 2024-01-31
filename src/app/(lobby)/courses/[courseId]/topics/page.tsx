@@ -1,7 +1,7 @@
 import { TopicCard } from "@/components/cards/topic-card"
 import { db } from "@/db"
-import { courses } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { courses, topics } from "@/db/schema"
+import { asc, eq } from "drizzle-orm"
 import { notFound } from "next/navigation"
 
 interface UpdateTopicPageProps {
@@ -16,7 +16,9 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
-      topics: true,
+      topics: {
+        orderBy: asc(topics.createdAt),
+      },
     },
   })
 
