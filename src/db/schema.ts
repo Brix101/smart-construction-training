@@ -11,7 +11,7 @@ import {
 
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
+  name: varchar("name", { length: 256 }).notNull(),
   description: text("description"),
   active: boolean("active").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -27,8 +27,8 @@ export const coursesRelations = relations(courses, ({ many }) => ({
 
 export const topics = pgTable("topics", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
-  urlId: varchar("url_id", { length: 100 }),
+  name: varchar("name", { length: 256 }).notNull(),
+  urlId: varchar("url_id", { length: 100 }).notNull(),
   videoLink: text("video_link"),
   details: text("details"),
   courseId: integer("course_id")
@@ -52,7 +52,7 @@ export const topicsRelations = relations(topics, ({ one, many }) => ({
 export const materials = pgTable("materials", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).default(""),
-  link: text("link"),
+  link: text("link").notNull(),
   topicId: integer("topic_id")
     .references(() => topics.id, { onDelete: "cascade" })
     .notNull(),

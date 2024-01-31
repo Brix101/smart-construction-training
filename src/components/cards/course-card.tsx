@@ -15,9 +15,10 @@ import { cn } from "@/lib/utils"
 interface CourseCardProps {
   course: Course
   href: string
+  hasBadge?: boolean
 }
 
-export function CourseCard({ course, href }: CourseCardProps) {
+export function CourseCard({ course, href, hasBadge }: CourseCardProps) {
   return (
     <Link href={href}>
       <span className="sr-only">{course.name}</span>
@@ -27,6 +28,7 @@ export function CourseCard({ course, href }: CourseCardProps) {
           <Badge
             className={cn(
               "pointer-events-none absolute right-2 top-2 rounded-sm px-2 py-0.5 font-semibold",
+              hasBadge ? "visible" : "invisible",
               course.active
                 ? "border-green-600/20 bg-green-100 text-green-700"
                 : "border-red-600/10 bg-red-100 text-red-700",

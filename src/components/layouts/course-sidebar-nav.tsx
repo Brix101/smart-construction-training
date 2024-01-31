@@ -25,7 +25,7 @@ export function CourseSidebarNav({
   return (
     <div className={cn("flex w-full flex-col gap-2", className)} {...props}>
       {items.map((item, index) => {
-        const _Icon = item.icon ? Icons[item.icon] : ChevronLeftIcon
+        const Icon = item.icon ? Icons[item.icon] : ChevronLeftIcon
 
         return item.href ? (
           <Link
@@ -45,7 +45,7 @@ export function CourseSidebarNav({
                 item.disabled && "pointer-events-none opacity-60",
               )}
             >
-              {/* <Icon className="mr-2 h-4 w-4" aria-hidden="true" /> */}
+              <Icon className="mr-2 h-4 w-4" aria-hidden="true" />
               <span>{item.title}</span>
             </span>
           </Link>

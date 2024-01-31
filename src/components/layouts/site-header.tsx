@@ -1,4 +1,5 @@
-import getCourses from "@/app/_action/getCourses"
+import { siteConfig } from "@/config/site"
+import { db } from "@/db"
 import { getUserEmail } from "@/lib/utils"
 import type { User } from "@clerk/nextjs/server"
 import { DashboardIcon, ExitIcon } from "@radix-ui/react-icons"
@@ -28,12 +29,20 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
     user?.lastName?.charAt(0) ?? ""
   }`
   const email = getUserEmail(user)
-  const courses = await getCourses()
+  const allCourses = await db.query.courses.findMany({
+    with: {
+      topics: true,
+    },
+  })
 
-  const navItems = courses.map(course => ({
-    ...course,
+  const navItems = allCourses.map(course => ({
+    title: course.name,
     href: `/courses/${course.id}`,
-    items: [],
+    items: course.topics.map(topic => ({
+      title: topic.name,
+      href: `/courses/${topic.courseId}/topics/${topic.id}`,
+      items: [],
+    })),
   }))
 
   const role = (user?.privateMetadata.role as String) ?? ""
@@ -41,7 +50,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
-        <MainNav />
+        <MainNav items={siteConfig.mainNav} />
         <MobileNav sidebarNavItems={navItems} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
