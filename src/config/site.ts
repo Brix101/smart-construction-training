@@ -3,7 +3,7 @@ import { MainNavItem } from "@/types"
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Smart Construction Training Course",
+  name: "Smart Construction Training",
   description: "",
   mainNav: [
     {
