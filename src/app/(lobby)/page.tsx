@@ -11,7 +11,7 @@ export default async function Home() {
     <>
       <section className="w-full bg-blue-50 py-12">
         <div className="container relative">
-          <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
+          <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
           <div className="absolute flex w-full translate-y-2 justify-between rounded-sm border bg-white p-4 shadow-lg">
