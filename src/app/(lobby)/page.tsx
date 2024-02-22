@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="w-full bg-primary py-12">
+      <section className="w-full bg-blue-50 py-12">
         <div className="container relative">
           <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
