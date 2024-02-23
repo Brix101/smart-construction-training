@@ -1,11 +1,14 @@
 import { TopicCard } from "@/components/cards/topic-card"
 import { Icons } from "@/components/icons"
+import { SearchInput } from "@/components/search-input"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getRandomPatternStyle } from "@/lib/generate-pattern"
-import { asc, eq } from "drizzle-orm"
+import { searchParamsSchema } from "@/lib/validations/params"
+import { SearchParams } from "@/types"
+import { asc, eq, ilike } from "drizzle-orm"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -13,10 +16,17 @@ interface UpdateCoursePageProps {
   params: {
     courseId: string
   }
+  searchParams: SearchParams
 }
 
-export default async function TopicsPage({ params }: UpdateCoursePageProps) {
+export default async function TopicsPage({
+  params,
+  searchParams,
+}: UpdateCoursePageProps) {
   const courseId = Number(params.courseId)
+  const { search } = searchParamsSchema.parse(searchParams)
+
+  console.log(search)
 
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
@@ -33,8 +43,8 @@ export default async function TopicsPage({ params }: UpdateCoursePageProps) {
   return (
     <>
       <div className="flex flex-col">
-        <div className="border-b bg-blue-50 shadow-lg">
-          <div className="e container flex w-full justify-between p-2 px-4">
+        <div className="bg-blue-50">
+          <div className="container flex w-full justify-between p-2 px-4">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Link
                 href="/courses"
@@ -59,38 +69,33 @@ export default async function TopicsPage({ params }: UpdateCoursePageProps) {
               </svg>
               <span className="font-medium text-foreground">{course.name}</span>
             </div>
-            <div className="flex rounded-lg border bg-white">
-              <Input
-                className="rounded-none rounded-l"
-                type="search"
-                placeholder="Search courses"
-              />
-              <Button className="rounded-none rounded-r">
-                <Icons.search />
-              </Button>
-            </div>
+            <SearchInput placeholder="Search topic" />
           </div>
         </div>
-        <div className="relative bg-blue-50">
-          <div className="container relative z-10 flex space-x-4 pt-4">
-            <div
-              className="h-40 w-60 rounded-t-lg border"
-              style={getRandomPatternStyle(String(course.id))}
-            />
+        <div
+          className="relative space-y-4 bg-blue-50"
+          style={getRandomPatternStyle(String(course.id))}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-blue-50" />
+          <div className="container relative flex space-x-4 pt-4">
             <div className="space-y-2">
-              <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+              <h1 className="scroll-m-20 text-4xl font-bold tracking-tight drop-shadow-xl">
                 {course.name}
               </h1>
-              <p className="text-lg text-muted-foreground">
-                {course.description}
-              </p>
+              {/* <p className="text-lg text-muted-foreground"> */}
+              {/*   {course.description?.length */}
+              {/*     ? course.description */}
+              {/*     : `Explore ${course.name}`} */}
+              {/* </p> */}
             </div>
           </div>
-          <div className="absolute bottom-0 w-full bg-blue-200">
-            <div className="container flex space-x-4">
-              <div className="w-60"></div>
+          <div className="w-full">
+            <div className="container flex translate-y-1 space-x-4">
               <div>
-                <Button variant="secondary" className="rounded-none">
+                <Button
+                  className="rounded-none border-b-transparent bg-background"
+                  variant="outline"
+                >
                   <Icons.home />
                   <span className="px-2">Topics</span>
                 </Button>

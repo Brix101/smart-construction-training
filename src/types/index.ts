@@ -80,3 +80,7 @@ export type OmitedUser = Omit<
 > & {
   email: string
 }
+
+export interface SearchParams {
+  [key: string]: string | string[] | undefined
+}

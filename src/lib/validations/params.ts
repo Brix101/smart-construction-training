@@ -6,8 +6,6 @@ export const searchParamsSchema = z.object({
   from: z.string().optional(),
   to: z.string().optional(),
   sort: z.string().optional().default("createdAt.desc"),
-})
-
-export const dashboardTopicsSearchParamsSchema = searchParamsSchema.extend({
   name: z.string().optional(),
+  search: z.string().optional(),
 })
