@@ -52,7 +52,7 @@ export default authMiddleware({
         req.nextUrl.pathname.includes("dashboard") &&
         !privateMetadata.data.role.includes("admin")
       ) {
-        url.pathname = "/"
+        url.pathname = "/courses"
         return NextResponse.redirect(url)
         // throw new Error("User unauthorized!")
         // return new NextResponse(null, { status: 403 })
