@@ -7,5 +7,5 @@ export const searchParamsSchema = z.object({
   to: z.string().optional(),
   sort: z.string().optional().default("createdAt.desc"),
   name: z.string().optional(),
-  search: z.string().optional(),
+  search: z.string().optional().default(""),
 })

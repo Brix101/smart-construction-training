@@ -13,7 +13,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   const { search } = searchParamsSchema.parse(searchParams)
 
   const courses = await db.query.courses.findMany({
-    where: (course, { ilike }) => ilike(course.name, `%${search || ""}%`),
+    where: (course, { ilike }) => ilike(course.name, `%${search}%`),
   })
 
   return (

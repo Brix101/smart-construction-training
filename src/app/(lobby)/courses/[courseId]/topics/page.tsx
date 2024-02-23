@@ -2,17 +2,18 @@ import { TopicCard } from "@/components/cards/topic-card"
 import { Icons } from "@/components/icons"
 import { SearchInput } from "@/components/search-input"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getRandomPatternStyle } from "@/lib/generate-pattern"
 import { searchParamsSchema } from "@/lib/validations/params"
 import { SearchParams } from "@/types"
-import { asc, eq, ilike } from "drizzle-orm"
+import { asc, eq } from "drizzle-orm"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
-interface UpdateCoursePageProps {
+export const dynamic = "force-dynamic"
+
+interface TopicsPageProps {
   params: {
     courseId: string
   }
@@ -22,17 +23,16 @@ interface UpdateCoursePageProps {
 export default async function TopicsPage({
   params,
   searchParams,
-}: UpdateCoursePageProps) {
+}: TopicsPageProps) {
   const courseId = Number(params.courseId)
   const { search } = searchParamsSchema.parse(searchParams)
-
-  console.log(search)
 
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
       topics: {
         orderBy: asc(topics.createdAt),
+        where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
       },
     },
   })
