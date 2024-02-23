@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { db } from "@/db"
 import { topics } from "@/db/schema"
 import { cn } from "@/lib/utils"
+import { SidebarNavItem } from "@/types"
 import { eq } from "drizzle-orm"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -36,11 +37,19 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
     notFound()
   }
 
-  const navItems = topic.course.topics.map(topic => ({
-    title: topic.name,
-    href: `/courses/${topic.courseId}/topics/${topic.id}`,
-    items: [],
-  }))
+  const navItems: SidebarNavItem[] = [
+    {
+      title: "Back to course",
+      href: `/courses/${topic.courseId}/topics`,
+      items: [],
+      icon: "home",
+    },
+    ...topic.course.topics.map(topic => ({
+      title: topic.name,
+      href: `/courses/${topic.courseId}/topics/${topic.id}`,
+      items: [],
+    })),
+  ]
 
   return (
     <div className="mx-10 flex-1 items-start md:grid md:grid-cols-[250px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-2">
