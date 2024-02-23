@@ -33,8 +33,8 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
   return (
     <>
       <div className="flex flex-col">
-        <div className="border-b bg-blue-50 shadow-lg">
-          <div className="e container flex w-full justify-between p-2 px-4">
+        <div className="bg-blue-50">
+          <div className="container flex w-full justify-between p-2 px-4">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Link
                 href="/courses"
@@ -71,26 +71,30 @@ export default async function CoursePage({ params }: UpdateCoursePageProps) {
             </div>
           </div>
         </div>
-        <div className="relative bg-blue-50">
-          <div className="container relative z-10 flex space-x-4 pt-4">
-            <div
-              className="h-40 w-60 rounded-t-lg border"
-              style={getRandomPatternStyle(String(course.id))}
-            />
+        <div
+          className="relative space-y-4 bg-blue-50"
+          style={getRandomPatternStyle(String(course.id))}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-blue-50" />
+          <div className="container relative flex space-x-4 pt-4">
             <div className="space-y-2">
-              <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+              <h1 className="scroll-m-20 text-4xl font-bold tracking-tight drop-shadow-xl">
                 {course.name}
               </h1>
               <p className="text-lg text-muted-foreground">
-                {course.description}
+                {course.description?.length
+                  ? course.description
+                  : `Explore ${course.name}`}
               </p>
             </div>
           </div>
-          <div className="absolute bottom-0 w-full bg-blue-200">
+          <div className="w-full">
             <div className="container flex space-x-4">
-              <div className="w-60"></div>
               <div>
-                <Button variant="secondary" className="rounded-none">
+                <Button
+                  className="rounded-none bg-background"
+                  variant="outline"
+                >
                   <Icons.home />
                   <span className="px-2">Topics</span>
                 </Button>
