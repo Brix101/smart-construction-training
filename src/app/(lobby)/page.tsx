@@ -9,7 +9,14 @@ export default async function Home() {
 
   return (
     <>
-      <section className="w-full bg-blue-50 py-12">
+      <section
+        className="w-full bg-blue-50 py-10"
+        style={{
+          backgroundImage: "url(/svg/default_banner.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "80% 20%",
+        }}
+      >
         <div className="container relative">
           <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter md:block md:text-6xl lg:leading-[1.1]">
             All Courses

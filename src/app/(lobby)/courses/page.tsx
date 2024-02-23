@@ -9,7 +9,14 @@ export default async function CoursesPage() {
 
   return (
     <>
-      <section className="w-full bg-blue-50 py-12">
+      <div
+        className="w-full bg-blue-50 py-10"
+        style={{
+          backgroundImage: "url(/svg/default_banner.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "80% 20%",
+        }}
+      >
         <div className="container relative">
           <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter md:block md:text-6xl lg:leading-[1.1]">
             All Courses
@@ -28,7 +35,7 @@ export default async function CoursesPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
       <div className="pt-14">
         <main className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {courses.map(course => (
