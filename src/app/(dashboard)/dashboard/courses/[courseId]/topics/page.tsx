@@ -9,7 +9,8 @@ import * as React from "react"
 
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { TopicsTableShell } from "@/components/shells/topics-table-shell"
-import { dashboardTopicsSearchParamsSchema } from "@/lib/validations/params"
+import { searchParamsSchema } from "@/lib/validations/params"
+import { SearchParams } from "@/types"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -21,9 +22,7 @@ interface TopicsPageProps {
   params: {
     courseId: string
   }
-  searchParams: {
-    [key: string]: string | string[] | undefined
-  }
+  searchParams: SearchParams
 }
 
 export default async function TopicsPage({
@@ -33,8 +32,7 @@ export default async function TopicsPage({
   const courseId = Number(params.courseId)
 
   // Parse search params using zod schema
-  const { page, per_page, sort, name } =
-    dashboardTopicsSearchParamsSchema.parse(searchParams)
+  const { page, per_page, sort, name } = searchParamsSchema.parse(searchParams)
 
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),

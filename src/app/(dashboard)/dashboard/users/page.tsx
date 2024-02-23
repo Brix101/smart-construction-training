@@ -10,7 +10,7 @@ import {
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
 import { UsersTableShell } from "@/components/shells/users-table-shell"
-import { dashboardTopicsSearchParamsSchema } from "@/lib/validations/params"
+import { searchParamsSchema } from "@/lib/validations/params"
 import { OmitedUser } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 
@@ -27,8 +27,7 @@ interface UsersPageProps {
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const { page, per_page } =
-    dashboardTopicsSearchParamsSchema.parse(searchParams)
+  const { page, per_page } = searchParamsSchema.parse(searchParams)
 
   // Fallback page for invalid page numbers
   const pageAsNumber = Number(page)
