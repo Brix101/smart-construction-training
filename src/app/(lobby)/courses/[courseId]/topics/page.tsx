@@ -44,7 +44,7 @@ export default async function TopicsPage({
     <>
       <div className="flex flex-col">
         <div className="bg-blue-100">
-          <div className="container flex w-full flex-col justify-between space-y-5 py-1 md:flex-row md:space-y-0">
+          <div className="container flex w-full flex-col justify-between space-y-5 pt-4 md:flex-row md:space-y-0 md:pt-1">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Link
                 href="/courses"

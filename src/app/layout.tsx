@@ -33,7 +33,7 @@ export default function RootLayout({
               {children}
             </ThemeProvider>
             <Toaster />
-            <Analytics />{" "}
+            <Analytics />
           </body>
         </html>
       </ClerkProvider>
