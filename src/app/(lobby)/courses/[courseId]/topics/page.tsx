@@ -52,7 +52,7 @@ export default async function TopicsPage({
               >
                 Courses
               </Link>
-              <Icons.home />
+              <Icons.chevronRight size={15} />
               <span className="font-medium text-foreground">{course.name}</span>
             </div>
             <SearchInput placeholder="Search topic" />
@@ -82,7 +82,7 @@ export default async function TopicsPage({
                   className="rounded-none border-b-transparent bg-background"
                   variant="outline"
                 >
-                  <Icons.home />
+                  <Icons.home size={14} />
                   <span className="px-2">Topics</span>
                 </Button>
               </div>
