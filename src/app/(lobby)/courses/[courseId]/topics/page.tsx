@@ -43,8 +43,8 @@ export default async function TopicsPage({
   return (
     <>
       <div className="flex flex-col">
-        <div className="bg-blue-50">
-          <div className="container flex w-full flex-col justify-between space-y-5 p-2 px-4 md:flex-row md:space-y-0">
+        <div className="bg-blue-100">
+          <div className="container flex w-full flex-col justify-between space-y-5 py-1 md:flex-row md:space-y-0">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Link
                 href="/courses"
@@ -73,12 +73,12 @@ export default async function TopicsPage({
           </div>
         </div>
         <div
-          className="relative space-y-4 bg-blue-50"
+          className="relative  bg-blue-100"
           style={getRandomPatternStyle(String(course.id))}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-blue-50" />
-          <div className="container relative flex space-x-4 pt-4">
-            <div className="space-y-2">
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-blue-100" />
+          <div className="container relative flex space-x-4 pt-2">
+            <div className="space-y-1">
               <h1 className="scroll-m-20 text-4xl font-bold tracking-tight drop-shadow-xl">
                 {course.name}
               </h1>
