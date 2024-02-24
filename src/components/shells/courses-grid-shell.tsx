@@ -21,8 +21,8 @@ function CoursesGridShell({ courses }: CoursesGridShellProps) {
           <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
-          <div className="container absolute w-full translate-y-2">
-            <div className="mr-20 flex justify-between rounded-sm border bg-white p-2 shadow-lg">
+          <div className="container absolute w-full translate-y-2 p-0">
+            <div className="mr-16 flex justify-between rounded-sm border bg-white p-2 shadow-lg">
               <div></div>
               <div>
                 <SearchInput placeholder="Search courses" />
