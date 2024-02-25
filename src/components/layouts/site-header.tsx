@@ -37,10 +37,10 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
 
   const navItems = allCourses.map(course => ({
     title: course.name,
-    href: `/courses/${course.id}/topics`,
+    href: `/${course.id}`,
     items: course.topics.map(topic => ({
       title: topic.name,
-      href: `/courses/${topic.courseId}/topics/${topic.id}`,
+      href: `/${topic.courseId}/${topic.id}`,
       items: [],
     })),
   }))
