@@ -11,7 +11,7 @@ export const siteConfig = {
       items: [
         {
           title: "Courses",
-          href: "/courses",
+          href: "/",
           description: "All the courses currently available.",
           items: [],
         },

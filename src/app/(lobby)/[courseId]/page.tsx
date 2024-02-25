@@ -1,7 +1,9 @@
 import { TopicCard } from "@/components/cards/topic-card"
 import { Icons } from "@/components/icons"
 import { SearchInput } from "@/components/search-input"
+import { TopicCardSkeleton } from "@/components/skeletons/topic-card-skeleton"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getRandomPatternStyle } from "@/lib/generate-pattern"
@@ -44,10 +46,10 @@ export default async function TopicsPage({
     <>
       <div className="flex flex-col">
         <div className="bg-blue-100">
-          <div className="container flex w-full flex-col justify-between space-y-5 pt-4 md:flex-row md:space-y-0 md:pt-1">
+          <div className="container flex w-full flex-col justify-between space-y-5 pb-2 pt-4 md:flex-row md:space-y-0 md:pt-1">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Link
-                href="/courses"
+                href="/"
                 className="overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
               >
                 Courses
@@ -96,7 +98,7 @@ export default async function TopicsPage({
             <TopicCard
               key={topic.id}
               topic={topic}
-              href={`/courses/${course.id}/topics/${topic.id}`}
+              href={`/${course.id}/${topic.id}`}
             />
           )
         })}

@@ -40,13 +40,13 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
   const navItems: SidebarNavItem[] = [
     {
       title: "Back to course",
-      href: `/courses/${topic.courseId}/topics`,
+      href: `/${topic.courseId}`,
       items: [],
       icon: "home",
     },
     ...topic.course.topics.map(topic => ({
       title: topic.name,
-      href: `/courses/${topic.courseId}/topics/${topic.id}`,
+      href: `/${topic.courseId}/${topic.id}`,
       items: [],
     })),
   ]

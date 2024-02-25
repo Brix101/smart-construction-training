@@ -4,7 +4,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default async function LoadingPage() {
   return (
     <>
-      {" "}
       <div
         className="w-full bg-blue-50 py-10"
         style={{
