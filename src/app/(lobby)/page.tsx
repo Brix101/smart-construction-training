@@ -1,6 +1,5 @@
 import { CourseCard } from "@/components/cards/course-card"
 import { SearchInput } from "@/components/search-input"
-import CoursesGridShell from "@/components/shells/courses-grid-shell"
 import { db } from "@/db"
 import { searchParamsSchema } from "@/lib/validations/params"
 import { SearchParams } from "@/types"
