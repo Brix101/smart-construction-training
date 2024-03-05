@@ -8,14 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "typecheck": "contentlayer build && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "check": "pnpm lint && pnpm typecheck && pnpm format:check",
     "db:generate": "dotenv drizzle-kit generate:pg",
     "db:push": "dotenv drizzle-kit push:pg",
     "db:introspect": "dotenv drizzle-kit introspect:pg",
-    "db:studio": "dotenv drizzle-kit studio --host 0.0.0.0 --verbose"
+    "db:studio": "dotenv drizzle-kit studio --verbose"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.27.5",

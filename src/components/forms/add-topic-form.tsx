@@ -36,8 +36,8 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
     resolver: zodResolver(topicSchema),
     defaultValues: {
       name: "",
-      urlId: "",
-      videoLink: "",
+      youtubeId: "",
+      youtubeUrl: "",
       details: "",
     },
   })
@@ -84,18 +84,18 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="videoLink"
+          name="youtubeUrl"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>Youtube link</FormLabel>
+              <FormLabel>Youtube url</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Type youtube link here."
+                  placeholder="Type youtube url here."
                   value={field.value}
                   onChange={e => {
                     const splitUrl = e.target.value.split("/")
-                    const urlId = splitUrl[splitUrl.length - 1]
-                    form.setValue("urlId", urlId)
+                    const youtubeId = splitUrl[splitUrl.length - 1]
+                    form.setValue("youtubeId", youtubeId)
                     field.onChange(e)
                   }}
                 />
@@ -106,7 +106,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="urlId"
+          name="youtubeId"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Youtube Id</FormLabel>
@@ -136,7 +136,9 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
-            onClick={() => void form.trigger(["name", "urlId", "videoLink"])}
+            onClick={() =>
+              void form.trigger(["name", "youtubeId", "youtubeUrl", "details"])
+            }
             className="w-fit"
             disabled={isPending}
           >

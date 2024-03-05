@@ -71,13 +71,15 @@ export default async function CoursesPage() {
         <AlertTitle>Heads up!</AlertTitle>
         <AlertDescription>
           there are currently{" "}
-          {counts.map((count, index) => (
-            <React.Fragment key={index}>
-              <span className="font-semibold">{count.count}</span>{" "}
-              {count.active ? "Active" : "Inactive"}
-              {index !== counts.length - 1 && " and "}
-            </React.Fragment>
-          ))}{" "}
+          {counts.length > 0
+            ? counts.map((count, index) => (
+                <React.Fragment key={index}>
+                  <span className="font-semibold">{count.count}</span>{" "}
+                  {count.active ? "Active" : "Inactive"}
+                  {index !== counts.length - 1 && " and "}
+                </React.Fragment>
+              ))
+            : "no"}{" "}
           courses.
         </AlertDescription>
       </Alert>

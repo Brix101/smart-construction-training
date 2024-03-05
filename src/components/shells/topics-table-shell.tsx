@@ -24,7 +24,7 @@ import { catchError, formatDate } from "@/lib/utils"
 
 type AwaitedTopic = Pick<
   Topic,
-  "id" | "name" | "urlId" | "videoLink" | "createdAt"
+  "id" | "name" | "youtubeId" | "youtubeUrl" | "createdAt"
 >
 
 interface TopicsTableShellProps {
@@ -90,13 +90,13 @@ export function TopicsTableShell({
         ),
       },
       {
-        accessorKey: "videoLink",
+        accessorKey: "youtubeUrl",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Youtube link" />
         ),
       },
       {
-        accessorKey: "urlId",
+        accessorKey: "youtubeId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Youtube Id" />
         ),

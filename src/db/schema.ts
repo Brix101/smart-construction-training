@@ -13,7 +13,9 @@ export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
   description: text("description"),
-  active: boolean("active").notNull().default(false),
+  level: integer("level").notNull().default(1),
+  isPublished: boolean("is_published").notNull().default(false),
+  isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
@@ -28,12 +30,13 @@ export const coursesRelations = relations(courses, ({ many }) => ({
 export const topics = pgTable("topics", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  urlId: varchar("url_id", { length: 100 }).notNull(),
-  videoLink: text("video_link"),
+  youtubeId: varchar("youtube_id", { length: 100 }).notNull(),
+  youtubeUrl: text("youtube_url"),
   details: text("details"),
   courseId: integer("course_id")
     .references(() => courses.id, { onDelete: "cascade" })
     .notNull(),
+  isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
@@ -56,6 +59,7 @@ export const materials = pgTable("materials", {
   topicId: integer("topic_id")
     .references(() => topics.id, { onDelete: "cascade" })
     .notNull(),
+  isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })

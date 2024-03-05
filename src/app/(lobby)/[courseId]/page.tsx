@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getRandomPatternStyle } from "@/lib/generate-pattern"
-import { searchParamsSchema } from "@/lib/validations/params"
-import { SearchParams } from "@/types"
 import { asc, eq } from "drizzle-orm"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -16,19 +14,16 @@ interface TopicsPageProps {
   params: {
     courseId: string
   }
-  searchParams: SearchParams
 }
 
-async function getCourseFromParams({ params, searchParams }: TopicsPageProps) {
+async function getCourseFromParams({ params }: TopicsPageProps) {
   const courseId = Number(params.courseId)
-  const { search } = searchParamsSchema.parse(searchParams)
 
   return await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
       topics: {
         orderBy: asc(topics.name),
-        where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
       },
     },
   })

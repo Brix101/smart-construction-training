@@ -23,7 +23,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Skeleton
           className={cn(
             buttonVariants({ variant, size, className }),
-            "bg-muted text-muted-foreground"
+            "bg-muted text-muted-foreground",
           )}
         >
           {children}
@@ -46,7 +46,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </Button>
     )
-  }
+  },
 )
 LoadingButton.displayName = "LoadingButton"
 
