@@ -21,14 +21,14 @@ interface TopicsPageProps {
 
 async function getCourseFromParams({ params, searchParams }: TopicsPageProps) {
   const courseId = Number(params.courseId)
-  const { search } = searchParamsSchema.parse(searchParams)
+  // const { search } = searchParamsSchema.parse(searchParams)
 
   return await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
       topics: {
         orderBy: asc(topics.name),
-        where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
+        // where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
       },
     },
   })
@@ -36,6 +36,7 @@ async function getCourseFromParams({ params, searchParams }: TopicsPageProps) {
 
 export default async function TopicsPage(params: TopicsPageProps) {
   const course = await getCourseFromParams(params)
+  
   if (!course) {
     notFound()
   }
