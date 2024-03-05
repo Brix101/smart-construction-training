@@ -84,15 +84,20 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="urlId"
+          name="videoLink"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>urlId</FormLabel>
+              <FormLabel>Youtube link</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Type topic urlId here."
+                  placeholder="Type youtube link here."
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={e => {
+                    const splitUrl = e.target.value.split("/")
+                    const urlId = splitUrl[splitUrl.length - 1]
+                    form.setValue("urlId", urlId)
+                    field.onChange(e)
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -101,13 +106,13 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="videoLink"
+          name="urlId"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>Video link</FormLabel>
+              <FormLabel>Youtube Id</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Type topic video link here."
+                  placeholder="Type youtube Id here."
                   value={field.value}
                   onChange={field.onChange}
                 />
