@@ -26,15 +26,6 @@ export default authMiddleware({
       return NextResponse.redirect(url)
     }
 
-    // If the user doesn't have a role, set it to user
-    if (!auth.user?.privateMetadata.role) {
-      await clerkClient.users.updateUserMetadata(auth.userId, {
-        privateMetadata: {
-          role: "user" satisfies UserRole,
-        },
-      })
-    }
-
     const privateMetadata = userPrivateMetadataSchema.safeParse(
       auth.user?.privateMetadata,
     )

@@ -1,8 +1,8 @@
 import { CourseCard } from "@/components/cards/course-card"
-import { getCourses } from "@/lib/actions/course"
+import { getActiveCourses } from "@/lib/actions/course"
 
 export default async function HomePage() {
-  const coursePromises = await getCourses()
+  const coursePromises = await getActiveCourses()
   const [allCourses] = await Promise.all([coursePromises])
 
   return (

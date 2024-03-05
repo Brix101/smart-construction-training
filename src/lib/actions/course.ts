@@ -12,6 +12,19 @@ import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
 export async function getCourses() {
   return await cache(
     async () => {
+      return db.select().from(courses).orderBy(asc(courses.name))
+    },
+    ["all-courses"],
+    {
+      revalidate: 1,
+      tags: ["all-courses"],
+    },
+  )()
+}
+
+export async function getActiveCourses() {
+  return await cache(
+    async () => {
       return db
         .select({
           id: courses.id,
@@ -20,13 +33,13 @@ export async function getCourses() {
           active: courses.active,
         })
         .from(courses)
+        .where(eq(courses.active, true))
         .orderBy(asc(courses.name))
-      // .orderBy(desc(courses.active), desc(sql<number>`count(*)`))
     },
-    ["featured-courses"],
+    ["active-courses"],
     {
       revalidate: 1,
-      tags: ["featured-courses"],
+      tags: ["active-courses"],
     },
   )()
 }
