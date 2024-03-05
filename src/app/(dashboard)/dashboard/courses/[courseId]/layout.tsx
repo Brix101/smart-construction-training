@@ -36,6 +36,7 @@ export default async function CourseLayout({
       name: courses.name,
     })
     .from(courses)
+    .orderBy(courses.name)
 
   const course = allcourses.find(course => course.id === courseId)
 
