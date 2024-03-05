@@ -29,12 +29,12 @@ export function CourseCard({ course, href, hasBadge }: CourseCardProps) {
             className={cn(
               "pointer-events-none absolute right-2 top-2 rounded-sm px-2 py-0.5 font-semibold",
               hasBadge ? "visible" : "invisible",
-              course.isActive
+              course.isPublished
                 ? "border-green-600/20 bg-green-100 text-green-700"
                 : "border-red-600/10 bg-red-100 text-red-700",
             )}
           >
-            {course.isActive ? "isActive" : "InisActive"}
+            {course.isPublished ? "Published" : "Unpublished"}
           </Badge>
           <div
             className="h-full rounded-t-md border-b"

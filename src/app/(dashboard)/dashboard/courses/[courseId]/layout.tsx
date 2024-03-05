@@ -57,7 +57,7 @@ export default async function CourseLayout({
           <CourseSwitcher
             currentCourse={course}
             courses={allcourses}
-            dashboardRedirectPath={"/dashboard/courses"}
+            dashboardRedirectPath={"/dashboard/courses/new"}
           />
         ) : null}
       </div>
