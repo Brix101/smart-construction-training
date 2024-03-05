@@ -2,12 +2,33 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, eq, not } from "drizzle-orm"
-import { revalidatePath } from "next/cache"
+import { and, asc, eq, not } from "drizzle-orm"
+import { revalidatePath, unstable_cache as cache } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
 import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
+
+export async function getCourses() {
+  return await cache(
+    async () => {
+      return await db
+        .select({
+          id: courses.id,
+          name: courses.name,
+          description: courses.description,
+        })
+        .from(courses)
+        .orderBy(asc(courses.name))
+      // .orderBy(desc(courses.active), desc(sql<number>`count(*)`))
+    },
+    ["featured-courses"],
+    {
+      revalidate: 1,
+      tags: ["featured-courses"],
+    },
+  )()
+}
 
 export async function addCourse(input: z.infer<typeof courseSchema>) {
   const courseWithSameName = await db.query.courses.findFirst({

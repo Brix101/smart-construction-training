@@ -12,4 +12,4 @@ const pool = new Pool({
 export const dbPool = pgDrizzle(pool)
 
 const connection = neon(env.DATABASE_URL!)
-export const db = drizzle(connection, { schema })
+export const db = drizzle(connection, { schema, logger: false })

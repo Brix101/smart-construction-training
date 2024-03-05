@@ -1,21 +1,8 @@
 import { CourseCard } from "@/components/cards/course-card"
-import { SearchInput } from "@/components/search-input"
-import { db } from "@/db"
-import { searchParamsSchema } from "@/lib/validations/params"
-import { SearchParams } from "@/types"
+import { getCourses } from "@/lib/actions/course"
 
-export const dynamic = "force-dynamic"
-
-interface HomeProps {
-  searchParams: SearchParams
-}
-
-export default async function HomePage({ searchParams }: HomeProps) {
-  const { search } = searchParamsSchema.parse(searchParams)
-
-  const courses = await db.query.courses.findMany({
-    where: (course, { ilike }) => ilike(course.name, `%${search}%`),
-  })
+export default async function HomePage() {
+  const courses = await getCourses()
 
   return (
     <>
@@ -27,18 +14,10 @@ export default async function HomePage({ searchParams }: HomeProps) {
           backgroundPosition: "80% 20%",
         }}
       >
-        <div className="container relative">
+        <div className="container ">
           <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
-          <div className="container absolute w-full translate-y-2 p-0">
-            <div className="mr-16 flex justify-between rounded-sm border bg-white p-2 shadow-lg">
-              <div></div>
-              <div>
-                <SearchInput placeholder="Search courses" />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div className="pt-14">

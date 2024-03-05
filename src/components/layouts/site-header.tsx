@@ -19,6 +19,7 @@ import {
 } from "../ui/dropdown-menu"
 import { MainNav } from "./main-nav"
 import { MobileNav } from "./mobile-nav"
+import { TopicCommandMenu } from "../topic-command-menu"
 
 interface SiteHeaderProps {
   user: User | null
@@ -54,6 +55,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
         <MobileNav sidebarNavItems={navItems} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
+            <TopicCommandMenu />
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

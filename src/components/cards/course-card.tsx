@@ -13,7 +13,7 @@ import { getRandomPatternStyle } from "@/lib/generate-pattern"
 import { cn } from "@/lib/utils"
 
 interface CourseCardProps {
-  course: Course
+  course: Partial<Course>
   href: string
   hasBadge?: boolean
 }
