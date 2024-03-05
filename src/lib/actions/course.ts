@@ -30,10 +30,10 @@ export async function getActiveCourses() {
           id: courses.id,
           name: courses.name,
           description: courses.description,
-          active: courses.active,
+          active: courses.isActive,
         })
         .from(courses)
-        .where(eq(courses.active, true))
+        .where(eq(courses.isActive, true))
         .orderBy(asc(courses.name))
     },
     ["active-courses"],
@@ -49,11 +49,11 @@ export async function getCourseCount() {
     async () => {
       return db
         .select({
-          active: courses.active,
-          count: sql<number>`count(${courses.active})`,
+          active: courses.isActive,
+          count: sql<number>`count(${courses.isActive})`,
         })
         .from(courses)
-        .groupBy(sql`${courses.active}`)
+        .groupBy(sql`${courses.isActive}`)
     },
     ["courses-count"],
     {
@@ -80,10 +80,23 @@ export async function addCourse(input: z.infer<typeof courseSchema>) {
   revalidatePath("/dashboard/courses")
 }
 
+export async function publishCourse(courseId: number) {
+  await db
+    .update(courses)
+    .set({
+      isPublished: true,
+    })
+    .where(eq(courses.id, courseId))
+
+  revalidatePath(`/dashboard/courses/${courseId}`)
+}
+
 export async function updateCourse(courseId: number, fd: FormData) {
   const input = updateCourseSchema.parse({
     name: fd.get("name"),
     description: fd.get("description"),
+    level: fd.get("level"),
+    isPublished: fd.get("isPublished")?.toString().toLowerCase() === "true",
   })
 
   const courseWithSameName = await db.query.courses.findFirst({
@@ -102,6 +115,8 @@ export async function updateCourse(courseId: number, fd: FormData) {
     .set({
       name: input.name,
       description: input.description,
+      level: input.level,
+      isPublished: input.isPublished,
     })
     .where(eq(courses.id, courseId))
 

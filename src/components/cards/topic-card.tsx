@@ -29,7 +29,7 @@ export function TopicCard({
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={4 / 3}>
             <Image
-              src={`https://img.youtube.com/vi/${topic.urlId}/hqdefault.jpg`}
+              src={`https://img.youtube.com/vi/${topic.youtubeId}/hqdefault.jpg`}
               alt={topic.name}
               className="object-cover"
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"

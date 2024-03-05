@@ -62,7 +62,7 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
         <div className="flex flex-col space-y-10 pb-10">
           <iframe
             className="mt-10 aspect-video"
-            src={`https://www.youtube.com/embed/${topic.urlId}`}
+            src={`https://www.youtube.com/embed/${topic.youtubeId}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title={topic?.name ?? "Embedded youtube"}

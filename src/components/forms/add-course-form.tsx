@@ -36,6 +36,7 @@ export function AddCourseForm({}: AddCourseFormProps) {
     resolver: zodResolver(courseSchema),
     defaultValues: {
       name: "",
+      level: 1,
       description: "",
     },
   })
@@ -68,6 +69,24 @@ export function AddCourseForm({}: AddCourseFormProps) {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="Type course name here." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="level"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Level</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min={1}
+                  placeholder="Type course level here."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

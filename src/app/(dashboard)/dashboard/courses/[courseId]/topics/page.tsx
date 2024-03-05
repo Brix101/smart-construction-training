@@ -69,8 +69,8 @@ export default async function TopicsPage({
       .select({
         id: topics.id,
         name: topics.name,
-        urlId: topics.urlId,
-        videoLink: topics.videoLink,
+        youtubeId: topics.youtubeId,
+        youtubeUrl: topics.youtubeUrl,
         createdAt: topics.createdAt,
       })
       .from(topics)

@@ -2,6 +2,7 @@ import * as z from "zod"
 
 export const courseSchema = z.object({
   name: z.string().min(3).max(50),
+  level: z.coerce.number(),
   description: z.string().optional(),
 })
 
@@ -21,5 +22,7 @@ export const getCoursesSchema = z.object({
 
 export const updateCourseSchema = z.object({
   name: z.string().min(3).max(50),
+  level: z.coerce.number(),
+  isPublished: z.boolean(),
   description: z.string().optional(),
 })

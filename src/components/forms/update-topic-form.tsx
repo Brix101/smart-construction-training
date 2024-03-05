@@ -39,12 +39,12 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   const [isPending, startTransition] = React.useTransition()
 
   React.useEffect(() => {
-    if (topic.urlId) {
+    if (topic.youtubeId) {
       const file = new File([], topic.name ?? "file name", {
         type: "image",
       })
       const fileWithPreview = Object.assign(file, {
-        preview: `https://img.youtube.com/vi/${topic.urlId}/maxresdefault.jpg`,
+        preview: `https://img.youtube.com/vi/${topic.youtubeId}/maxresdefault.jpg`,
       })
       setThumbnailPreview(fileWithPreview)
     }
@@ -55,8 +55,8 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
     defaultValues: {
       name: topic.name ?? "",
       details: topic.details ?? "",
-      urlId: topic.urlId ?? "",
-      videoLink: topic.videoLink ?? "",
+      youtubeId: topic.youtubeId ?? "",
+      youtubeUrl: topic.youtubeUrl ?? "",
     },
   })
 
@@ -104,8 +104,8 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormControl>
             <Input
               placeholder="Type topic URL ID here."
-              {...form.register("urlId")}
-              defaultValue={topic.urlId ?? ""}
+              {...form.register("youtubeId")}
+              defaultValue={topic.youtubeId ?? ""}
             />
           </FormControl>
           <FormMessage />
@@ -115,8 +115,8 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormControl>
             <Input
               placeholder="Type topic video link here."
-              {...form.register("videoLink")}
-              defaultValue={topic.videoLink ?? ""}
+              {...form.register("youtubeUrl")}
+              defaultValue={topic.youtubeUrl ?? ""}
             />
           </FormControl>
           <FormMessage />
@@ -161,7 +161,12 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
             variant="destructive"
             onClick={() => {
               startTransition(async () => {
-                void form.trigger(["name", "urlId", "videoLink"])
+                void form.trigger([
+                  "name",
+                  "youtubeId",
+                  "youtubeUrl",
+                  "details",
+                ])
                 await deleteTopic({
                   courseId: topic.courseId,
                   id: topic.id,

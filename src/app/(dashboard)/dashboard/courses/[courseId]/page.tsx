@@ -17,6 +17,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { deleteCourse, updateCourse } from "@/lib/actions/course"
+import { PublishCourseButton } from "@/components/activate-course-button"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -41,6 +52,8 @@ export default async function UpdatecoursePage({
       id: true,
       name: true,
       description: true,
+      level: true,
+      isPublished: true,
     },
   })
 
@@ -50,23 +63,25 @@ export default async function UpdatecoursePage({
 
   return (
     <div className="space-y-10">
-      <Card
-        as="section"
-        id="connect-to-stripe"
-        aria-labelledby="connect-to-stripe-heading"
-      >
-        <CardHeader className="space-y-1">
-          <CardTitle className="line-clamp-1 text-2xl">
-            Connect to Stripe
-          </CardTitle>
-          <CardDescription>
-            Connect your store to Stripe to start accepting payments
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {/* <ConnectStoreToStripeButton storeId={storeId} /> */}
-        </CardContent>
-      </Card>
+      {!course.isPublished && (
+        <Card
+          as="section"
+          id="publish-course"
+          aria-labelledby="publish-couse-heading"
+        >
+          <CardHeader className="space-y-1">
+            <CardTitle className="line-clamp-1 text-2xl">
+              Publish Course
+            </CardTitle>
+            <CardDescription>
+              Publish course to enables users to access this course
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PublishCourseButton courseId={courseId} />
+          </CardContent>
+        </Card>
+      )}
       <Card as="section">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update your course</CardTitle>
@@ -79,6 +94,26 @@ export default async function UpdatecoursePage({
             action={updateCourse.bind(null, courseId)}
             className="grid w-full max-w-xl gap-5"
           >
+            <div
+              className={cn("gap-2.5", course.isPublished ? "grid" : "hidden")}
+            >
+              <Label htmlFor="update-course-is-publish">Status</Label>
+              <Select
+                name="isPublished"
+                defaultValue={course.isPublished.toString()}
+              >
+                <SelectTrigger className="w-1/2">
+                  <SelectValue placeholder="Select a status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Status</SelectLabel>
+                    <SelectItem value={"true"}>Published</SelectItem>
+                    <SelectItem value={"false"}>Unpublish</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="grid gap-2.5">
               <Label htmlFor="update-course-name">Name</Label>
               <Input
@@ -89,7 +124,20 @@ export default async function UpdatecoursePage({
                 minLength={3}
                 maxLength={50}
                 placeholder="Type course name here."
-                defaultValue={course.name ?? ""}
+                defaultValue={course.name}
+              />
+            </div>
+            <div className="grid gap-2.5">
+              <Label htmlFor="update-course-name">Level</Label>
+              <Input
+                id="update-course-name"
+                aria-describedby="update-course-name-description"
+                name="name"
+                required
+                type="number"
+                min={1}
+                placeholder="Type course level here."
+                defaultValue={course.level}
               />
             </div>
             <div className="grid gap-2.5">

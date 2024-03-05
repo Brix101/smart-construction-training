@@ -36,6 +36,41 @@
       "when": 1702627404367,
       "tag": "0004_colorful_darwin",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1709645589273,
+      "tag": "0005_burly_jack_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1709645764753,
+      "tag": "0006_groovy_leopardon",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1709647028960,
+      "tag": "0007_overconfident_thor",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1709647056929,
+      "tag": "0008_wealthy_viper",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1709647842134,
+      "tag": "0009_awesome_warbound",
+      "breakpoints": true
     }
   ]
 }
