@@ -90,17 +90,18 @@ export function TopicsTableShell({
         ),
       },
       {
-        accessorKey: "urlId",
+        accessorKey: "videoLink",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Url Id" />
+          <DataTableColumnHeader column={column} title="Youtube link" />
         ),
       },
       {
-        accessorKey: "videoLink",
+        accessorKey: "urlId",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Video Link" />
+          <DataTableColumnHeader column={column} title="Youtube Id" />
         ),
       },
+
       {
         accessorKey: "createdAt",
         header: ({ column }) => (
