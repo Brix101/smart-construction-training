@@ -2,13 +2,13 @@ import { SidebarNav } from "@/components/layouts/sidebar-nav"
 import { SiteHeader } from "@/components/layouts/site-header"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { dashboardConfig } from "@/config/dashboard"
-import { currentUser } from "@clerk/nextjs"
+import { getCacheduser } from "@/lib/actions/auth"
 import { redirect } from "next/navigation"
 
 export default async function DashboardLayout({
   children,
 }: React.PropsWithChildren) {
-  const user = await currentUser()
+  const user = await getCacheduser()
 
   if (!user) {
     redirect("/signin")

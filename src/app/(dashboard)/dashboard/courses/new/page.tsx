@@ -1,5 +1,4 @@
 import { env } from "@/env.mjs"
-import { currentUser } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
@@ -17,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { getCacheduser } from "@/lib/actions/auth"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 }
 
 export default async function NewCoursePage() {
-  const user = await currentUser()
+  const user = await getCacheduser()
 
   if (!user) {
     redirect("/signin")

@@ -50,7 +50,24 @@ export default async function UpdatecoursePage({
 
   return (
     <div className="space-y-10">
-      <Card>
+      <Card
+        as="section"
+        id="connect-to-stripe"
+        aria-labelledby="connect-to-stripe-heading"
+      >
+        <CardHeader className="space-y-1">
+          <CardTitle className="line-clamp-1 text-2xl">
+            Connect to Stripe
+          </CardTitle>
+          <CardDescription>
+            Connect your store to Stripe to start accepting payments
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* <ConnectStoreToStripeButton storeId={storeId} /> */}
+        </CardContent>
+      </Card>
+      <Card as="section">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update your course</CardTitle>
           <CardDescription>

@@ -26,15 +26,8 @@ export default authMiddleware({
       return NextResponse.redirect(url)
     }
 
-    // Set the user's role to user if it doesn't exist
-    const user = await clerkClient.users.getUser(auth.userId)
-
-    if (!user) {
-      throw new Error("User not found.")
-    }
-
     // If the user doesn't have a role, set it to user
-    if (!user.privateMetadata.role) {
+    if (!auth.user?.privateMetadata.role) {
       await clerkClient.users.updateUserMetadata(auth.userId, {
         privateMetadata: {
           role: "user" satisfies UserRole,
@@ -43,7 +36,7 @@ export default authMiddleware({
     }
 
     const privateMetadata = userPrivateMetadataSchema.safeParse(
-      user.privateMetadata,
+      auth.user?.privateMetadata,
     )
 
     // Protect dashboard from ordinary user

@@ -1,6 +1,5 @@
 import { db } from "@/db"
 import { courses } from "@/db/schema"
-import { currentUser } from "@clerk/nextjs"
 import { notFound, redirect } from "next/navigation"
 
 import {
@@ -11,6 +10,7 @@ import {
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
 import { CourseTabs } from "@/components/pagers/course-tabs"
 import { Shell } from "@/components/shells/shell"
+import { getCacheduser } from "@/lib/actions/auth"
 
 interface CourseLayoutProps extends React.PropsWithChildren {
   params: {
@@ -24,7 +24,7 @@ export default async function CourseLayout({
 }: CourseLayoutProps) {
   const courseId = Number(params.courseId)
 
-  const user = await currentUser()
+  const user = await getCacheduser()
 
   if (!user) {
     redirect("/signin")

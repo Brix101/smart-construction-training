@@ -38,18 +38,6 @@ export type SidebarNavItem = NavItemWithChildren
 export type UserRole = z.infer<typeof userPrivateMetadataSchema.shape.role>
 export type PrivateMetadata = z.infer<typeof userPrivateMetadataSchema>
 
-export type Material = {
-  name?: string
-  url: string
-}
-
-export type Course = {
-  id: string
-  title: string
-  url: string
-  materials?: Array<Material>
-}
-
 export interface SSOCallbackProps {
   searchParams: HandleOAuthCallbackParams
 }
