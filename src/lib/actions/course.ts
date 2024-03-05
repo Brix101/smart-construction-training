@@ -44,21 +44,21 @@ export async function getActiveCourses() {
   )()
 }
 
-export async function getCourseCount() {
+export async function getPublishedCourse() {
   return await cache(
     async () => {
       return db
         .select({
-          active: courses.isActive,
-          count: sql<number>`count(${courses.isActive})`,
+          isPublished: courses.isPublished,
+          count: sql<number>`count(${courses.isPublished})`,
         })
         .from(courses)
-        .groupBy(sql`${courses.isActive}`)
+        .groupBy(sql`${courses.isPublished}`)
     },
-    ["courses-count"],
+    ["courses-published-count"],
     {
       revalidate: 1,
-      tags: ["courses-count"],
+      tags: ["courses-published-countt"],
     },
   )()
 }
