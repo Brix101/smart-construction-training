@@ -2,7 +2,7 @@ import { siteConfig } from "@/config/site"
 import { db } from "@/db"
 import { getUserEmail } from "@/lib/utils"
 import type { User } from "@clerk/nextjs/server"
-import { DashboardIcon, ExitIcon } from "@radix-ui/react-icons"
+import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import { Icons } from "../icons"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -86,34 +86,37 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     {role.includes("admin") ? (
-                      <DropdownMenuItem asChild>
-                        <Link href="/dashboard/courses">
-                          <DashboardIcon
-                            className="mr-2 h-4 w-4"
-                            aria-hidden="true"
-                          />
-                          Dashboard
-                          <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
-                        </Link>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link href="/dashboard/courses">
+                            <DashboardIcon
+                              className="mr-2 h-4 w-4"
+                              aria-hidden="true"
+                            />
+                            Dashboard
+                            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild>
+                          <Link href="/dashboard/users">
+                            <Icons.users
+                              className="mr-2 h-4 w-4"
+                              aria-hidden="true"
+                            />
+                            Users
+                            <DropdownMenuShortcut>⌘U</DropdownMenuShortcut>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
                     ) : undefined}
                     <DropdownMenuItem asChild>
-                      <Link href="/">
-                        <Icons.credit
-                          className="mr-2 h-4 w-4"
-                          aria-hidden="true"
-                        />
-                        Courses
-                        <DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
-                      </Link>
-                    </DropdownMenuItem>
-                    {/*  <DropdownMenuItem asChild>
                       <Link href="/dashboard/account">
                         <GearIcon className="mr-2 h-4 w-4" aria-hidden="true" />
                         Settings
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                       </Link>
-                    </DropdownMenuItem>*/}
+                    </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -121,7 +124,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                       <ExitIcon className="mr-2 h-4 w-4" aria-hidden="true" />
                       Log out
                       <DropdownMenuShortcut></DropdownMenuShortcut>
-                      {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
+                      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
