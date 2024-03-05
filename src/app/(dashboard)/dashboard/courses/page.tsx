@@ -22,7 +22,8 @@ export const metadata: Metadata = {
 }
 
 export default async function CoursesPage() {
-  const courses = await getCourses()
+  const coursePromises = await getCourses()
+  const [allCourses] = await Promise.all([coursePromises])
 
   return (
     <Shell variant="sidebar">
@@ -57,11 +58,12 @@ export default async function CoursesPage() {
             <CourseCardSkeleton key={i} />
           ))}
         >
-          {courses.map(course => (
+          {allCourses.map(course => (
             <CourseCard
               key={course.id}
               course={course}
               href={`/dashboard/courses/${course.id}`}
+              hasBadge
             />
           ))}
         </React.Suspense>

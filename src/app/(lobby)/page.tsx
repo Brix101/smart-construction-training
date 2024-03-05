@@ -2,7 +2,8 @@ import { CourseCard } from "@/components/cards/course-card"
 import { getCourses } from "@/lib/actions/course"
 
 export default async function HomePage() {
-  const courses = await getCourses()
+  const coursePromises = await getCourses()
+  const [allCourses] = await Promise.all([coursePromises])
 
   return (
     <>
@@ -22,7 +23,7 @@ export default async function HomePage() {
       </div>
       <div className="pt-14">
         <main className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {courses.map(course => (
+          {allCourses.map(course => (
             <CourseCard
               key={course.id}
               course={course}

@@ -7,6 +7,12 @@ export interface DashboardConfig {
 export const dashboardConfig: DashboardConfig = {
   sidebarNav: [
     {
+      title: "Account",
+      href: "/dashboard/account",
+      icon: "avatar",
+      items: [],
+    },
+    {
       title: "Courses",
       href: "/dashboard/courses",
       icon: "library",

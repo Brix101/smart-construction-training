@@ -12,11 +12,12 @@ import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
 export async function getCourses() {
   return await cache(
     async () => {
-      return await db
+      return db
         .select({
           id: courses.id,
           name: courses.name,
           description: courses.description,
+          active: courses.active,
         })
         .from(courses)
         .orderBy(asc(courses.name))
