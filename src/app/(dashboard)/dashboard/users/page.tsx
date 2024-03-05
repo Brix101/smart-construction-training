@@ -27,7 +27,7 @@ interface UsersPageProps {
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const { page, per_page } = searchParamsSchema.parse(searchParams)
+  const { page, per_page, firstName } = searchParamsSchema.parse(searchParams)
 
   // Fallback page for invalid page numbers
   const pageAsNumber = Number(page)
@@ -40,23 +40,23 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0
 
   const count = await clerkClient.users.getCount()
-  const items = (await clerkClient.users.getUserList({ limit, offset })).map(
-    user => {
-      const {
-        emailAddresses,
-        primaryEmailAddressId,
-        externalAccounts,
-        id,
-        ...userWithoutSensitiveInfo
-      } = user
+  const items = (
+    await clerkClient.users.getUserList({ limit, offset, query: firstName })
+  ).map(user => {
+    const {
+      emailAddresses,
+      primaryEmailAddressId,
+      externalAccounts,
+      id,
+      ...userWithoutSensitiveInfo
+    } = user
 
-      const email =
-        emailAddresses.find(email => email.id === primaryEmailAddressId)
-          ?.emailAddress ?? ""
+    const email =
+      emailAddresses.find(email => email.id === primaryEmailAddressId)
+        ?.emailAddress || emailAddresses[0].emailAddress
 
-      return { ...userWithoutSensitiveInfo, email } as OmitedUser
-    },
-  )
+    return { ...userWithoutSensitiveInfo, email } as OmitedUser
+  })
 
   const transaction = Promise.resolve({
     items,

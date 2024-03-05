@@ -55,7 +55,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       searchableColumns={[
         {
           id: "firstName",
-          title: "names",
+          title: "name",
         },
       ]}
     />
