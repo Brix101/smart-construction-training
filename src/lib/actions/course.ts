@@ -2,7 +2,7 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, not } from "drizzle-orm"
+import { and, asc, eq, not, sql } from "drizzle-orm"
 import { revalidatePath, unstable_cache as cache } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -40,6 +40,25 @@ export async function getActiveCourses() {
     {
       revalidate: 1,
       tags: ["active-courses"],
+    },
+  )()
+}
+
+export async function getCourseCount() {
+  return await cache(
+    async () => {
+      return db
+        .select({
+          active: courses.active,
+          count: sql<number>`count(${courses.active})`,
+        })
+        .from(courses)
+        .groupBy(sql`${courses.active}`)
+    },
+    ["courses-count"],
+    {
+      revalidate: 1,
+      tags: ["courses-count"],
     },
   )()
 }
