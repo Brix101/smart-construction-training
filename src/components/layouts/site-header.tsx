@@ -20,6 +20,7 @@ import {
 import { MainNav } from "./main-nav"
 import { MobileNav } from "./mobile-nav"
 import { TopicCommandMenu } from "../topic-command-menu"
+import { getActiveCourses } from "@/lib/actions/course"
 
 interface SiteHeaderProps {
   user: User | null
@@ -30,20 +31,13 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
     user?.lastName?.charAt(0) ?? ""
   }`
   const email = getUserEmail(user)
-  const allCourses = await db.query.courses.findMany({
-    with: {
-      topics: true,
-    },
-  })
+  const coursePromises = await getActiveCourses()
+  const [allCourses] = await Promise.all([coursePromises])
 
   const navItems = allCourses.map(course => ({
     title: course.name,
     href: `/${course.id}`,
-    items: course.topics.map(topic => ({
-      title: topic.name,
-      href: `/${topic.courseId}/${topic.id}`,
-      items: [],
-    })),
+    items: [],
   }))
 
   const role = (user?.privateMetadata.role as String) ?? ""

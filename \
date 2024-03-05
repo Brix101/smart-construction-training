@@ -1,7 +1,8 @@
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { authMiddleware, clerkClient } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
-import { adminRouters } from "@/lib/constants"
+
+const adminRouters = ["/dashboard/courses", "dashboard/users"]
 
 export default authMiddleware({
   // Public routes are routes that don't require authentication
@@ -34,8 +35,12 @@ export default authMiddleware({
       const user = await clerkClient.users.getUser(auth.userId)
       const metaData = userPrivateMetadataSchema.safeParse(user.privateMetadata)
 
-      if (!(metaData.success && metaData.data.role.includes("admin"))) {
-        return new NextResponse(null, { status: 403 })
+      console.log(metaData)
+      if (metaData.success) {
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++")
+        if (!metaData.data.role.includes("admin")) {
+          return new NextResponse(null, { status: 404 })
+        }
       }
     }
   },

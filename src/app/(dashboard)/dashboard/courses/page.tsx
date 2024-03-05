@@ -39,7 +39,6 @@ export default async function CoursesPage() {
     countPromises,
   ])
 
-  console.log(counts)
   return (
     <Shell variant="sidebar">
       <PageHeader

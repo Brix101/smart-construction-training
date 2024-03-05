@@ -10,3 +10,5 @@ export const redirects = {
 } as const
 
 export const databasePrefix = "sctc"
+
+export const adminRouters = ["/dashboard/courses", "/dashboard/users"]
