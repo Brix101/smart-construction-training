@@ -1,6 +1,5 @@
 import { TopicCard } from "@/components/cards/topic-card"
 import { Icons } from "@/components/icons"
-import { SearchInput } from "@/components/search-input"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
@@ -20,22 +19,23 @@ interface TopicsPageProps {
   searchParams: SearchParams
 }
 
-export default async function TopicsPage({
-  params,
-  searchParams,
-}: TopicsPageProps) {
+async function getCourseFromParams({ params, searchParams }: TopicsPageProps) {
   const courseId = Number(params.courseId)
   const { search } = searchParamsSchema.parse(searchParams)
 
-  const course = await db.query.courses.findFirst({
+  return await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
       topics: {
-        orderBy: asc(topics.createdAt),
+        orderBy: asc(topics.name),
         where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
       },
     },
   })
+}
+
+export default async function TopicsPage(params: TopicsPageProps) {
+  const course = await getCourseFromParams(params)
   if (!course) {
     notFound()
   }
@@ -55,7 +55,6 @@ export default async function TopicsPage({
               <Icons.chevronRight size={15} />
               <span className="font-medium text-foreground">{course.name}</span>
             </div>
-            <SearchInput placeholder="Search topic" />
           </div>
         </div>
         <div

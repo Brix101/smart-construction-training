@@ -11,7 +11,7 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { buttonVariants } from "@/components/ui/button"
-import { db } from "@/db"
+import { getCourses } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 }
 
 export default async function CoursesPage() {
-  const allCourses = await db.query.courses.findMany()
+  const courses = await getCourses()
 
   return (
     <Shell variant="sidebar">
@@ -57,11 +57,11 @@ export default async function CoursesPage() {
             <CourseCardSkeleton key={i} />
           ))}
         >
-          {allCourses.map(store => (
+          {courses.map(course => (
             <CourseCard
-              key={store.id}
-              course={store}
-              href={`/dashboard/courses/${store.id}`}
+              key={course.id}
+              course={course}
+              href={`/dashboard/courses/${course.id}`}
             />
           ))}
         </React.Suspense>
