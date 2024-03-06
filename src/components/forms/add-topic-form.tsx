@@ -22,8 +22,6 @@ import { addTopic, checkTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 
 interface AddTopicFormProps {
   courseId: number
@@ -41,7 +39,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
       youtubeId: "",
       youtubeUrl: "",
       description: "",
-      materials: [],
+      materials: "",
     },
   })
 
@@ -114,11 +112,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
             <FormItem className="w-full">
               <FormLabel>Youtube Id</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Type youtube Id here."
-                  value={field.value}
-                  onChange={field.onChange}
-                />
+                <Input placeholder="Type youtube Id here." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -126,13 +120,13 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="materials"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details</FormLabel>
+              <FormLabel>Materials</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Type topic description here."
+                  placeholder="Type topic materials link here split by (,) ."
                   {...field}
                 />
               </FormControl>
@@ -145,19 +139,12 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Materials</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Card className="p-4">
-                  <Badge variant="secondary">
-                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
-                  </Badge>
-                  <Badge variant="secondary">
-                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
-                  </Badge>
-                  <Badge variant="secondary">
-                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
-                  </Badge>
-                </Card>
+                <Textarea
+                  placeholder="Type topic description here."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
