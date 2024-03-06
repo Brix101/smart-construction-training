@@ -3,6 +3,7 @@ import {
   boolean,
   integer,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
@@ -49,16 +50,13 @@ export const topicsRelations = relations(topics, ({ one, many }) => ({
     fields: [topics.courseId],
     references: [courses.id],
   }),
-  materials: many(materials),
+  materials: many(topicsToMaterials),
 }))
 
 export const materials = pgTable("materials", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).default(""),
-  link: text("link").notNull(),
-  topicId: integer("topic_id")
-    .references(() => topics.id, { onDelete: "cascade" })
-    .notNull(),
+  link: text("link").unique().notNull(),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -67,9 +65,35 @@ export const materials = pgTable("materials", {
 export type Material = typeof materials.$inferSelect
 export type NewMaterial = typeof materials.$inferInsert
 
-export const materialsRelations = relations(materials, ({ one }) => ({
-  topic: one(topics, {
-    fields: [materials.topicId],
-    references: [topics.id],
-  }),
+export const materialsRelations = relations(materials, ({ many }) => ({
+  topics: many(topicsToMaterials),
 }))
+
+export const topicsToMaterials = pgTable(
+  "topics_to_materials",
+  {
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id),
+    materialId: integer("material_id")
+      .notNull()
+      .references(() => materials.id),
+  },
+  t => ({
+    pk: primaryKey({ columns: [t.topicId, t.materialId] }),
+  }),
+)
+
+export const topicsToMaterialsRelations = relations(
+  topicsToMaterials,
+  ({ one }) => ({
+    material: one(materials, {
+      fields: [topicsToMaterials.materialId],
+      references: [materials.id],
+    }),
+    topic: one(topics, {
+      fields: [topicsToMaterials.topicId],
+      references: [topics.id],
+    }),
+  }),
+)
