@@ -21,22 +21,24 @@ export const metadata: Metadata = {
   description: "Manage your topic",
 }
 
-interface UpdateTopicPageProps {
+interface TopicPageProps {
   params: {
     courseId: string
     topicId: string
   }
 }
 
-export default async function UpdateTopicPage({
-  params,
-}: UpdateTopicPageProps) {
+async function getTopic({ params }: TopicPageProps) {
   const courseId = Number(params.courseId)
   const topicId = Number(params.topicId)
 
-  const topic = await db.query.topics.findFirst({
+  return await db.query.topics.findFirst({
     where: and(eq(topics.id, topicId), eq(topics.courseId, courseId)),
   })
+}
+
+export default async function TopicPage(props: TopicPageProps) {
+  const topic = await getTopic(props)
 
   if (!topic) {
     notFound()
