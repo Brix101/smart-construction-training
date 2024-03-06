@@ -114,7 +114,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/signout">
+                    <Link href="/sign-out">
                       <ExitIcon className="mr-2 h-4 w-4" aria-hidden="true" />
                       Log out
                       <DropdownMenuShortcut></DropdownMenuShortcut>
@@ -125,7 +125,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
               </DropdownMenu>
             ) : (
               <Link
-                href="/signin"
+                href="/sign-in"
                 className={buttonVariants({
                   size: "sm",
                 })}

@@ -27,7 +27,7 @@ export default async function CourseLayout({
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
   const allcourses = await db

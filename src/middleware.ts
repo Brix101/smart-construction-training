@@ -7,8 +7,8 @@ export default authMiddleware({
   // Public routes are routes that don't require authentication
   publicRoutes: [
     // "/",
-    "/signin(.*)",
-    "/signup(.*)",
+    "/sign-in(.*)",
+    "/sign-up(.*)",
     "/sso-callback(.*)",
   ],
 
@@ -26,7 +26,7 @@ export default authMiddleware({
     if (!auth.userId) {
       //  If user tries to access a private route without being authenticated,
       //  redirect them to the sign in page
-      url.pathname = "/signin"
+      url.pathname = "/sign-in"
       return NextResponse.redirect(url)
     }
 

@@ -28,7 +28,7 @@ export default async function NewCoursePage() {
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
   return (

@@ -29,7 +29,7 @@ export default async function CoursesPage() {
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
   const coursePromises = await getAllCourses()
