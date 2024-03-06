@@ -20,7 +20,7 @@ import {
 import { MainNav } from "./main-nav"
 import { MobileNav } from "./mobile-nav"
 import { TopicCommandMenu } from "../topic-command-menu"
-import { getActiveCourses } from "@/lib/actions/course"
+import { getPublishedCourses } from "@/lib/actions/course"
 
 interface SiteHeaderProps {
   user: User | null
@@ -31,7 +31,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
     user?.lastName?.charAt(0) ?? ""
   }`
   const email = getUserEmail(user)
-  const coursePromises = await getActiveCourses()
+  const coursePromises = await getPublishedCourses()
   const [allCourses] = await Promise.all([coursePromises])
 
   const navItems = allCourses.map(course => ({

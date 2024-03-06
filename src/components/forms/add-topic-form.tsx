@@ -22,6 +22,8 @@ import { addTopic, checkTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 interface AddTopicFormProps {
   courseId: number
@@ -38,7 +40,8 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
       name: "",
       youtubeId: "",
       youtubeUrl: "",
-      details: "",
+      description: "",
+      materials: [],
     },
   })
 
@@ -123,12 +126,38 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="details"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Details</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type topic details here." {...field} />
+                <Textarea
+                  placeholder="Type topic description here."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Materials</FormLabel>
+              <FormControl>
+                <Card className="p-4">
+                  <Badge variant="secondary">
+                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
+                  </Badge>
+                  <Badge variant="secondary">
+                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
+                  </Badge>
+                  <Badge variant="secondary">
+                    https://globalkomatsu.box.com/s/f46kdyym7rgwrlok4fop2064941jvwkn
+                  </Badge>
+                </Card>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,7 +166,12 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             onClick={() =>
-              void form.trigger(["name", "youtubeId", "youtubeUrl", "details"])
+              void form.trigger([
+                "name",
+                "youtubeId",
+                "youtubeUrl",
+                "description",
+              ])
             }
             className="w-fit"
             disabled={isPending}

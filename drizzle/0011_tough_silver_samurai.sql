@@ -1,0 +1,1 @@
+ALTER TABLE "topics" RENAME COLUMN "desciption" TO "description";

@@ -11,7 +11,7 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { buttonVariants } from "@/components/ui/button"
-import { getPublishedCourse, getCourses } from "@/lib/actions/course"
+import { getPublishedCourse, getAllCourses } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -32,7 +32,7 @@ export default async function CoursesPage() {
     redirect("/signin")
   }
 
-  const coursePromises = await getCourses()
+  const coursePromises = await getAllCourses()
   const publishPromises = await getPublishedCourse()
   const [allCourses, publishCount] = await Promise.all([
     coursePromises,

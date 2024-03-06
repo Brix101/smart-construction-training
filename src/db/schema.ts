@@ -33,7 +33,7 @@ export const topics = pgTable("topics", {
   name: varchar("name", { length: 256 }).notNull(),
   youtubeId: varchar("youtube_id", { length: 100 }).notNull(),
   youtubeUrl: text("youtube_url"),
-  details: text("details"),
+  description: text("description"),
   courseId: integer("course_id")
     .references(() => courses.id, { onDelete: "cascade" })
     .notNull(),

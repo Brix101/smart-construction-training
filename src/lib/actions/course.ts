@@ -9,7 +9,7 @@ import { z } from "zod"
 
 import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
 
-export async function getCourses() {
+export async function getAllCourses() {
   return await cache(
     async () => {
       return db.select().from(courses).orderBy(asc(courses.name))
@@ -22,7 +22,7 @@ export async function getCourses() {
   )()
 }
 
-export async function getActiveCourses() {
+export async function getPublishedCourses() {
   return await cache(
     async () => {
       return db
@@ -33,13 +33,13 @@ export async function getActiveCourses() {
           active: courses.isActive,
         })
         .from(courses)
-        .where(eq(courses.isActive, true))
+        .where(eq(courses.isPublished, true))
         .orderBy(asc(courses.name))
     },
-    ["active-courses"],
+    ["published-courses"],
     {
       revalidate: 1,
-      tags: ["active-courses"],
+      tags: ["published-courses"],
     },
   )()
 }

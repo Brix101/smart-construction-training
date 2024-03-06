@@ -25,7 +25,11 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
   const topic = await db.query.topics.findFirst({
     where: eq(topics.id, topicId),
     with: {
-      materials: true,
+      materials: {
+        with: {
+          material: true,
+        },
+      },
       course: {
         with: {
           topics: true,
@@ -70,7 +74,7 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
           <PageHeader>
             <PageHeaderHeading>{topic?.name}</PageHeaderHeading>
             <ul className="space-y-2 pt-5">
-              {topic.materials?.map((material, index) => {
+              {topic.materials?.map(({ material }, index) => {
                 return (
                   <li key={index}>
                     <PageHeaderDescription size="sm">

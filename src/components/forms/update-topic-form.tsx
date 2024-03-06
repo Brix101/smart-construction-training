@@ -54,7 +54,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
     resolver: zodResolver(topicSchema),
     defaultValues: {
       name: topic.name ?? "",
-      details: topic.details ?? "",
+      description: topic.description ?? "",
       youtubeId: topic.youtubeId ?? "",
       youtubeUrl: topic.youtubeUrl ?? "",
     },
@@ -122,12 +122,12 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormMessage />
         </FormItem>
         <FormItem>
-          <FormLabel>Details</FormLabel>
+          <FormLabel>description</FormLabel>
           <FormControl>
             <Textarea
-              placeholder="Type topic details here."
-              {...form.register("details")}
-              defaultValue={topic.details ?? ""}
+              placeholder="Type topic description here."
+              {...form.register("description")}
+              defaultValue={topic.description ?? ""}
             />
           </FormControl>
           <FormMessage />
@@ -165,7 +165,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
                   "name",
                   "youtubeId",
                   "youtubeUrl",
-                  "details",
+                  "description",
                 ])
                 await deleteTopic({
                   courseId: topic.courseId,
