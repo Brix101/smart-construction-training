@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { deleteCourse, updateCourse } from "@/lib/actions/course"
+import { Switch } from "@/components/ui/switch"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -92,23 +93,13 @@ export default async function UpdatecoursePage({
             className="grid w-full max-w-xl gap-5"
           >
             {course.isPublished && (
-              <div className="grid gap-2.5">
-                <Label htmlFor="update-course-is-publish">Status</Label>
-                <Select
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="update-couse-published">Published</Label>
+                <Switch
+                  id="update-course-published"
                   name="isPublished"
-                  defaultValue={course.isPublished.toString()}
-                >
-                  <SelectTrigger className="w-1/2">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Status</SelectLabel>
-                      <SelectItem value={"true"}>Published</SelectItem>
-                      <SelectItem value={"false"}>Unpublish</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                  defaultChecked={course.isPublished}
+                />
               </div>
             )}
             <div className="grid gap-2.5">
@@ -129,7 +120,7 @@ export default async function UpdatecoursePage({
               <Input
                 id="update-course-name"
                 aria-describedby="update-course-name-description"
-                name="name"
+                name="level"
                 required
                 type="number"
                 min={1}

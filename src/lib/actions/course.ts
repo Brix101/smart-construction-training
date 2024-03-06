@@ -96,7 +96,7 @@ export async function updateCourse(courseId: number, fd: FormData) {
     name: fd.get("name"),
     description: fd.get("description"),
     level: fd.get("level"),
-    isPublished: fd.get("isPublished")?.toString().toLowerCase() === "true",
+    isPublished: fd.get("isPublished")?.toString() === "on",
   })
 
   const courseWithSameName = await db.query.courses.findFirst({
