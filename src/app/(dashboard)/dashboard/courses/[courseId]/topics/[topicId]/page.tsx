@@ -34,6 +34,13 @@ async function getTopic({ params }: TopicPageProps) {
 
   return await db.query.topics.findFirst({
     where: and(eq(topics.id, topicId), eq(topics.courseId, courseId)),
+    with: {
+      materials: {
+        with: {
+          material: true,
+        },
+      },
+    },
   })
 }
 

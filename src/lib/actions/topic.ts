@@ -1,14 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import {
-  NewMaterial,
-  NewTopicsToMaterials,
-  courses,
-  materials,
-  topics,
-  topicsToMaterials,
-} from "@/db/schema"
+import { courses, topics } from "@/db/schema"
 import { and, asc, eq, ilike, or } from "drizzle-orm"
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { z } from "zod"
@@ -16,6 +9,7 @@ import { z } from "zod"
 import { getErrorMessage } from "@/lib/handle-error"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
+import { addTopicMaterialsLink, updateTopicMaterialsLink } from "./material"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
@@ -79,25 +73,10 @@ export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
     })
     .returning({ id: topics.id })
 
-  const materialLinks = (input.materials
-    ?.split(",")
-    .map(value => value.trim())
-    .filter(value => value !== "")
-    .map(value => {
-      return { link: value }
-    }) || []) as NewMaterial[]
-
-  const insertedMaterials = await db
-    .insert(materials)
-    .values(materialLinks)
-    .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
-    .returning({ id: materials.id })
-
-  const newTopicToMaterials = insertedMaterials.map(material => {
-    return { materialId: material.id, topicId: newTopic[0].id }
+  await addTopicMaterialsLink({
+    materials: input.materials || "",
+    topicId: newTopic[0].id,
   })
-
-  await db.insert(topicsToMaterials).values(newTopicToMaterials)
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics.`)
 }
@@ -106,9 +85,10 @@ const extendedTopicSchemaWithId = extendedTopicSchema.extend({
   id: z.number(),
 })
 
-export async function updateTopic(
-  input: z.infer<typeof extendedTopicSchemaWithId>,
-) {
+export async function updateTopic({
+  materials,
+  ...input
+}: z.infer<typeof extendedTopicSchemaWithId>) {
   const topic = await db.query.topics.findFirst({
     where: and(eq(topics.id, input.id), eq(topics.courseId, input.courseId)),
   })
@@ -118,6 +98,11 @@ export async function updateTopic(
   }
 
   await db.update(topics).set(input).where(eq(topics.id, input.id))
+
+  await updateTopicMaterialsLink({
+    materials: materials || "",
+    topicId: input.id,
+  })
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics/${input.id}`)
 }
@@ -136,11 +121,11 @@ export async function deleteTopic(rawInput: z.infer<typeof getTopicSchema>) {
     throw new Error("Topic not found.")
   }
 
-  // await db.delete(topics).where(eq(topics.id, input.id))
-  await db
-    .update(topics)
-    .set({ isActive: false })
-    .where(eq(topics.id, input.id))
+  await db.delete(topics).where(eq(topics.id, input.id))
+  // await db
+  //   .update(topics)
+  //   .set({ isActive: false })
+  //   .where(eq(topics.id, input.id))
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics`)
 }

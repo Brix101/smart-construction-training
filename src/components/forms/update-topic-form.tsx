@@ -1,6 +1,6 @@
 "use client"
 
-import { type Topic } from "@/db/schema"
+import { type Material, type Topic } from "@/db/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import * as React from "react"
@@ -26,8 +26,12 @@ import { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { Zoom } from "../zoom-image"
 
+type TopicWithMaterials = Topic & {
+  materials: { topicId: number; materialId: number; material: Material }[]
+}
+
 interface UpdateTopicFormProps {
-  topic: Topic
+  topic: TopicWithMaterials
 }
 
 type Inputs = z.infer<typeof topicSchema>
@@ -50,6 +54,10 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
     }
   }, [topic])
 
+  const materialStr = topic.materials
+    .map(({ material }) => material.link)
+    .join(", ")
+
   const form = useForm<Inputs>({
     resolver: zodResolver(topicSchema),
     defaultValues: {
@@ -57,6 +65,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
       description: topic.description ?? "",
       youtubeId: topic.youtubeId ?? "",
       youtubeUrl: topic.youtubeUrl ?? "",
+      materials: materialStr,
     },
   })
 
@@ -117,7 +126,18 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormMessage />
         </FormItem>
         <FormItem>
-          <FormLabel>description</FormLabel>
+          <FormLabel>Materials</FormLabel>
+          <FormControl>
+            <Textarea
+              placeholder="Type topic materials link here split by(,) ."
+              {...form.register("materials")}
+              defaultValue={materialStr ?? ""}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        <FormItem>
+          <FormLabel>Description</FormLabel>
           <FormControl>
             <Textarea
               placeholder="Type topic description here."

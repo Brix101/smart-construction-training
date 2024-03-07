@@ -122,7 +122,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
               <FormLabel>Materials</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Type topic materials link here split by (,) ."
+                  placeholder="Type topic materials link here split by(,) ."
                   {...field}
                 />
               </FormControl>

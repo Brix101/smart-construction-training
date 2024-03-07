@@ -78,6 +78,7 @@ export default async function TopicsPage({
       .offset(offset)
       .where(
         and(
+          eq(topics.isActive, true),
           eq(topics.courseId, courseId),
           // Filter by name
           name ? like(topics.name, `%${name}%`) : undefined,
