@@ -10,7 +10,7 @@ export default async function LoadingPage() {
           <div className="container flex w-full flex-col justify-between space-y-5 pb-2 pt-4 md:flex-row md:space-y-0 md:pt-1">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Skeleton className="h-4 w-20 bg-foreground" />
-              <Icons.chevronRight size={15} />
+              <Icons.chevronRight />
               <Skeleton className="h-4 w-64 bg-foreground" />
             </div>
             <Skeleton className="h-12 w-64 border" />
