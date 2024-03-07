@@ -22,37 +22,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { deleteTopic, updateTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
-import { FileWithPreview } from "@/types"
-import Image from "next/image"
-import { Zoom } from "../zoom-image"
-
-type TopicWithMaterials = Topic & {
-  materials: { topicId: number; materialId: number; material: Material }[]
-}
 
 interface UpdateTopicFormProps {
-  topic: TopicWithMaterials
+  topic: Topic & {
+    materials: { topicId: number; materialId: number; material: Material }[]
+  }
 }
 
 type Inputs = z.infer<typeof topicSchema>
 
 export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   const router = useRouter()
-  const [thumbnailPreview, setThumbnailPreview] =
-    React.useState<FileWithPreview | null>(null)
   const [isPending, startTransition] = React.useTransition()
-
-  React.useEffect(() => {
-    if (topic.youtubeId) {
-      const file = new File([], topic.name ?? "file name", {
-        type: "image",
-      })
-      const fileWithPreview = Object.assign(file, {
-        preview: `https://img.youtube.com/vi/${topic.youtubeId}/maxresdefault.jpg`,
-      })
-      setThumbnailPreview(fileWithPreview)
-    }
-  }, [topic])
 
   const materialStr = topic.materials
     .map(({ material }) => material.link)
@@ -147,20 +128,6 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           </FormControl>
           <FormMessage />
         </FormItem>
-        <div className="flex items-center gap-2">
-          {thumbnailPreview ? (
-            <Zoom>
-              <Image
-                src={thumbnailPreview.preview}
-                alt={thumbnailPreview.name}
-                className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
-                width={640}
-                height={480}
-              />
-            </Zoom>
-          ) : undefined}
-        </div>
-
         <div className="flex space-x-2">
           <Button disabled={isPending}>
             {isPending && (
@@ -180,6 +147,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
                   "name",
                   "youtubeId",
                   "youtubeUrl",
+                  "materials",
                   "description",
                 ])
                 await deleteTopic({
