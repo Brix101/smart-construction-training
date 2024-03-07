@@ -39,12 +39,14 @@ export async function filterTopics({ query }: { query: string }) {
         courseId: topics.courseId,
         course: courses.name,
         level: courses.level,
+        isPublished: courses.isPublished,
       })
       .from(topics)
       .innerJoin(courses, eq(courses.id, topics.courseId))
       .where(
         and(
           lte(courses.level, publicMetadata.level),
+          eq(courses.isPublished, true),
           or(
             ilike(courses.name, `%${query}%`),
             ilike(topics.name, `%${query}%`),
