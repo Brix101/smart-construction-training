@@ -27,9 +27,6 @@ interface SiteHeaderProps {
 }
 
 export async function SiteHeader({ user }: SiteHeaderProps) {
-  const initials = `${user?.firstName?.charAt(0) ?? ""} ${
-    user?.lastName?.charAt(0) ?? ""
-  }`
   const email = getUserEmail(user)
   const coursePromises = await getPublishedCourses()
   const [allCourses] = await Promise.all([coursePromises])
@@ -62,7 +59,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
                         src={user.imageUrl}
                         alt={user.username ?? ""}
                       />
-                      <AvatarFallback>{initials}</AvatarFallback>
+                      <AvatarFallback>{email.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>

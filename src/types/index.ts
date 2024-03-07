@@ -67,6 +67,7 @@ export type OmitedUser = Omit<
   "emailAddresses" | "externalAccounts" | "primaryEmailAddressId"
 > & {
   email: string
+  level: number
 }
 
 export interface SearchParams {
