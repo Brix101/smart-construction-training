@@ -8,8 +8,8 @@ import { redirect } from "next/navigation"
 import { z } from "zod"
 
 import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
-import { getCacheduser } from "./auth"
-import { userPublicMetadataSchema } from "../validations/auth"
+import { getCacheduser } from "@/lib/actions/auth"
+import { userPublicMetadataSchema } from "@/lib/validations/auth"
 
 export async function getAllCourses() {
   return await cache(

@@ -10,8 +10,8 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
 import { addTopicMaterialsLink, updateTopicMaterialsLink } from "./material"
-import { userPublicMetadataSchema } from "../validations/auth"
-import { getCacheduser } from "./auth"
+import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { getCacheduser } from "@/lib/actions/auth"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),

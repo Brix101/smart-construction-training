@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { Course } from "@/db/schema"
 import { publishCourse } from "@/lib/actions/course"
+import { catchError } from "@/lib/utils"
 
 interface PublishCourseButtonProps {
   courseId: Course["id"]
@@ -20,8 +21,7 @@ export function PublishCourseButton({ courseId }: PublishCourseButtonProps) {
           try {
             await publishCourse(courseId)
           } catch (err) {
-            console.log(err)
-            // catchError(err)
+            catchError(err)
           }
         })
       }}

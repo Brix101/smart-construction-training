@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/command"
 import { useDebounce } from "@/hooks/use-debounce"
 import { filterTopics } from "@/lib/actions/topic"
-import { cn, isMacOs } from "@/lib/utils"
+import { catchError, cn, isMacOs } from "@/lib/utils"
 import { TopicGroup } from "@/types/topic"
 import { CircleIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { useRouter } from "next/navigation"
@@ -37,7 +37,7 @@ export function TopicCommandMenu() {
         const { data } = await filterTopics({ query: debouncedQuery })
         setData(data)
       } catch (err) {
-        // catchError(err)
+        catchError(err)
       }
     }
 
@@ -124,7 +124,7 @@ export function TopicCommandMenu() {
                       value={item.name}
                       onSelect={() =>
                         handleSelect(() =>
-                          router.push(`/${group.courseId}/${item.id}`),
+                          router.push(`/courses/${group.courseId}/${item.id}`),
                         )
                       }
                     >
