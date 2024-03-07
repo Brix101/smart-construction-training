@@ -16,7 +16,7 @@ export default async function HomePage() {
         }}
       >
         <div className="container ">
-          <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
+          <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
         </div>
