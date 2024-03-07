@@ -85,23 +85,23 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormMessage />
         </FormItem>
         <FormItem className="w-full">
-          <FormLabel>URL ID</FormLabel>
+          <FormLabel>Youtube url</FormLabel>
           <FormControl>
             <Input
-              placeholder="Type topic URL ID here."
-              {...form.register("youtubeId")}
-              defaultValue={topic.youtubeId ?? ""}
+              placeholder="Type topic youtube url here."
+              {...form.register("youtubeUrl")}
+              defaultValue={topic.youtubeUrl ?? ""}
             />
           </FormControl>
           <FormMessage />
         </FormItem>
         <FormItem className="w-full">
-          <FormLabel>Video Link</FormLabel>
+          <FormLabel>Youtube Id</FormLabel>
           <FormControl>
             <Input
-              placeholder="Type topic video link here."
-              {...form.register("youtubeUrl")}
-              defaultValue={topic.youtubeUrl ?? ""}
+              placeholder="Type topic youtube Id here."
+              {...form.register("youtubeId")}
+              defaultValue={topic.youtubeId ?? ""}
             />
           </FormControl>
           <FormMessage />

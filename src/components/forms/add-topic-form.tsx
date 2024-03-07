@@ -87,7 +87,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
               <FormLabel>Youtube url</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Type youtube url here."
+                  placeholder="Type topic youtube url here."
                   value={field.value}
                   onChange={e => {
                     const splitUrl = e.target.value.split("/")
@@ -108,7 +108,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
             <FormItem className="w-full">
               <FormLabel>Youtube Id</FormLabel>
               <FormControl>
-                <Input placeholder="Type youtube Id here." {...field} />
+                <Input placeholder="Type topic youtube Id here." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
