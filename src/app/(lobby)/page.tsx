@@ -27,7 +27,7 @@ export default async function HomePage() {
             <CourseCard
               key={course.id}
               course={course}
-              href={`/${course.id}`}
+              href={`/courses/${course.id}`}
             />
           ))}
         </main>

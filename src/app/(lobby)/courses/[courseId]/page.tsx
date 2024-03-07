@@ -29,8 +29,8 @@ async function getCourseFromParams({ params }: TopicsPageProps) {
   })
 }
 
-export default async function TopicsPage(params: TopicsPageProps) {
-  const course = await getCourseFromParams(params)
+export default async function TopicsPage(props: TopicsPageProps) {
+  const course = await getCourseFromParams(props)
   if (!course) {
     notFound()
   }
@@ -90,7 +90,7 @@ export default async function TopicsPage(params: TopicsPageProps) {
             <TopicCard
               key={topic.id}
               topic={topic}
-              href={`/${course.id}/${topic.id}`}
+              href={`/courses/${course.id}/${topic.id}`}
             />
           )
         })}
