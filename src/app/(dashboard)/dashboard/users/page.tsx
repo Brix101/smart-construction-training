@@ -11,7 +11,6 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { UsersTableShell } from "@/components/shells/users-table-shell"
 import { searchParamsSchema } from "@/lib/validations/params"
-import { OmitedUser } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
@@ -40,29 +39,14 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0
 
   const count = await clerkClient.users.getCount()
-  const items = (
-    await clerkClient.users.getUserList({ limit, offset, query: firstName })
-  ).map(user => {
-    const {
-      emailAddresses,
-      primaryEmailAddressId,
-      externalAccounts,
-      id,
-      publicMetadata,
-      ...userWithoutSensitiveInfo
-    } = user
-
-    const email =
-      emailAddresses.find(email => email.id === primaryEmailAddressId)
-        ?.emailAddress || emailAddresses[0].emailAddress
-
-    const level = publicMetadata["level"] || 1
-
-    return { ...userWithoutSensitiveInfo, email, level } as OmitedUser
+  const userList = await clerkClient.users.getUserList({
+    limit,
+    offset,
+    query: firstName,
   })
 
   const transaction = Promise.resolve({
-    items,
+    items: JSON.parse(JSON.stringify(userList)),
     count,
   })
 

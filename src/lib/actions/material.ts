@@ -4,7 +4,7 @@ import { db } from "@/db"
 import { NewMaterial, materials, topicsToMaterials } from "@/db/schema"
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
-import { materialSchema } from "../validations/material"
+import { materialSchema } from "@/lib/validations/material"
 
 function parseMaterialLinks(input: string): NewMaterial[] {
   const uniqueMaterials = [

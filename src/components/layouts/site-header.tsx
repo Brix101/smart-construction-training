@@ -1,12 +1,13 @@
 import { siteConfig } from "@/config/site"
-import { db } from "@/db"
+import { getPublishedCourses } from "@/lib/actions/course"
 import { getUserEmail } from "@/lib/utils"
 import type { User } from "@clerk/nextjs/server"
 import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { Icons } from "../icons"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Button, buttonVariants } from "../ui/button"
+import { Icons } from "@/components/icons"
+import { TopicCommandMenu } from "@/components/topic-command-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,11 +17,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import { MainNav } from "./main-nav"
-import { MobileNav } from "./mobile-nav"
-import { TopicCommandMenu } from "../topic-command-menu"
-import { getPublishedCourses } from "@/lib/actions/course"
+} from "@/components/ui/dropdown-menu"
+import { MainNav } from "@/components/layouts/main-nav"
+import { MobileNav } from "@/components/layouts/mobile-nav"
 
 interface SiteHeaderProps {
   user: User | null

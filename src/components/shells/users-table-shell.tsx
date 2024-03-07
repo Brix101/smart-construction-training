@@ -1,24 +1,33 @@
 "use client"
 
 import { type ColumnDef } from "@tanstack/react-table"
-import * as React from "react"
 import { format } from "date-fns"
+import * as React from "react"
 
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { OmitedUser } from "@/types"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { User } from "@clerk/nextjs/server"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
+import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 type AwaitedUser = Pick<
-  OmitedUser,
+  User,
   | "id"
+  | "emailAddresses"
+  | "imageUrl"
+  | "lastSignInAt"
   | "firstName"
   | "lastName"
-  | "email"
-  | "level"
-  | "createdAt"
-  | "lastSignInAt"
-  | "imageUrl"
+  | "publicMetadata"
 >
 
 interface UsersTableShellProps {
@@ -43,26 +52,54 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
           <DataTableColumnHeader column={column} title="Image" />
         ),
         cell: ({ row: { original } }) => {
+          const email = original.emailAddresses[0].emailAddress || ""
           return (
             <Avatar className="h-8 w-8">
               <AvatarImage src={original.imageUrl} alt={""} />
-              <AvatarFallback>{original.email.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{email.charAt(0)}</AvatarFallback>
             </Avatar>
           )
         },
+      },
+      {
+        accessorKey: "firstName",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="First name" />
+        ),
+      },
+      {
+        accessorKey: "lastName",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Last name" />
+        ),
       },
       {
         accessorKey: "email",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Email" />
         ),
+        cell: ({ row: { original } }) => {
+          const emails = original.emailAddresses
+          return (
+            <ul>
+              {emails.map(email => {
+                return <li key={email.id}>{email.emailAddress}</li>
+              })}
+            </ul>
+          )
+        },
       },
       {
-        accessorKey: "level",
+        accessorKey: "publicMetadata",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Level" />
         ),
+        cell: ({ row: { original } }) => {
+          const level = (original.publicMetadata["level"] as number) || 1
+          return <span>{level}</span>
+        },
       },
+
       {
         accessorKey: "lastSignInAt",
         header: ({ column }) => (
@@ -77,17 +114,29 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
         },
       },
       {
-        accessorKey: "createdAt",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Account Created" />
+        id: "actions",
+        cell: ({ row: { original } }) => (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                aria-label="Open menu"
+                variant="ghost"
+                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+              >
+                <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[160px]">
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/users/${original.id}`}>Edit</Link>
+              </DropdownMenuItem>
+              {/* <DropdownMenuItem asChild>
+                <Link href={`/topic/${row.original.id}`}>View</Link>
+              </DropdownMenuItem> */}
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          </DropdownMenu>
         ),
-        cell: ({ row }) => {
-          const original = row.original
-          const formattedDate = original.createdAt
-            ? format(new Date(original.createdAt), "MMM dd, yyyy HH:mm")
-            : ""
-          return <span>{formattedDate}</span>
-        },
       },
     ],
     [],
