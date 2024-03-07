@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { userPublicMetadataSchema } from "@/lib/validations/auth"
 
 type AwaitedUser = Pick<
   User,
@@ -95,8 +96,10 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
           <DataTableColumnHeader column={column} title="Level" />
         ),
         cell: ({ row: { original } }) => {
-          const level = (original.publicMetadata["level"] as number) || 1
-          return <span>{level}</span>
+          const publicMetadata = userPublicMetadataSchema.parse(
+            original.publicMetadata,
+          )
+          return <span>{publicMetadata.level}</span>
         },
       },
 

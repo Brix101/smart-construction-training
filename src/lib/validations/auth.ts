@@ -47,3 +47,7 @@ export const userPrivateMetadataSchema = z.object({
   // stripeCustomerId: z.string().optional().nullable(),
   // stripeCurrentPeriodEnd: z.string().optional().nullable(),
 })
+
+export const userPublicMetadataSchema = z.object({
+  level: z.number().default(1),
+})

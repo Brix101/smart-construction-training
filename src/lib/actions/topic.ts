@@ -2,7 +2,7 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, ilike, or } from "drizzle-orm"
+import { and, asc, eq, ilike, lte, or } from "drizzle-orm"
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { z } from "zod"
 
@@ -10,6 +10,8 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
 import { addTopicMaterialsLink, updateTopicMaterialsLink } from "./material"
+import { userPublicMetadataSchema } from "../validations/auth"
+import { getCacheduser } from "./auth"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
@@ -19,6 +21,8 @@ type GroupedTopics = Record<number, TopicGroup>
 
 export async function filterTopics({ query }: { query: string }) {
   noStore()
+  const user = await getCacheduser()
+  const publicMetadata = userPublicMetadataSchema.parse(user?.publicMetadata)
 
   try {
     if (query.length === 0) {
@@ -34,13 +38,20 @@ export async function filterTopics({ query }: { query: string }) {
         name: topics.name,
         courseId: topics.courseId,
         course: courses.name,
+        level: courses.level,
       })
       .from(topics)
       .innerJoin(courses, eq(courses.id, topics.courseId))
       .where(
-        or(ilike(courses.name, `%${query}%`), ilike(topics.name, `%${query}%`)),
+        and(
+          lte(courses.level, publicMetadata.level),
+          or(
+            ilike(courses.name, `%${query}%`),
+            ilike(topics.name, `%${query}%`),
+          ),
+        ),
       )
-      .orderBy(asc(topics.createdAt))
+      .orderBy(asc(topics.name))
       .limit(10)
 
     const groupedByCourse = filteredTopics.reduce((result, item) => {

@@ -2,12 +2,14 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, not, sql } from "drizzle-orm"
+import { and, asc, eq, not, sql, lte } from "drizzle-orm"
 import { revalidatePath, unstable_cache as cache } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
 import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
+import { getCacheduser } from "./auth"
+import { userPublicMetadataSchema } from "../validations/auth"
 
 export async function getAllCourses() {
   return await cache(
@@ -23,6 +25,9 @@ export async function getAllCourses() {
 }
 
 export async function getPublishedCourses() {
+  const user = await getCacheduser()
+  const publicMetadata = userPublicMetadataSchema.parse(user?.publicMetadata)
+
   return await cache(
     async () => {
       return db
@@ -31,9 +36,15 @@ export async function getPublishedCourses() {
           name: courses.name,
           description: courses.description,
           active: courses.isActive,
+          level: courses.level,
         })
         .from(courses)
-        .where(eq(courses.isPublished, true))
+        .where(
+          and(
+            eq(courses.isPublished, true),
+            lte(courses.level, publicMetadata.level),
+          ),
+        )
         .orderBy(asc(courses.name))
     },
     ["published-courses"],
