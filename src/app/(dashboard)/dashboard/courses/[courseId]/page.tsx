@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { PublishCourseButton } from "@/components/activate-course-button"
 import { LoadingButton } from "@/components/loading-button"
 import {
   Card,
@@ -15,9 +16,6 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { deleteCourse, updateCourse } from "@/lib/actions/course"
-import { PublishCourseButton } from "@/components/activate-course-button"
 import {
   Select,
   SelectContent,
@@ -27,7 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
+import { deleteCourse, updateCourse } from "@/lib/actions/course"
+import { Switch } from "@/components/ui/switch"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -85,35 +85,23 @@ export default async function UpdatecoursePage({
       <Card as="section">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update your course</CardTitle>
-          <CardDescription>
-            Update your course name and description, or delete it
-          </CardDescription>
+          <CardDescription>Update your course, or delete it</CardDescription>
         </CardHeader>
         <CardContent>
           <form
             action={updateCourse.bind(null, courseId)}
             className="grid w-full max-w-xl gap-5"
           >
-            <div
-              className={cn("gap-2.5", course.isPublished ? "grid" : "hidden")}
-            >
-              <Label htmlFor="update-course-is-publish">Status</Label>
-              <Select
-                name="isPublished"
-                defaultValue={course.isPublished.toString()}
-              >
-                <SelectTrigger className="w-1/2">
-                  <SelectValue placeholder="Select a status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Status</SelectLabel>
-                    <SelectItem value={"true"}>Published</SelectItem>
-                    <SelectItem value={"false"}>Unpublish</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+            {course.isPublished && (
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="update-couse-published">Published</Label>
+                <Switch
+                  id="update-course-published"
+                  name="isPublished"
+                  defaultChecked={course.isPublished}
+                />
+              </div>
+            )}
             <div className="grid gap-2.5">
               <Label htmlFor="update-course-name">Name</Label>
               <Input
@@ -132,7 +120,7 @@ export default async function UpdatecoursePage({
               <Input
                 id="update-course-name"
                 aria-describedby="update-course-name-description"
-                name="name"
+                name="level"
                 required
                 type="number"
                 min={1}

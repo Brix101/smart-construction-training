@@ -2,13 +2,14 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, ilike, not, or } from "drizzle-orm"
+import { and, asc, eq, ilike, or } from "drizzle-orm"
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { z } from "zod"
 
+import { getErrorMessage } from "@/lib/handle-error"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
-import { getErrorMessage } from "@/lib/handle-error"
+import { addTopicMaterialsLink, updateTopicMaterialsLink } from "./material"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
@@ -63,42 +64,18 @@ export async function filterTopics({ query }: { query: string }) {
   }
 }
 
-export async function checkTopic(input: { name: string; id?: number }) {
-  noStore()
-  try {
-    const topicWithSameName = await db.query.topics.findFirst({
-      columns: {
-        id: true,
-      },
-      where: input.id
-        ? and(not(eq(topics.id, input.id)), eq(topics.name, input.name))
-        : eq(topics.name, input.name),
-    })
-
-    if (topicWithSameName) {
-      throw new Error("Topic name already taken.")
-    }
-  } catch (err) {
-    console.error(err)
-    return null
-  }
-}
-
 export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
-  const topicWithSameName = await db.query.topics.findFirst({
-    columns: {
-      id: true,
-    },
-    where: eq(topics.name, input.name),
-  })
+  const newTopic = await db
+    .insert(topics)
+    .values({
+      ...input,
+      courseId: input.courseId,
+    })
+    .returning({ id: topics.id })
 
-  if (topicWithSameName) {
-    throw new Error("Topic name already taken.")
-  }
-
-  await db.insert(topics).values({
-    ...input,
-    courseId: input.courseId,
+  await addTopicMaterialsLink({
+    materials: input.materials || "",
+    topicId: newTopic[0].id,
   })
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics.`)
@@ -108,9 +85,10 @@ const extendedTopicSchemaWithId = extendedTopicSchema.extend({
   id: z.number(),
 })
 
-export async function updateTopic(
-  input: z.infer<typeof extendedTopicSchemaWithId>,
-) {
+export async function updateTopic({
+  materials,
+  ...input
+}: z.infer<typeof extendedTopicSchemaWithId>) {
   const topic = await db.query.topics.findFirst({
     where: and(eq(topics.id, input.id), eq(topics.courseId, input.courseId)),
   })
@@ -120,6 +98,11 @@ export async function updateTopic(
   }
 
   await db.update(topics).set(input).where(eq(topics.id, input.id))
+
+  await updateTopicMaterialsLink({
+    materials: materials || "",
+    topicId: input.id,
+  })
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics/${input.id}`)
 }
@@ -139,6 +122,10 @@ export async function deleteTopic(rawInput: z.infer<typeof getTopicSchema>) {
   }
 
   await db.delete(topics).where(eq(topics.id, input.id))
+  // await db
+  //   .update(topics)
+  //   .set({ isActive: false })
+  //   .where(eq(topics.id, input.id))
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics`)
 }

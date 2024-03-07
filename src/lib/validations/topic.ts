@@ -4,7 +4,8 @@ export const topicSchema = z.object({
   name: z.string().min(3).max(256),
   youtubeId: z.string().max(100),
   youtubeUrl: z.string().min(3).max(256),
-  details: z.string().optional(),
+  description: z.string().optional(),
+  materials: z.string().optional(),
 })
 
 export const getTopicSchema = z.object({

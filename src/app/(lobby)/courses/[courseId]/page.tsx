@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getRandomPatternStyle } from "@/lib/generate-pattern"
-import { searchParamsSchema } from "@/lib/validations/params"
-import { SearchParams } from "@/types"
 import { asc, eq } from "drizzle-orm"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -16,27 +14,24 @@ interface TopicsPageProps {
   params: {
     courseId: string
   }
-  searchParams: SearchParams
 }
 
-async function getCourseFromParams({ params, searchParams }: TopicsPageProps) {
+async function getCourseFromParams({ params }: TopicsPageProps) {
   const courseId = Number(params.courseId)
-  // const { search } = searchParamsSchema.parse(searchParams)
 
   return await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     with: {
       topics: {
+        where: eq(topics.isActive, true),
         orderBy: asc(topics.name),
-        // where: (topic, { ilike }) => ilike(topic.name, `%${search}%`),
       },
     },
   })
 }
 
-export default async function TopicsPage(params: TopicsPageProps) {
-  const course = await getCourseFromParams(params)
-  
+export default async function TopicsPage(props: TopicsPageProps) {
+  const course = await getCourseFromParams(props)
   if (!course) {
     notFound()
   }
@@ -53,7 +48,7 @@ export default async function TopicsPage(params: TopicsPageProps) {
               >
                 Courses
               </Link>
-              <Icons.chevronRight size={15} />
+              <Icons.chevronRight />
               <span className="font-medium text-foreground">{course.name}</span>
             </div>
           </div>
@@ -82,7 +77,7 @@ export default async function TopicsPage(params: TopicsPageProps) {
                   className="rounded-none border-b-transparent bg-background"
                   variant="outline"
                 >
-                  <Icons.home size={14} />
+                  <Icons.home />
                   <span className="px-2">Topics</span>
                 </Button>
               </div>
@@ -96,7 +91,7 @@ export default async function TopicsPage(params: TopicsPageProps) {
             <TopicCard
               key={topic.id}
               topic={topic}
-              href={`/${course.id}/${topic.id}`}
+              href={`/courses/${course.id}/${topic.id}`}
             />
           )
         })}

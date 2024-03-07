@@ -20,12 +20,16 @@ interface UpdateTopicPageProps {
   }
 }
 
-export default async function TopicPage({ params }: UpdateTopicPageProps) {
+async function getTopic({ params }: UpdateTopicPageProps) {
   const topicId = Number(params.topicId)
-  const topic = await db.query.topics.findFirst({
+  return await db.query.topics.findFirst({
     where: eq(topics.id, topicId),
     with: {
-      materials: true,
+      materials: {
+        with: {
+          material: true,
+        },
+      },
       course: {
         with: {
           topics: true,
@@ -33,6 +37,11 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
       },
     },
   })
+}
+
+export default async function TopicPage(props: UpdateTopicPageProps) {
+  const topic = await getTopic(props)
+
   if (!topic) {
     notFound()
   }
@@ -40,13 +49,13 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
   const navItems: SidebarNavItem[] = [
     {
       title: "Back to course",
-      href: `/${topic.courseId}`,
+      href: `/courses/${topic.courseId}`,
       items: [],
       icon: "home",
     },
     ...topic.course.topics.map(topic => ({
       title: topic.name,
-      href: `/${topic.courseId}/${topic.id}`,
+      href: `/courses/${topic.courseId}/${topic.id}`,
       items: [],
     })),
   ]
@@ -65,12 +74,12 @@ export default async function TopicPage({ params }: UpdateTopicPageProps) {
             src={`https://www.youtube.com/embed/${topic.youtubeId}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            title={topic?.name ?? "Embedded youtube"}
+            title={topic.name}
           />
           <PageHeader>
-            <PageHeaderHeading>{topic?.name}</PageHeaderHeading>
+            <PageHeaderHeading>{topic.name}</PageHeaderHeading>
             <ul className="space-y-2 pt-5">
-              {topic.materials?.map((material, index) => {
+              {topic.materials.map(({ material }, index) => {
                 return (
                   <li key={index}>
                     <PageHeaderDescription size="sm">

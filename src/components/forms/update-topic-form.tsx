@@ -1,6 +1,6 @@
 "use client"
 
-import { type Topic } from "@/db/schema"
+import { type Material, type Topic } from "@/db/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import * as React from "react"
@@ -19,55 +19,40 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { checkTopic, deleteTopic, updateTopic } from "@/lib/actions/topic"
+import { deleteTopic, updateTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
-import { FileWithPreview } from "@/types"
-import Image from "next/image"
-import { Zoom } from "../zoom-image"
 
 interface UpdateTopicFormProps {
-  topic: Topic
+  topic: Topic & {
+    materials: { topicId: number; materialId: number; material: Material }[]
+  }
 }
 
 type Inputs = z.infer<typeof topicSchema>
 
 export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   const router = useRouter()
-  const [thumbnailPreview, setThumbnailPreview] =
-    React.useState<FileWithPreview | null>(null)
   const [isPending, startTransition] = React.useTransition()
 
-  React.useEffect(() => {
-    if (topic.youtubeId) {
-      const file = new File([], topic.name ?? "file name", {
-        type: "image",
-      })
-      const fileWithPreview = Object.assign(file, {
-        preview: `https://img.youtube.com/vi/${topic.youtubeId}/maxresdefault.jpg`,
-      })
-      setThumbnailPreview(fileWithPreview)
-    }
-  }, [topic])
+  const materialStr = topic.materials
+    .map(({ material }) => material.link)
+    .join(", ")
 
   const form = useForm<Inputs>({
     resolver: zodResolver(topicSchema),
     defaultValues: {
       name: topic.name ?? "",
-      details: topic.details ?? "",
+      description: topic.description ?? "",
       youtubeId: topic.youtubeId ?? "",
       youtubeUrl: topic.youtubeUrl ?? "",
+      materials: materialStr,
     },
   })
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await checkTopic({
-          name: data.name,
-          id: topic.id,
-        })
-
         await updateTopic({
           ...data,
           id: topic.id,
@@ -122,30 +107,27 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           <FormMessage />
         </FormItem>
         <FormItem>
-          <FormLabel>Details</FormLabel>
+          <FormLabel>Materials</FormLabel>
           <FormControl>
             <Textarea
-              placeholder="Type topic details here."
-              {...form.register("details")}
-              defaultValue={topic.details ?? ""}
+              placeholder="Type topic materials link here split by(,) ."
+              {...form.register("materials")}
+              defaultValue={materialStr ?? ""}
             />
           </FormControl>
           <FormMessage />
         </FormItem>
-        <div className="flex items-center gap-2">
-          {thumbnailPreview ? (
-            <Zoom>
-              <Image
-                src={thumbnailPreview.preview}
-                alt={thumbnailPreview.name}
-                className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
-                width={640}
-                height={480}
-              />
-            </Zoom>
-          ) : undefined}
-        </div>
-
+        <FormItem>
+          <FormLabel>Description</FormLabel>
+          <FormControl>
+            <Textarea
+              placeholder="Type topic description here."
+              {...form.register("description")}
+              defaultValue={topic.description ?? ""}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
         <div className="flex space-x-2">
           <Button disabled={isPending}>
             {isPending && (
@@ -165,7 +147,8 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
                   "name",
                   "youtubeId",
                   "youtubeUrl",
-                  "details",
+                  "materials",
+                  "description",
                 ])
                 await deleteTopic({
                   courseId: topic.courseId,

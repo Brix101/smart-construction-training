@@ -71,6 +71,20 @@
       "when": 1709647842134,
       "tag": "0009_awesome_warbound",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1709689921457,
+      "tag": "0010_next_electro",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1709690068073,
+      "tag": "0011_tough_silver_samurai",
+      "breakpoints": true
     }
   ]
 }

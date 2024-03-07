@@ -11,7 +11,7 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { buttonVariants } from "@/components/ui/button"
-import { getCourseCount, getCourses } from "@/lib/actions/course"
+import { getPublishedCourse, getAllCourses } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -29,14 +29,14 @@ export default async function CoursesPage() {
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
-  const coursePromises = await getCourses()
-  const countPromises = await getCourseCount()
-  const [allCourses, counts] = await Promise.all([
+  const coursePromises = await getAllCourses()
+  const publishPromises = await getPublishedCourse()
+  const [allCourses, publishCount] = await Promise.all([
     coursePromises,
-    countPromises,
+    publishPromises,
   ])
 
   return (
@@ -70,13 +70,16 @@ export default async function CoursesPage() {
         <RocketIcon className="size-4" aria-hidden="true" />
         <AlertTitle>Heads up!</AlertTitle>
         <AlertDescription>
-          there are currently{" "}
-          {counts.length > 0
-            ? counts.map((count, index) => (
+          there are{" "}
+          {publishCount.length > 0
+            ? publishCount.map((count, index) => (
                 <React.Fragment key={index}>
-                  <span className="font-semibold">{count.count}</span>{" "}
-                  {count.active ? "Active" : "Inactive"}
-                  {index !== counts.length - 1 && " and "}
+                  currently
+                  <span className="font-semibold">
+                    {count.count}{" "}
+                    {count.isPublished ? "published" : "unplublish"}
+                  </span>
+                  {index !== publishCount.length - 1 && " and "}
                 </React.Fragment>
               ))
             : "no"}{" "}

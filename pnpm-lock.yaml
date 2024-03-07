@@ -65,6 +65,9 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.42)(react@18.2.0)
+  '@radix-ui/react-switch':
+    specifier: ^1.0.3
+    version: 1.0.3(@types/react-dom@18.2.17)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-tabs':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.17)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
@@ -89,6 +92,9 @@ dependencies:
   cmdk:
     specifier: ^0.2.0
     version: 0.2.0(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
+  date-fns:
+    specifier: ^3.3.1
+    version: 3.3.1
   drizzle-orm:
     specifier: ^0.29.1
     version: 0.29.1(@neondatabase/serverless@0.6.0)(pg@8.11.3)(postgres@3.4.3)
@@ -1866,6 +1872,33 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@radix-ui/react-switch@1.0.3(@types/react-dom@18.2.17)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mxm87F88HyHztsI7N+ZUmEoARGkC22YVW5CaC+Byc+HRpuvCrOBPTAnXgf+tZ/7i0Sg/eOePGdMhUKhPaQEqow==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.5
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.42)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.42)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.17)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.42)(react@18.2.0)
+      '@radix-ui/react-use-previous': 1.0.1(@types/react@18.2.42)(react@18.2.0)
+      '@radix-ui/react-use-size': 1.0.1(@types/react@18.2.42)(react@18.2.0)
+      '@types/react': 18.2.42
+      '@types/react-dom': 18.2.17
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@radix-ui/react-tabs@1.0.4(@types/react-dom@18.2.17)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-egZfYY/+wRNCflXNHx+dePvnz9FbmssDTJBtgRfDY7e8SE5oIo3Py2eCB1ckAbh1Q7cQ/6yJZThJ++sgbxibog==}
     peerDependencies:
@@ -2782,6 +2815,10 @@ packages:
   /damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
+
+  /date-fns@3.3.1:
+    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
+    dev: false
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}

@@ -48,6 +48,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       primaryEmailAddressId,
       externalAccounts,
       id,
+      publicMetadata,
       ...userWithoutSensitiveInfo
     } = user
 
@@ -55,7 +56,9 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       emailAddresses.find(email => email.id === primaryEmailAddressId)
         ?.emailAddress || emailAddresses[0].emailAddress
 
-    return { ...userWithoutSensitiveInfo, email } as OmitedUser
+    const level = publicMetadata["level"] || 1
+
+    return { ...userWithoutSensitiveInfo, email, level } as OmitedUser
   })
 
   const transaction = Promise.resolve({

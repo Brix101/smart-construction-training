@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { addTopic, checkTopic } from "@/lib/actions/topic"
+import { addTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 import Link from "next/link"
@@ -38,17 +38,14 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
       name: "",
       youtubeId: "",
       youtubeUrl: "",
-      details: "",
+      description: "",
+      materials: "",
     },
   })
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await checkTopic({
-          name: data.name,
-        })
-
         await addTopic({
           ...data,
           courseId,
@@ -111,10 +108,22 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
             <FormItem className="w-full">
               <FormLabel>Youtube Id</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Type youtube Id here."
-                  value={field.value}
-                  onChange={field.onChange}
+                <Input placeholder="Type youtube Id here." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="materials"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Materials</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Type topic materials link here split by(,) ."
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -123,12 +132,15 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         />
         <FormField
           control={form.control}
-          name="details"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type topic details here." {...field} />
+                <Textarea
+                  placeholder="Type topic description here."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,7 +149,12 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             onClick={() =>
-              void form.trigger(["name", "youtubeId", "youtubeUrl", "details"])
+              void form.trigger([
+                "name",
+                "youtubeId",
+                "youtubeUrl",
+                "description",
+              ])
             }
             className="w-fit"
             disabled={isPending}

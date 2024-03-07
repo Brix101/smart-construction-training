@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
   const role = (user.privateMetadata.role as String) ?? ""

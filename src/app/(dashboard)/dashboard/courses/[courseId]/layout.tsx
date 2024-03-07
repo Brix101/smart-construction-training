@@ -27,7 +27,7 @@ export default async function CourseLayout({
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/signin")
+    redirect("/sign-in")
   }
 
   const allcourses = await db
@@ -36,6 +36,7 @@ export default async function CourseLayout({
       name: courses.name,
     })
     .from(courses)
+    .orderBy(courses.name)
 
   const course = allcourses.find(course => course.id === courseId)
 
@@ -56,7 +57,7 @@ export default async function CourseLayout({
           <CourseSwitcher
             currentCourse={course}
             courses={allcourses}
-            dashboardRedirectPath={"/dashboard/courses"}
+            dashboardRedirectPath={"/dashboard/courses/new"}
           />
         ) : null}
       </div>

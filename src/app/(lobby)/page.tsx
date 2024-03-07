@@ -1,8 +1,8 @@
 import { CourseCard } from "@/components/cards/course-card"
-import { getActiveCourses } from "@/lib/actions/course"
+import { getPublishedCourses } from "@/lib/actions/course"
 
 export default async function HomePage() {
-  const coursePromises = await getActiveCourses()
+  const coursePromises = await getPublishedCourses()
   const [allCourses] = await Promise.all([coursePromises])
 
   return (
@@ -16,7 +16,7 @@ export default async function HomePage() {
         }}
       >
         <div className="container ">
-          <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
+          <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
         </div>
@@ -27,7 +27,7 @@ export default async function HomePage() {
             <CourseCard
               key={course.id}
               course={course}
-              href={`/${course.id}`}
+              href={`/courses/${course.id}`}
             />
           ))}
         </main>

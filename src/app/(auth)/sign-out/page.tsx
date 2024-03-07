@@ -25,7 +25,7 @@ export default function SignOutPage() {
       >
         <PageHeaderHeading size="sm">Sign out</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Are you sure you want to sign out?
+          Do you really want to log out?
         </PageHeaderDescription>
       </PageHeader>
       <LogOutButtons />
