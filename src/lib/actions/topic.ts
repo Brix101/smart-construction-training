@@ -1,14 +1,21 @@
 "use server"
 
 import { db } from "@/db"
-import { courses, topics } from "@/db/schema"
-import { and, asc, eq, ilike, not, or } from "drizzle-orm"
+import {
+  NewMaterial,
+  NewTopicsToMaterials,
+  courses,
+  materials,
+  topics,
+  topicsToMaterials,
+} from "@/db/schema"
+import { and, asc, eq, ilike, or } from "drizzle-orm"
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { z } from "zod"
 
+import { getErrorMessage } from "@/lib/handle-error"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
-import { getErrorMessage } from "@/lib/handle-error"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
@@ -63,43 +70,34 @@ export async function filterTopics({ query }: { query: string }) {
   }
 }
 
-export async function checkTopic(input: { name: string; id?: number }) {
-  noStore()
-  try {
-    const topicWithSameName = await db.query.topics.findFirst({
-      columns: {
-        id: true,
-      },
-      where: input.id
-        ? and(not(eq(topics.id, input.id)), eq(topics.name, input.name))
-        : eq(topics.name, input.name),
-    })
-
-    if (topicWithSameName) {
-      throw new Error("Topic name already taken.")
-    }
-  } catch (err) {
-    console.error(err)
-    return null
-  }
-}
-
 export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
-  const topicWithSameName = await db.query.topics.findFirst({
-    columns: {
-      id: true,
-    },
-    where: eq(topics.name, input.name),
+  const newTopic = await db
+    .insert(topics)
+    .values({
+      ...input,
+      courseId: input.courseId,
+    })
+    .returning({ id: topics.id })
+
+  const materialLinks = (input.materials
+    ?.split(",")
+    .map(value => value.trim())
+    .filter(value => value !== "")
+    .map(value => {
+      return { link: value }
+    }) || []) as NewMaterial[]
+
+  const insertedMaterials = await db
+    .insert(materials)
+    .values(materialLinks)
+    .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
+    .returning({ id: materials.id })
+
+  const newTopicToMaterials = insertedMaterials.map(material => {
+    return { materialId: material.id, topicId: newTopic[0].id }
   })
 
-  if (topicWithSameName) {
-    throw new Error("Topic name already taken.")
-  }
-
-  await db.insert(topics).values({
-    ...input,
-    courseId: input.courseId,
-  })
+  await db.insert(topicsToMaterials).values(newTopicToMaterials)
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics.`)
 }
@@ -138,7 +136,11 @@ export async function deleteTopic(rawInput: z.infer<typeof getTopicSchema>) {
     throw new Error("Topic not found.")
   }
 
-  await db.delete(topics).where(eq(topics.id, input.id))
+  // await db.delete(topics).where(eq(topics.id, input.id))
+  await db
+    .update(topics)
+    .set({ isActive: false })
+    .where(eq(topics.id, input.id))
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics`)
 }

@@ -60,7 +60,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
           size="sm"
           className="absolute right-0 top-0 h-full px-3 py-1"
         >
-          <Icons.search />
+          <Icons.magnifyingGlass />
         </Button>
       </form>
     )

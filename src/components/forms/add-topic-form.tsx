@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { addTopic, checkTopic } from "@/lib/actions/topic"
+import { addTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 import Link from "next/link"
@@ -46,10 +46,6 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await checkTopic({
-          name: data.name,
-        })
-
         await addTopic({
           ...data,
           courseId,

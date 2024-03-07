@@ -23,6 +23,7 @@ async function getCourseFromParams({ params }: TopicsPageProps) {
     where: eq(courses.id, courseId),
     with: {
       topics: {
+        where: eq(topics.isActive, true),
         orderBy: asc(topics.name),
       },
     },
@@ -47,7 +48,7 @@ export default async function TopicsPage(props: TopicsPageProps) {
               >
                 Courses
               </Link>
-              <Icons.chevronRight size={15} />
+              <Icons.chevronRight />
               <span className="font-medium text-foreground">{course.name}</span>
             </div>
           </div>
@@ -76,7 +77,7 @@ export default async function TopicsPage(props: TopicsPageProps) {
                   className="rounded-none border-b-transparent bg-background"
                   variant="outline"
                 >
-                  <Icons.home size={14} />
+                  <Icons.home />
                   <span className="px-2">Topics</span>
                 </Button>
               </div>

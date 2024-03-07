@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { checkTopic, deleteTopic, updateTopic } from "@/lib/actions/topic"
+import { deleteTopic, updateTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 import { FileWithPreview } from "@/types"
@@ -63,11 +63,6 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await checkTopic({
-          name: data.name,
-          id: topic.id,
-        })
-
         await updateTopic({
           ...data,
           id: topic.id,

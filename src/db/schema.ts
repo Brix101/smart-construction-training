@@ -84,6 +84,8 @@ export const topicsToMaterials = pgTable(
   }),
 )
 
+export type NewTopicsToMaterials = typeof topicsToMaterials.$inferInsert
+
 export const topicsToMaterialsRelations = relations(
   topicsToMaterials,
   ({ one }) => ({
