@@ -50,7 +50,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
   const columns = React.useMemo<ColumnDef<AwaitedUser, unknown>[]>(
     () => [
       {
-        id: "user",
+        accessorKey: "firstName",
         enableSorting: false,
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="User" />
@@ -166,7 +166,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       searchableColumns={[
         {
           id: "firstName",
-          title: "name",
+          title: "user",
         },
       ]}
     />
