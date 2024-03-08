@@ -12,7 +12,7 @@ export default function CoursesLoading() {
       <PageHeader separated>
         <PageHeaderHeading size="sm">Courses</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Manage your courses settings
+          View and manage courses
         </PageHeaderDescription>
       </PageHeader>
       <section className="grid gap-10 rounded-lg border p-4">

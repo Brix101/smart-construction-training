@@ -50,7 +50,7 @@ export default async function CourseLayout({
         <PageHeader className="flex-1">
           <PageHeaderHeading size="sm">Courses</PageHeaderHeading>
           <PageHeaderDescription size="sm">
-            View and manage users{" "}
+            View and manage courses{" "}
           </PageHeaderDescription>
         </PageHeader>
         {allcourses.length > 1 ? (

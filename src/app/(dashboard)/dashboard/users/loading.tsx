@@ -4,6 +4,7 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function UsersLoading() {
@@ -12,30 +13,33 @@ export default function UsersLoading() {
       <PageHeader separated>
         <PageHeaderHeading size="sm">Users</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Manage your users settings
+          View and manage users
         </PageHeaderDescription>
       </PageHeader>
-      <section className="grid gap-10 rounded-lg border p-4">
-        <div className="space-y-2">
-          <Skeleton className="h-5 w-20" />
-          <Skeleton className="h-4 w-72" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
-      </section>
+      <div className="space-y-10">
+        <Card>
+          <CardHeader className="space-y-2">
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-4 w-2/4" />
+          </CardHeader>
+          <CardContent>
+            <div className="grid w-full max-w-xl gap-4">
+              <div className="space-y-2.5">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-6" />
+              </div>
+              <div className="space-y-2.5">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-20" />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="xs:flex-row flex flex-col gap-2">
+            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-10 w-32" />
+          </CardFooter>
+        </Card>
+      </div>
     </Shell>
   )
 }

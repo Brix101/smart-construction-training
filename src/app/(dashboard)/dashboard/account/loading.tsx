@@ -12,7 +12,7 @@ export default function AccountLoading() {
       <PageHeader separated>
         <PageHeaderHeading size="sm">Account</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Manage your account settings
+          Manage your account information
         </PageHeaderDescription>
       </PageHeader>
       <section className="grid gap-10 rounded-lg border p-4">
