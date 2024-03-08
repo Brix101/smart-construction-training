@@ -48,9 +48,9 @@ export default async function CourseLayout({
     <Shell variant="sidebar">
       <div className="xxs:flex-row flex flex-col gap-4 pr-1">
         <PageHeader className="flex-1">
-          <PageHeaderHeading size="sm">Dashboard</PageHeaderHeading>
+          <PageHeaderHeading size="sm">Courses</PageHeaderHeading>
           <PageHeaderDescription size="sm">
-            Manage your course
+            View and manage users{" "}
           </PageHeaderDescription>
         </PageHeader>
         {allcourses.length > 1 ? (

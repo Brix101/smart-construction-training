@@ -1,14 +1,11 @@
 "use client"
 
 import { type ColumnDef } from "@tanstack/react-table"
-import { format } from "date-fns"
+import { format, formatDistanceToNow } from "date-fns"
 import * as React from "react"
 
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { User } from "@clerk/nextjs/server"
-import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,9 +13,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { User } from "@clerk/nextjs/server"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
+import Link from "next/link"
+import { formatSignInDate } from "@/lib/date-utils"
 
 type AwaitedUser = Pick<
   User,
@@ -29,6 +31,7 @@ type AwaitedUser = Pick<
   | "firstName"
   | "lastName"
   | "publicMetadata"
+  | "primaryEmailAddressId"
 >
 
 interface UsersTableShellProps {
@@ -47,46 +50,33 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
   const columns = React.useMemo<ColumnDef<AwaitedUser, unknown>[]>(
     () => [
       {
-        accessorKey: "imageUrl",
+        id: "user",
         enableSorting: false,
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Image" />
-        ),
-        cell: ({ row: { original } }) => {
-          const email = original.emailAddresses[0].emailAddress || ""
-          return (
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={original.imageUrl} alt={""} />
-              <AvatarFallback>{email.charAt(0)}</AvatarFallback>
-            </Avatar>
-          )
-        },
-      },
-      {
-        accessorKey: "firstName",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="First name" />
-        ),
-      },
-      {
-        accessorKey: "lastName",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Last name" />
-        ),
-      },
-      {
-        accessorKey: "email",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Email" />
+          <DataTableColumnHeader column={column} title="User" />
         ),
         cell: ({ row: { original } }) => {
           const emails = original.emailAddresses
+          const email =
+            emails.find(e => e.id === original.primaryEmailAddressId)
+              ?.emailAddress ?? ""
           return (
-            <ul>
-              {emails.map(email => {
-                return <li key={email.id}>{email.emailAddress}</li>
-              })}
-            </ul>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={original.imageUrl} alt={""} />
+                <AvatarFallback>{email.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p>{`${original.firstName ?? ""} ${
+                  original.lastName ?? ""
+                }`}</p>
+                <ul className="text-muted-foreground">
+                  {emails.map(email => {
+                    return <li key={email.id}>{email.emailAddress}</li>
+                  })}
+                </ul>
+              </div>
+            </div>
           )
         },
       },
@@ -106,13 +96,12 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       {
         accessorKey: "lastSignInAt",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="last sign in" />
+          <DataTableColumnHeader column={column} title="Last Signed In" />
         ),
         cell: ({ row }) => {
           const original = row.original
-          const formattedDate = original.lastSignInAt
-            ? format(new Date(original.lastSignInAt), "MMM dd, yyyy HH:mm")
-            : ""
+          const lastSignInAt = original.lastSignInAt
+          const formattedDate = formatSignInDate(lastSignInAt)
           return <span>{formattedDate}</span>
         },
       },
@@ -137,6 +126,29 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                 <Link href={`/topic/${row.original.id}`}>View</Link>
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
+              <DropdownMenuItem
+              // onClick={() => {
+              //   startTransition(() => {
+              //     row.toggleSelected(false)
+              //
+              //     toast.promise(
+              //       deleteTopic({
+              //         id: row.original.id,
+              //         courseId,
+              //       }),
+              //       {
+              //         loading: "Deleting...",
+              //         success: () => "Topic deleted successfully.",
+              //         error: (err: unknown) => catchError(err),
+              //       },
+              //     )
+              //   })
+              // }}
+              // disabled={isPending}
+              >
+                Delete
+                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),

@@ -63,7 +63,7 @@ export default async function CoursesPage() {
           </Link>
         </div>
         <PageHeaderDescription size="sm">
-          Manage your courses
+          View and manage courses
         </PageHeaderDescription>
       </PageHeader>
       <Alert>

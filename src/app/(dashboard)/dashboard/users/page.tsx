@@ -44,7 +44,6 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
     offset,
     query: firstName,
   })
-
   const transaction = Promise.resolve({
     items: JSON.parse(JSON.stringify(userList)),
     count,
@@ -59,7 +58,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       >
         <PageHeaderHeading size="sm">Users</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Manage your users settings
+          View and manage users
         </PageHeaderDescription>
       </PageHeader>
       <section

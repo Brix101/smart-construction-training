@@ -12,12 +12,12 @@ import { UserProfile } from "@/components/auth/user-profile"
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: "Account",
-  description: "Manage your account settings",
+  description: "Manage your account information",
 }
 
 export default function AccountPage() {
   return (
-    <Shell variant="sidebar">
+    <Shell variant="sidebar" className="gap-0">
       <PageHeader
         id="account-header"
         aria-labelledby="account-header-heading"
@@ -25,7 +25,7 @@ export default function AccountPage() {
       >
         <PageHeaderHeading size="sm">Account</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Manage your account settings
+          Manage your account information
         </PageHeaderDescription>
       </PageHeader>
       <section
