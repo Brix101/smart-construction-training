@@ -14,7 +14,7 @@ export function formatSignInDate(lastSignInTimestamp?: number | null) {
   let formattedDate
 
   if (isNotOverAWeek) {
-    formattedDate = "Last " + format(lastSignInDate, "eeee 'at' h:mm a")
+    formattedDate = format(lastSignInDate, "'Last' eeee 'at' h:mm a")
   } else {
     formattedDate = format(lastSignInDate, "MM/dd/yyyy")
   }
