@@ -1,7 +1,6 @@
 "use client"
 
 import { type ColumnDef } from "@tanstack/react-table"
-import { format, formatDistanceToNow } from "date-fns"
 import * as React from "react"
 
 import { DataTable } from "@/components/data-table/data-table"
@@ -16,11 +15,24 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { deleteUser } from "@/lib/actions/user"
+import { formatSignInDate } from "@/lib/date-utils"
+import { catchError } from "@/lib/utils"
 import { userPublicMetadataSchema } from "@/lib/validations/auth"
 import { User } from "@clerk/nextjs/server"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import Link from "next/link"
-import { formatSignInDate } from "@/lib/date-utils"
+import { toast } from "sonner"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog"
+import { Input } from "../ui/input"
+import { Label } from "../ui/label"
 
 type AwaitedUser = Pick<
   User,
@@ -45,6 +57,8 @@ interface UsersTableShellProps {
 export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
   const { items: data, count } = React.use(transaction)
   const pageCount = Math.ceil(count / limit)
+
+  const [isPending, startTransition] = React.useTransition()
 
   // Memoize the columns so they don't re-render on every render
   const columns = React.useMemo<ColumnDef<AwaitedUser, unknown>[]>(
@@ -107,54 +121,95 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       },
       {
         id: "actions",
-        cell: ({ row: { original } }) => (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                aria-label="Open menu"
-                variant="ghost"
-                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-              >
-                <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuItem asChild>
-                <Link href={`/dashboard/users/${original.id}`}>Edit</Link>
-              </DropdownMenuItem>
-              {/* <DropdownMenuItem asChild>
-                <Link href={`/topic/${row.original.id}`}>View</Link>
-              </DropdownMenuItem> */}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-              // onClick={() => {
-              //   startTransition(() => {
-              //     row.toggleSelected(false)
-              //
-              //     toast.promise(
-              //       deleteTopic({
-              //         id: row.original.id,
-              //         courseId,
-              //       }),
-              //       {
-              //         loading: "Deleting...",
-              //         success: () => "Topic deleted successfully.",
-              //         error: (err: unknown) => catchError(err),
-              //       },
-              //     )
-              //   })
-              // }}
-              // disabled={isPending}
-              >
-                Delete
-                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ),
+        cell: ({ row: { original } }) => {
+          const emails = original.emailAddresses
+          const email =
+            emails.find(e => e.id === original.primaryEmailAddressId)
+              ?.emailAddress ?? ""
+
+          const publicMetadata = userPublicMetadataSchema.parse(
+            original.publicMetadata,
+          )
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  aria-label="Open menu"
+                  variant="ghost"
+                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem asChild>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="w-full">
+                        Edit
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Edit User Level</DialogTitle>
+                        <DialogDescription>
+                          Make changes to user level. Click save when
+                          you&apos;re done.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            id="email"
+                            defaultValue={email}
+                            className="col-span-3"
+                            readOnly
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="level">Level</Label>
+                          <Input
+                            id="level"
+                            className="col-span-3"
+                            type="number"
+                            min={1}
+                            placeholder="Type course level here."
+                            defaultValue={publicMetadata.level}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit">Save changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    startTransition(() => {
+                      // row.toggleSelected(false)
+
+                      toast.promise(deleteUser(original.id), {
+                        loading: "Deleting...",
+                        success: () => "User deleted successfully.",
+                        error: (err: unknown) => catchError(err),
+                      })
+                    })
+                  }}
+                  disabled={isPending}
+                >
+                  Delete
+                  <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        },
       },
     ],
-    [],
+    [isPending],
   )
 
   return (
