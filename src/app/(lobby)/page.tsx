@@ -1,4 +1,6 @@
 import { CourseCard } from "@/components/cards/course-card"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
+import { Shell } from "@/components/shells/shell"
 import { getPublishedCourses } from "@/lib/actions/course"
 
 export default async function HomePage() {
@@ -8,20 +10,21 @@ export default async function HomePage() {
   return (
     <>
       <div
-        className="w-full bg-blue-50 py-10"
+        className="w-full bg-background py-10"
         style={{
           backgroundImage: "url(/svg/default_banner.svg)",
           backgroundSize: "cover",
           backgroundPosition: "80% 20%",
         }}
       >
-        <div className="container ">
-          <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
-            All Courses
-          </h1>
-        </div>
+        <PageHeader className="container">
+          <PageHeaderHeading size="lg">All Courses</PageHeaderHeading>
+        </PageHeader>
       </div>
-      <section className="container grid grid-cols-1 gap-6 pt-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <Shell
+        variant="default"
+        className="grid grid-cols-1 gap-6 pt-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {allCourses.map(course => (
           <CourseCard
             key={course.id}
@@ -29,7 +32,7 @@ export default async function HomePage() {
             href={`/courses/${course.id}`}
           />
         ))}
-      </section>
+      </Shell>
     </>
   )
 }
