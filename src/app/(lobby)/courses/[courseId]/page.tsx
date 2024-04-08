@@ -4,6 +4,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
+import { Shell } from "@/components/shells/shell"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,6 +13,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { asc, eq } from "drizzle-orm"
@@ -46,50 +48,40 @@ export default async function TopicsPage(props: TopicsPageProps) {
   }
 
   return (
-    <>
-      <div className="flex flex-col">
-        <div className="container flex w-full flex-col justify-between space-y-5 pb-2 pt-4 md:flex-row md:space-y-0 md:pt-1">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Courses</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{course.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-        <div
-          className="relative"
-          // style={getRandomPatternStyle(String(course.id))}
-        >
-          <div className="container relative flex space-x-4 pt-2">
-            <div className="space-y-1">
-              <PageHeader>
-                <PageHeaderHeading size="lg">{course.name}</PageHeaderHeading>
-                <PageHeaderDescription size="sm">
-                  {course.description?.length
-                    ? course.description
-                    : `Explore ${course.name}`}
-                </PageHeaderDescription>
-              </PageHeader>
-            </div>
+    <Shell>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Courses</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{course.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="flex flex-col gap-8 md:flex-row md:gap-16">
+        <div className="flex w-full flex-col gap-4">
+          <div className="space-y-2">
+            <h2 className="line-clamp-1 text-2xl font-bold">{course.name}</h2>
+            <p className="text-base text-muted-foreground">
+              {course.description}
+            </p>
+          </div>
+          <Separator className="my-1.5" />
+          <div className="grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {course.topics.map(topic => {
+              return (
+                <TopicCard
+                  key={topic.id}
+                  topic={topic}
+                  href={`/courses/${course.id}/${topic.id}`}
+                />
+              )
+            })}
           </div>
         </div>
       </div>
-      <div className="container grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {course.topics.map(topic => {
-          return (
-            <TopicCard
-              key={topic.id}
-              topic={topic}
-              href={`/courses/${course.id}/${topic.id}`}
-            />
-          )
-        })}
-      </div>
-    </>
+    </Shell>
   )
 }

@@ -1,5 +1,9 @@
 import { CourseCard } from "@/components/cards/course-card"
-import { PageHeader, PageHeaderHeading } from "@/components/page-header"
+import {
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderHeading,
+} from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
 import { getPublishedCourses } from "@/lib/actions/course"
 
@@ -10,15 +14,16 @@ export default async function HomePage() {
   return (
     <>
       <div
-        className="w-full bg-background py-10"
-        style={{
-          backgroundImage: "url(/svg/default_banner.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "80% 20%",
-        }}
+        className="w-full bg-background py-5"
+        // style={{
+        //   backgroundImage: "url(/svg/default_banner.svg)",
+        //   backgroundSize: "cover",
+        //   backgroundPosition: "80% 20%",
+        // }}
       >
         <PageHeader className="container">
-          <PageHeaderHeading size="lg">All Courses</PageHeaderHeading>
+          <PageHeaderHeading>Courses</PageHeaderHeading>
+          <PageHeaderDescription>Explore Courses</PageHeaderDescription>
         </PageHeader>
       </div>
       <Shell
