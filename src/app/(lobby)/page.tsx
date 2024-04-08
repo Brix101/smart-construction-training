@@ -21,17 +21,15 @@ export default async function HomePage() {
           </h1>
         </div>
       </div>
-      <div className="pt-14">
-        <main className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {allCourses.map(course => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              href={`/courses/${course.id}`}
-            />
-          ))}
-        </main>
-      </div>
+      <section className="container grid grid-cols-1 gap-6 pt-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {allCourses.map(course => (
+          <CourseCard
+            key={course.id}
+            course={course}
+            href={`/courses/${course.id}`}
+          />
+        ))}
+      </section>
     </>
   )
 }

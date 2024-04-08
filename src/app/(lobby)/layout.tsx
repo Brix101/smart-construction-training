@@ -2,9 +2,12 @@ import { SiteHeader } from "@/components/layouts/site-header"
 import { getCacheduser } from "@/lib/actions/auth"
 import { redirect } from "next/navigation"
 
-export default async function DashboardLayout({
-  children,
-}: React.PropsWithChildren) {
+interface LobyLayoutProps
+  extends React.PropsWithChildren<{
+    // modal: React.ReactNode
+  }> {}
+
+export default async function LobyLayout({ children }: LobyLayoutProps) {
   const user = await getCacheduser()
 
   if (!user) {
@@ -14,7 +17,10 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader user={user} />
-      {children}
+      <main className="flex-1">
+        {children}
+        {/* {modal} */}
+      </main>
     </div>
   )
 }
