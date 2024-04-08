@@ -32,10 +32,10 @@ export default async function LoadingPage() {
         <div className="flex w-full flex-col gap-4">
           <div className="space-y-2">
             <h2 className="line-clamp-1 text-2xl font-bold">
-              <Skeleton className="h-10 w-36 bg-foreground" />
+              <Skeleton className="h-7 w-44 bg-foreground" />
             </h2>
-            <p className="text-base text-muted-foreground">
-              <Skeleton className="h-4 w-20 bg-foreground" />
+            <p className="text-mu4ted-foreground text-base">
+              <Skeleton className="h-4 w-44 bg-foreground" />
             </p>
           </div>
           <Separator className="my-1.5" />
