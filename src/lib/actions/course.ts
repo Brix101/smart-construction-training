@@ -2,14 +2,14 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, not, sql, lte } from "drizzle-orm"
-import { revalidatePath, unstable_cache as cache } from "next/cache"
+import { and, asc, eq, lte, not, sql } from "drizzle-orm"
+import { unstable_cache as cache, revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
-import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
-import { getCacheduser } from "@/lib/actions/auth"
 import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
+import { currentUser } from "@clerk/nextjs"
 
 export async function getAllCourses() {
   return await cache(
@@ -25,7 +25,7 @@ export async function getAllCourses() {
 }
 
 export async function getPublishedCourses() {
-  const user = await getCacheduser()
+  const user = await currentUser()
   const publicMetadata = userPublicMetadataSchema.parse(user?.publicMetadata)
 
   return await cache(
