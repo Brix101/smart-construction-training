@@ -6,14 +6,13 @@ export default async function LoadingPage() {
   return (
     <>
       <div className="flex flex-col pb-3">
-        <div className="bg-blue-100">
+        <div className="bg-blue-100 dark:bg-background">
           <div className="container flex w-full flex-col justify-between space-y-5 pb-2 pt-4 md:flex-row md:space-y-0 md:pt-1">
             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Skeleton className="h-4 w-20 bg-foreground" />
               <Icons.chevronRight />
               <Skeleton className="h-4 w-64 bg-foreground" />
             </div>
-            <Skeleton className="h-12 w-64 border" />
           </div>
         </div>
         <div className="relative">
