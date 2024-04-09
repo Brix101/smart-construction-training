@@ -22,7 +22,7 @@ export default async function IndexPage() {
           <CourseCard
             key={course.id}
             course={course}
-            href={`/courses/${course.id}`}
+            href={`/course/${course.id}`}
           />
         ))}
       </section>
