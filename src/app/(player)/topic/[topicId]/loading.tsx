@@ -14,7 +14,7 @@ export default function LoadingPage() {
       </nav>
       <section className="flex h-[calc(100vh-3.5rem)]">
         <aside className="h-screen border-r">
-          <div className="mt-4 flex w-72 flex-col gap-2">
+          <div className="mt-4 flex w-72 flex-col gap-2 px-1">
             <Skeleton className="h-9 w-full" />
             <Skeleton className="h-9 w-full" />
             <Skeleton className="h-9 w-full" />
