@@ -1,5 +1,5 @@
+import { SiteHeader } from "@/components/layouts/site-header"
 import { currentUser } from "@clerk/nextjs"
-import { DashboardHeader } from "./dashboard/_components/dashboard-header"
 import { DashboardSidebar } from "./dashboard/_components/dashboard-sidebar"
 import { SidebarProvider } from "./dashboard/_components/sidebar-provider"
 
@@ -11,7 +11,8 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen flex-col">
-        <DashboardHeader user={user} />
+        {/* <DashboardHeader user={user} /> */}
+        <SiteHeader user={user} />
         <div className="container flex-1 items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
           <DashboardSidebar
             // the top-16 class is used for the dashboard-header of h-16, added extra 0.1rem to fix the sticky layout shift issue
