@@ -5,6 +5,7 @@ import { Course, Material } from "@/db/schema"
 import { useSidebar } from "@/providers/sidebar-provider"
 import {
   ArrowRightIcon,
+  DoubleArrowLeftIcon,
   DownloadIcon,
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons"
@@ -19,7 +20,7 @@ export function TopicPlayerHeader({
   materials,
   course,
 }: TopicPlayerHeaderProps) {
-  const { setOpen } = useSidebar()
+  const { open, setOpen } = useSidebar()
 
   function openLinks() {
     materials.forEach(({ material }) => {
@@ -31,7 +32,13 @@ export function TopicPlayerHeader({
     <nav className="flex w-full justify-between border-b bg-background px-4 py-2">
       <div>
         <Button variant="secondary" onClick={() => setOpen(prev => !prev)}>
-          <HamburgerMenuIcon className="size-4 mr-2" aria-hidden="true" />
+          <span className="size-4 mr-2">
+            {open ? (
+              <DoubleArrowLeftIcon aria-hidden="true" />
+            ) : (
+              <HamburgerMenuIcon aria-hidden="true" />
+            )}
+          </span>
           Topics
           <span className="sr-only">Topics</span>
         </Button>
