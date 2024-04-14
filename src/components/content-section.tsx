@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 interface ContentSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   description?: string
-  href: string
+  href?: string
   linkText?: string
   children: React.ReactNode
   asChild?: boolean
@@ -40,13 +40,15 @@ export function ContentSection({
             </p>
           ) : null}
         </div>
-        <Button variant="outline" className="hidden sm:flex" asChild>
-          <Link href={href}>
-            {linkText}
-            <ArrowRightIcon className="size-4 ml-2" aria-hidden="true" />
-            <span className="sr-only"> {linkText}</span>
-          </Link>
-        </Button>
+        {href && (
+          <Button variant="outline" className="hidden sm:flex" asChild>
+            <Link href={href}>
+              {linkText}
+              <ArrowRightIcon className="size-4 ml-2" aria-hidden="true" />
+              <span className="sr-only"> {linkText}</span>
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="space-y-8">
         <ChildrenShell
@@ -57,17 +59,19 @@ export function ContentSection({
         >
           {children}
         </ChildrenShell>
-        <Button
-          variant="ghost"
-          className="mx-auto flex w-fit sm:hidden"
-          asChild
-        >
-          <Link href={href}>
-            {linkText}
-            <ArrowRightIcon className="size-4 ml-2" aria-hidden="true" />
-            <span className="sr-only"> {linkText}</span>
-          </Link>
-        </Button>
+        {href && (
+          <Button
+            variant="ghost"
+            className="mx-auto flex w-fit sm:hidden"
+            asChild
+          >
+            <Link href={href}>
+              {linkText}
+              <ArrowRightIcon className="size-4 ml-2" aria-hidden="true" />
+              <span className="sr-only"> {linkText}</span>
+            </Link>
+          </Button>
+        )}
       </div>
     </section>
   )

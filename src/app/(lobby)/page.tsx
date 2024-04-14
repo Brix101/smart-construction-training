@@ -1,31 +1,20 @@
-import { CourseCard } from "@/components/cards/course-card"
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
 import { getPublishedCourses } from "@/lib/actions/course"
+import React from "react"
+import { Lobby } from "./_components/lobby"
+import { LobbySkeleton } from "./_components/lobby-skeleton"
 
 export default async function IndexPage() {
-  const coursePromises = await getPublishedCourses()
-  const [allCourses] = await Promise.all([coursePromises])
+  /**
+   * To avoid sequential waterfall requests, multiple promises are passed to fetch data parallelly.
+   * These promises are also passed to the `Lobby` component, making them hot promises. This means they can execute without being awaited, further preventing sequential requests.
+   * @see https://www.youtube.com/shorts/A7GGjutZxrs
+   * @see https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#parallel-data-fetching
+   */
+  const coursesPromises = getPublishedCourses()
 
   return (
-    <Shell>
-      <PageHeader className="container">
-        <PageHeaderHeading>Courses</PageHeaderHeading>
-        <PageHeaderDescription>Explore available courses</PageHeaderDescription>
-      </PageHeader>
-      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {allCourses.map(course => (
-          <CourseCard
-            key={course.id}
-            course={course}
-            href={`/course/${course.id}`}
-          />
-        ))}
-      </section>
-    </Shell>
+    <React.Suspense fallback={<LobbySkeleton />}>
+      <Lobby coursesPromises={coursesPromises} />
+    </React.Suspense>
   )
 }
