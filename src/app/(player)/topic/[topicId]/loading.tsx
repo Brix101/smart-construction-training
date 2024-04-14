@@ -13,11 +13,13 @@ export default function LoadingPage() {
         </div>
       </nav>
       <section className="flex h-[calc(100vh-3.5rem)]">
-        <aside className="mt-4  flex h-screen w-72 flex-col gap-2 border-r">
-          <Skeleton className="h-9 w-full" />
-          <Skeleton className="h-9 w-full" />
-          <Skeleton className="h-9 w-full" />
-          <Skeleton className="h-9 w-full" />
+        <aside className="h-screen border-r">
+          <div className="mt-4 flex w-72 flex-col gap-2">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </div>
         </aside>
         <div className="flex-1"></div>
       </section>
