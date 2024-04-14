@@ -1,5 +1,6 @@
+import { SiteFooter } from "@/components/layouts/site-footer"
 import { SiteHeader } from "@/components/layouts/site-header"
-import { getCacheduser } from "@/lib/actions/auth"
+import { currentUser } from "@clerk/nextjs"
 
 interface LobyLayoutProps
   extends React.PropsWithChildren<{
@@ -7,7 +8,7 @@ interface LobyLayoutProps
   }> {}
 
 export default async function LobyLayout({ children }: LobyLayoutProps) {
-  const user = await getCacheduser()
+  const user = await currentUser()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -16,6 +17,7 @@ export default async function LobyLayout({ children }: LobyLayoutProps) {
         {children}
         {/* {modal} */}
       </main>
+      <SiteFooter />
     </div>
   )
 }

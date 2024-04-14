@@ -1,10 +1,7 @@
-import { siteConfig } from "@/config/site"
-import { getPublishedCourses } from "@/lib/actions/course"
-import { getUserEmail } from "@/lib/utils"
-import type { User } from "@clerk/nextjs/server"
-import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
-import Link from "next/link"
 import { Icons } from "@/components/icons"
+import { ModeToggle } from "@/components/layouts//mode-toggle"
+import { MainNav } from "@/components/layouts/main-nav"
+import { MobileNav } from "@/components/layouts/mobile-nav"
 import { TopicCommandMenu } from "@/components/topic-command-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -18,8 +15,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MainNav } from "@/components/layouts/main-nav"
-import { MobileNav } from "@/components/layouts/mobile-nav"
+import { siteConfig } from "@/config/site"
+import { getPublishedCourses } from "@/lib/actions/course"
+import { getUserEmail } from "@/lib/utils"
+import type { User } from "@clerk/nextjs/server"
+import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
+import Link from "next/link"
 
 interface SiteHeaderProps {
   user: User | null
@@ -46,6 +47,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
             <TopicCommandMenu />
+            <ModeToggle />
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
