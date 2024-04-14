@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/layouts/site-header"
 import { currentUser } from "@clerk/nextjs"
 import { DashboardSidebar } from "./dashboard/_components/dashboard-sidebar"
-import { SidebarProvider } from "./dashboard/_components/sidebar-provider"
+import { SidebarProvider } from "@/providers/sidebar-provider"
 
 export default async function DashboardLayout({
   children,

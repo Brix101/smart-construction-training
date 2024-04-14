@@ -1,8 +1,10 @@
 import { db } from "@/db"
 import { topics } from "@/db/schema"
+import { SidebarProvider } from "@/providers/sidebar-provider"
 import { eq } from "drizzle-orm"
 import { notFound } from "next/navigation"
-import { TopicPlayerShell } from "@/app/(player)/_components/topic-player-shell"
+import { TopicPlayerHeader } from "../../_components/topic-player-header"
+import { TopicPlayerSideBar } from "../../_components/topic-player-sidebar"
 
 interface UpdateTopicPageProps {
   params: {
@@ -37,18 +39,22 @@ export default async function TopicPage(props: UpdateTopicPageProps) {
   }
 
   return (
-    <TopicPlayerShell
-      course={topic.course}
-      topics={topic.course.topics}
-      materials={topic.materials}
-    >
-      <iframe
-        className="h-full w-full"
-        src={`https://www.youtube.com/embed/${topic.youtubeId}`}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        title={topic.name}
-      />
-    </TopicPlayerShell>
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex w-full flex-col">
+        <TopicPlayerHeader course={topic.course} materials={topic.materials} />
+        <section className="flex h-[calc(100vh-3.5rem)]">
+          <TopicPlayerSideBar topics={topic.course.topics} />
+          <div className="flex w-full flex-1 flex-col">
+            <iframe
+              className="h-full w-full"
+              src={`https://www.youtube.com/embed/${topic.youtubeId}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={topic.name}
+            />
+          </div>
+        </section>
+      </div>
+    </SidebarProvider>
   )
 }

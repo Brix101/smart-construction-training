@@ -12,8 +12,15 @@ const SidebarContext = React.createContext<SidebarContextProps>({
   setOpen: () => {},
 })
 
-export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
-  const [open, setOpen] = React.useState(false)
+interface SidebarProviderProps extends React.PropsWithChildren {
+  defaultOpen?: boolean
+}
+
+export const SidebarProvider = ({
+  children,
+  defaultOpen,
+}: SidebarProviderProps) => {
+  const [open, setOpen] = React.useState(defaultOpen ?? false)
 
   return (
     <SidebarContext.Provider
