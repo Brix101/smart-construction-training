@@ -1,32 +1,28 @@
-import { SidebarNav } from "@/components/layouts/sidebar-nav"
-import { SiteHeader } from "@/components/layouts/site-header"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { dashboardConfig } from "@/config/dashboard"
-import { getCacheduser } from "@/lib/actions/auth"
-import { adminRouters } from "@/lib/constants"
+import { currentUser } from "@clerk/nextjs"
+import { DashboardHeader } from "./dashboard/_components/dashboard-header"
+import { DashboardSidebar } from "./dashboard/_components/dashboard-sidebar"
+import { SidebarProvider } from "./dashboard/_components/sidebar-provider"
 
 export default async function DashboardLayout({
   children,
 }: React.PropsWithChildren) {
-  const user = await getCacheduser()
-
-  const role = (user?.privateMetadata.role as String) ?? ""
-
-  const filteredNav = dashboardConfig.sidebarNav.filter(
-    item => role.includes("admin") || !adminRouters.includes(item.href ?? ""),
-  )
+  const user = await currentUser()
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader user={user} />
-      <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-        <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r md:sticky md:block">
-          <ScrollArea className="py-6 pr-6 lg:py-8">
-            <SidebarNav items={filteredNav} className="p-1" />
-          </ScrollArea>
-        </aside>
-        <main className="flex w-full flex-col overflow-hidden">{children}</main>
+    <SidebarProvider>
+      <div className="flex min-h-screen flex-col">
+        <DashboardHeader user={user} />
+        <div className="container flex-1 items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+          <DashboardSidebar
+            // the top-16 class is used for the dashboard-header of h-16, added extra 0.1rem to fix the sticky layout shift issue
+            className="top-[calc(theme('spacing.16')_+_0.1rem)] z-30 hidden border-r lg:sticky lg:block"
+            user={user}
+          />
+          <main className="flex w-full flex-col overflow-hidden">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }

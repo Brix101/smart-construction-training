@@ -1,4 +1,4 @@
-import { adminRouters } from "@/lib/constants"
+import { adminRoutes } from "@/lib/constants"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { authMiddleware, clerkClient } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
@@ -24,7 +24,7 @@ export default authMiddleware({
       return NextResponse.redirect(url)
     }
 
-    if (adminRouters.includes(req.nextUrl.pathname) && auth.userId) {
+    if (adminRoutes.includes(req.nextUrl.pathname) && auth.userId) {
       const user = await clerkClient.users.getUser(auth.userId)
       const metaData = userPrivateMetadataSchema.safeParse(user.privateMetadata)
 

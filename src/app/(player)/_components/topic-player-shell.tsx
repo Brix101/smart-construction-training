@@ -19,6 +19,7 @@ interface PlayerShellProps extends React.PropsWithChildren {
   materials: { material: Material }[]
 }
 
+//TODO move this into a context provider
 export function TopicPlayerShell({
   course,
   topics,
