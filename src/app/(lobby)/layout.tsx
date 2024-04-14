@@ -1,6 +1,5 @@
 import { SiteHeader } from "@/components/layouts/site-header"
 import { getCacheduser } from "@/lib/actions/auth"
-import { redirect } from "next/navigation"
 
 interface LobyLayoutProps
   extends React.PropsWithChildren<{
@@ -9,10 +8,6 @@ interface LobyLayoutProps
 
 export default async function LobyLayout({ children }: LobyLayoutProps) {
   const user = await getCacheduser()
-
-  if (!user) {
-    redirect("/sign-in")
-  }
 
   return (
     <div className="flex min-h-screen flex-col">

@@ -1,7 +1,7 @@
+import { adminRouters } from "@/lib/constants"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { authMiddleware, clerkClient } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
-import { adminRouters } from "@/lib/constants"
 
 export default authMiddleware({
   // Public routes are routes that don't require authentication
@@ -16,34 +16,40 @@ export default authMiddleware({
   // no authentication information
   ignoredRoutes: [],
   async afterAuth(auth, req) {
-    if (auth.isPublicRoute) {
-      //  For public routes, we don't need to do anything
-      return NextResponse.next()
-    }
-
     const url = new URL(req.nextUrl.origin)
-
-    if (!auth.userId) {
-      //  If user tries to access a private route without being authenticated,
+    // Handle users who aren't authenticated
+    if (!auth.isPublicRoute && !auth.userId) {
       //  redirect them to the sign in page
       url.pathname = "/sign-in"
       return NextResponse.redirect(url)
     }
 
-    if (adminRouters.includes(req.nextUrl.pathname)) {
+    if (adminRouters.includes(req.nextUrl.pathname) && auth.userId) {
       const user = await clerkClient.users.getUser(auth.userId)
       const metaData = userPrivateMetadataSchema.safeParse(user.privateMetadata)
 
       if (!(metaData.success && metaData.data.role.includes("admin"))) {
-        return new NextResponse(null, { status: 403 })
+        // return new NextResponse(null, { status: 403 })
+        return NextResponse.redirect(url)
       }
     }
+
+    // If the user is signed in and trying to access a protected route, allow them to access route
+    if (auth.userId && !auth.isPublicRoute) {
+      return NextResponse.next()
+    }
+
+    // Allow users visiting public routes to access them
+    return NextResponse.next()
   },
 })
 
 export const config = {
-  // Protects all routes, including api/trpc.
-  // See https://clerk.com/docs/references/nextjs/auth-middleware
-  // for more information about configuring your Middleware
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    // Exclude files with a "." followed by an extension, which are typically static files.
+    // Exclude files in the _next directory, which are Next.js internals.
+    "/((?!.+\\.[\\w]+$|_next).*)",
+    // Re-include any files in the api or trpc folders that might have an extension
+    "/(api|trpc)(.*)",
+  ],
 }

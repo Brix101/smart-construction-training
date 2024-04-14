@@ -29,29 +29,27 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <>
-      <ClerkProvider>
-        <html lang="en">
-          <body className={inter.className}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <TailwindIndicator />
-            </ThemeProvider>
-            <Toaster />
-            {env.NODE_ENV === "production" && (
-              <>
-                <Analytics />
-                <SpeedInsights />
-              </>
-            )}
-          </body>
-        </html>
-      </ClerkProvider>
-    </>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <TailwindIndicator />
+          </ThemeProvider>
+          <Toaster />
+          {env.NODE_ENV === "production" && (
+            <>
+              <Analytics />
+              <SpeedInsights />
+            </>
+          )}
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

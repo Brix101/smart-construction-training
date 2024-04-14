@@ -4,18 +4,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { dashboardConfig } from "@/config/dashboard"
 import { getCacheduser } from "@/lib/actions/auth"
 import { adminRouters } from "@/lib/constants"
-import { redirect } from "next/navigation"
 
 export default async function DashboardLayout({
   children,
 }: React.PropsWithChildren) {
   const user = await getCacheduser()
 
-  if (!user) {
-    redirect("/sign-in")
-  }
-
-  const role = (user.privateMetadata.role as String) ?? ""
+  const role = (user?.privateMetadata.role as String) ?? ""
 
   const filteredNav = dashboardConfig.sidebarNav.filter(
     item => role.includes("admin") || !adminRouters.includes(item.href ?? ""),
