@@ -1,7 +1,7 @@
 import { getPublishedCourses } from "@/lib/actions/course"
 import React from "react"
-import { Lobby } from "./_components/lobby"
-import { LobbySkeleton } from "./_components/lobby-skeleton"
+import { Lobby } from "@/app/(lobby)/_components/lobby"
+import { LobbySkeleton } from "@/app/(lobby)/_components/lobby-skeleton"
 
 export default async function IndexPage() {
   /**
