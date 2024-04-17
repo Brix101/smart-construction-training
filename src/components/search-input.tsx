@@ -2,9 +2,9 @@
 
 import * as React from "react"
 
+import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input, type InputProps } from "@/components/ui/input"
-import { Icons } from "./icons"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(

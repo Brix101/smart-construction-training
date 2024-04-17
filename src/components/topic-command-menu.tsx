@@ -1,5 +1,8 @@
 "use client"
 
+import { useRouter } from "next/navigation"
+import React from "react"
+
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -9,14 +12,12 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useDebounce } from "@/hooks/use-debounce"
 import { filterTopics } from "@/lib/actions/topic"
 import { catchError, cn, isMacOs } from "@/lib/utils"
 import { TopicGroup } from "@/types/topic"
 import { CircleIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import { useRouter } from "next/navigation"
-import React from "react"
-import { Skeleton } from "./ui/skeleton"
 
 export function TopicCommandMenu() {
   const router = useRouter()
@@ -123,9 +124,7 @@ export function TopicCommandMenu() {
                       className="h-9"
                       value={item.name}
                       onSelect={() =>
-                        handleSelect(() =>
-                          router.push(`/courses/${group.courseId}/${item.id}`),
-                        )
+                        handleSelect(() => router.push(`/topic/${item.id}`))
                       }
                     >
                       <CircleIcon
