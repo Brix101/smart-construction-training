@@ -1,3 +1,6 @@
+import { asc, eq } from "drizzle-orm"
+import { notFound } from "next/navigation"
+
 import { TopicCard } from "@/components/cards/topic-card"
 import { Shell } from "@/components/shells/shell"
 import {
@@ -11,8 +14,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { asc, eq } from "drizzle-orm"
-import { notFound } from "next/navigation"
 
 export const dynamic = "force-dynamic"
 

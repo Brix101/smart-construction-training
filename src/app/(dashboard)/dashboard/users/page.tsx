@@ -1,4 +1,5 @@
 import { env } from "@/env.mjs"
+import { clerkClient } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import * as React from "react"
 
@@ -11,7 +12,6 @@ import {
 import { Shell } from "@/components/shells/shell"
 import { UsersTableShell } from "@/components/shells/users-table-shell"
 import { searchParamsSchema } from "@/lib/validations/params"
-import { clerkClient } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),

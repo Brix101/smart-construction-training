@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Course, Material } from "@/db/schema"
 import { useSidebar } from "@/providers/sidebar-provider"
@@ -9,7 +11,6 @@ import {
   DownloadIcon,
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons"
-import Link from "next/link"
 
 interface TopicPlayerHeaderProps {
   course: Course

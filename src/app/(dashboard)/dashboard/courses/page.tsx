@@ -1,5 +1,6 @@
 import { env } from "@/env.mjs"
 import type { Metadata } from "next"
+import Link from "next/link"
 import * as React from "react"
 
 import { CourseCard } from "@/components/cards/course-card"
@@ -15,7 +16,6 @@ import { buttonVariants } from "@/components/ui/button"
 import { getAllCourses, getPublishedCourse } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
 import { RocketIcon } from "@radix-ui/react-icons"
-import Link from "next/link"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),

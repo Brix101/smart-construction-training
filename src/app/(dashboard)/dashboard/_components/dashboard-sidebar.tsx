@@ -1,3 +1,4 @@
+import { User } from "@clerk/nextjs/server"
 import * as React from "react"
 
 import { SidebarNav } from "@/components/layouts/sidebar-nav"
@@ -5,7 +6,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { dashboardConfig } from "@/config/dashboard"
 import { adminRoutes } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { User } from "@clerk/nextjs/server"
 
 interface DashboardSidebarProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode

@@ -1,10 +1,11 @@
+import { eq } from "drizzle-orm"
+import { notFound } from "next/navigation"
+
+import { TopicPlayerHeader } from "@/app/(player)/_components/topic-player-header"
+import { TopicPlayerSideBar } from "@/app/(player)/_components/topic-player-sidebar"
 import { db } from "@/db"
 import { topics } from "@/db/schema"
 import { SidebarProvider } from "@/providers/sidebar-provider"
-import { eq } from "drizzle-orm"
-import { notFound } from "next/navigation"
-import { TopicPlayerHeader } from "../../_components/topic-player-header"
-import { TopicPlayerSideBar } from "../../_components/topic-player-sidebar"
 
 interface UpdateTopicPageProps {
   params: {

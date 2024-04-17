@@ -1,10 +1,10 @@
 "use client"
 
+import { CourseSidebarNav } from "@/app/(player)/_components/course-sidebar-nav"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Topic } from "@/db/schema"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/providers/sidebar-provider"
-import { CourseSidebarNav } from "./course-sidebar-nav"
 
 interface TopicPlayerSideBarProps {
   topics: Topic[]
