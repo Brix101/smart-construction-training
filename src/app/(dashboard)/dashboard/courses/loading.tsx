@@ -4,7 +4,10 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
+import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
+import { RocketIcon } from "@radix-ui/react-icons"
 
 export default function CoursesLoading() {
   return (
@@ -15,26 +18,19 @@ export default function CoursesLoading() {
           View and manage courses
         </PageHeaderDescription>
       </PageHeader>
-      <section className="grid gap-10 rounded-lg border p-4">
-        <div className="space-y-2">
-          <Skeleton className="h-5 w-20" />
-          <Skeleton className="h-4 w-72" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="h-8 w-52" />
-        </div>
+      <Alert>
+        <RocketIcon className="size-4" aria-hidden="true" />
+        <AlertTitle>
+          <Skeleton className="h-4 w-32" />
+        </AlertTitle>
+        <AlertDescription>
+          <Skeleton className="h-4 w-52" />
+        </AlertDescription>
+      </Alert>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <CourseCardSkeleton key={i} />
+        ))}
       </section>
     </Shell>
   )

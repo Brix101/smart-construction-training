@@ -10,14 +10,12 @@ import {
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
-import { buttonVariants } from "@/components/ui/button"
-import { getPublishedCourse, getAllCourses } from "@/lib/actions/course"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { buttonVariants } from "@/components/ui/button"
+import { getAllCourses, getPublishedCourse } from "@/lib/actions/course"
+import { cn } from "@/lib/utils"
 import { RocketIcon } from "@radix-ui/react-icons"
-import { getCacheduser } from "@/lib/actions/auth"
-import { redirect } from "next/navigation"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -26,12 +24,6 @@ export const metadata: Metadata = {
 }
 
 export default async function CoursesPage() {
-  const user = await getCacheduser()
-
-  if (!user) {
-    redirect("/sign-in")
-  }
-
   const coursePromises = await getAllCourses()
   const publishPromises = await getPublishedCourse()
   const [allCourses, publishCount] = await Promise.all([
