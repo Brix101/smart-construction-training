@@ -94,7 +94,7 @@ export function TopicCommandMenu() {
         className="top-48 translate-y-0"
       >
         <CommandInput
-          placeholder="Search courses..."
+          placeholder="Start typing..."
           value={query}
           onValueChange={setQuery}
         />
