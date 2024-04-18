@@ -71,7 +71,7 @@ export function TopicCommandMenu() {
         onClick={() => setOpen(true)}
       >
         <MagnifyingGlassIcon className="size-4 xl:mr-2" aria-hidden="true" />
-        <span className="hidden xl:inline-flex">Search courses...</span>
+        <span className="hidden xl:inline-flex">Start typing...</span>
         <span className="sr-only">Search courses</span>
         <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100 xl:flex">
           <abbr
