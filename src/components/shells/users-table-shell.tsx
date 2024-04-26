@@ -1,27 +1,15 @@
 "use client"
 
+import { User } from "@clerk/nextjs/server"
+import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type ColumnDef } from "@tanstack/react-table"
 import * as React from "react"
+import { toast } from "sonner"
 
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { deleteUser } from "@/lib/actions/user"
-import { formatSignInDate } from "@/lib/date-utils"
-import { catchError } from "@/lib/utils"
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
-import { User } from "@clerk/nextjs/server"
-import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -30,9 +18,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { deleteUser } from "@/lib/actions/user"
+import { formatSignInDate } from "@/lib/date-utils"
+import { catchError } from "@/lib/utils"
+import { userPublicMetadataSchema } from "@/lib/validations/auth"
 
 type AwaitedUser = Pick<
   User,
@@ -218,12 +218,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       data={data}
       pageCount={pageCount}
       filterableColumns={[]}
-      searchableColumns={[
-        {
-          id: "firstName",
-          title: "user",
-        },
-      ]}
+      searchableColumns={[{ id: "firstName", title: "user" }]}
     />
   )
 }

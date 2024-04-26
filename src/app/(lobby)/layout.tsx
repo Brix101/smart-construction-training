@@ -1,6 +1,5 @@
 import { currentUser } from "@clerk/nextjs"
 
-import { SiteFooter } from "@/components/layouts/site-footer"
 import { SiteHeader } from "@/components/layouts/site-header"
 
 interface LobyLayoutProps
@@ -18,7 +17,7 @@ export default async function LobyLayout({ children }: LobyLayoutProps) {
         {children}
         {/* {modal} */}
       </main>
-      <SiteFooter />
+      {/* <SiteFooter /> */}
     </div>
   )
 }
