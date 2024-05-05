@@ -22,3 +22,12 @@ export async function deleteUser(userId: string) {
   await clerkClient.users.deleteUser(userId)
   revalidatePath(`/dashboard/users`)
 }
+
+export async function updateUserForm(userId: string, fd: FormData) {
+  const params = updateUserParams.parse({
+    userId,
+    level: fd.get("level"),
+  })
+
+  await updateUser(params)
+}

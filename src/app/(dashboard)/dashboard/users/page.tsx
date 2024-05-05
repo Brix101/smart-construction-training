@@ -10,8 +10,8 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
-import { UsersTableShell } from "@/components/shells/users-table-shell"
 import { searchParamsSchema } from "@/lib/validations/params"
+import { UsersTableShell } from "../_components/users-table-shell"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),

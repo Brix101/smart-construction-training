@@ -49,5 +49,5 @@ export const userPrivateMetadataSchema = z.object({
 })
 
 export const userPublicMetadataSchema = z.object({
-  level: z.number().default(1),
+  level: z.coerce.number().default(1),
 })

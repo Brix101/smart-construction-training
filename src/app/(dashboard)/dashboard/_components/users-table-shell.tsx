@@ -29,10 +29,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { deleteUser } from "@/lib/actions/user"
+import { deleteUser, updateUserForm } from "@/lib/actions/user"
 import { formatSignInDate } from "@/lib/date-utils"
 import { catchError } from "@/lib/utils"
 import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { LoadingButton } from "@/components/loading-button"
 
 type AwaitedUser = Pick<
   User,
@@ -122,6 +123,8 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       {
         id: "actions",
         cell: ({ row: { original } }) => {
+          const [isOpen, setOpen] = React.useState(false)
+
           const emails = original.emailAddresses
           const email =
             emails.find(e => e.id === original.primaryEmailAddressId)
@@ -131,80 +134,97 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
             original.publicMetadata,
           )
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  aria-label="Open menu"
-                  variant="ghost"
-                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                >
-                  <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem asChild>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" className="w-full">
-                        Edit
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Edit User Level</DialogTitle>
-                        <DialogDescription>
-                          Make changes to user level. Click save when
-                          you&apos;re done.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="email">Email</Label>
-                          <Input
-                            id="email"
-                            defaultValue={email}
-                            className="col-span-3"
-                            readOnly
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="level">Level</Label>
-                          <Input
-                            id="level"
-                            className="col-span-3"
-                            type="number"
-                            min={1}
-                            placeholder="Type course level here."
-                            defaultValue={publicMetadata.level}
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => {
-                    startTransition(() => {
-                      // row.toggleSelected(false)
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    aria-label="Open menu"
+                    variant="ghost"
+                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                  >
+                    <DotsHorizontalIcon
+                      className="h-4 w-4"
+                      aria-hidden="true"
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[160px]">
+                  <DropdownMenuItem onClick={() => setOpen(true)}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="hidden" />
+                  <DropdownMenuItem
+                    className="hidden"
+                    onClick={() => {
+                      startTransition(() => {
+                        // row.toggleSelected(false)
 
-                      toast.promise(deleteUser(original.id), {
-                        loading: "Deleting...",
-                        success: () => "User deleted successfully.",
+                        toast.promise(deleteUser(original.id), {
+                          loading: "Deleting...",
+                          success: () => "User deleted successfully.",
+                          error: (err: unknown) => catchError(err),
+                        })
+                      })
+                    }}
+                    disabled={isPending}
+                  >
+                    Delete
+                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <Dialog open={isOpen} onOpenChange={setOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit User Level</DialogTitle>
+                    <DialogDescription>
+                      Make changes to user level. Click save when you&apos;re
+                      done.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form
+                    onSubmit={() => setOpen(false)}
+                    action={e => {
+                      toast.promise(updateUserForm(original.id, e), {
+                        loading: "Updating...",
+                        success: () => "User updated successfully.",
                         error: (err: unknown) => catchError(err),
                       })
-                    })
-                  }}
-                  disabled={isPending}
-                >
-                  Delete
-                  <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    }}
+                    className="grid gap-4 py-4"
+                  >
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        defaultValue={email}
+                        className="col-span-3"
+                        readOnly
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="level">Level</Label>
+                      <Input
+                        id="level"
+                        name="level"
+                        className="col-span-3"
+                        type="number"
+                        min={1}
+                        placeholder="Type course level here."
+                        defaultValue={publicMetadata.level}
+                      />
+                    </div>
+                    <DialogFooter>
+                      <LoadingButton type="submit">
+                        Save Changes
+                        <span className="sr-only">Save Changes</span>
+                      </LoadingButton>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </>
           )
         },
       },
