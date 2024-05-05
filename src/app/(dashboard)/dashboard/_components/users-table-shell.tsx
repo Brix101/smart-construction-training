@@ -33,6 +33,7 @@ import { formatSignInDate } from "@/lib/date-utils"
 import { catchError } from "@/lib/utils"
 import { userPublicMetadataSchema } from "@/lib/validations/auth"
 import { LoadingButton } from "@/components/loading-button"
+import Link from "next/link"
 
 type AwaitedUser = Pick<
   User,
@@ -58,7 +59,6 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
   const { items: data, count } = React.use(transaction)
   const pageCount = Math.ceil(count / limit)
 
-  const [isOpen, setOpen] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
 
   // Memoize the columns so they don't re-render on every render
@@ -123,14 +123,6 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       {
         id: "actions",
         cell: ({ row: { original } }) => {
-          const emails = original.emailAddresses
-          const email =
-            emails.find(e => e.id === original.primaryEmailAddressId)
-              ?.emailAddress ?? ""
-
-          const publicMetadata = userPublicMetadataSchema.parse(
-            original.publicMetadata,
-          )
           return (
             <>
               <DropdownMenu>
@@ -147,12 +139,11 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[160px]">
-                  <DropdownMenuItem onClick={() => setOpen(true)}>
-                    Edit
+                  <DropdownMenuItem asChild>
+                    <Link href={`/dashboard/users/${original.id}`}>Edit</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator className="hidden" />
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="hidden"
                     onClick={() => {
                       startTransition(() => {
                         // row.toggleSelected(false)
@@ -171,57 +162,6 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
-              <Dialog open={isOpen} onOpenChange={setOpen}>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Edit User Level</DialogTitle>
-                    <DialogDescription>
-                      Make changes to user level. Click save when you&apos;re
-                      done.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form
-                    onSubmit={() => setOpen(false)}
-                    action={e => {
-                      toast.promise(updateUserForm(original.id, e), {
-                        loading: "Updating...",
-                        success: () => "User updated successfully.",
-                        error: (err: unknown) => catchError(err),
-                      })
-                    }}
-                    className="grid gap-4 py-4"
-                  >
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        defaultValue={email}
-                        className="col-span-3"
-                        readOnly
-                      />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="level">Level</Label>
-                      <Input
-                        id="level"
-                        name="level"
-                        className="col-span-3"
-                        type="number"
-                        min={1}
-                        placeholder="Type course level here."
-                        defaultValue={publicMetadata.level}
-                      />
-                    </div>
-                    <DialogFooter>
-                      <LoadingButton type="submit">
-                        Save Changes
-                        <span className="sr-only">Save Changes</span>
-                      </LoadingButton>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
             </>
           )
         },

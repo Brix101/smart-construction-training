@@ -30,4 +30,6 @@ export async function updateUserForm(userId: string, fd: FormData) {
   })
 
   await updateUser(params)
+
+  revalidatePath(`/dashboard/users/${userId}`)
 }

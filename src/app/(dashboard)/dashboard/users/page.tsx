@@ -4,12 +4,6 @@ import type { Metadata } from "next"
 import * as React from "react"
 
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
 import { searchParamsSchema } from "@/lib/validations/params"
 import { UsersTableShell } from "../_components/users-table-shell"
 
@@ -50,34 +44,16 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   })
 
   return (
-    <Shell variant="sidebar">
-      <PageHeader
-        id="users-header"
-        aria-labelledby="users-header-heading"
-        separated
-      >
-        <PageHeaderHeading size="sm">Users</PageHeaderHeading>
-        <PageHeaderDescription size="sm">
-          View and manage users
-        </PageHeaderDescription>
-      </PageHeader>
-      <section
-        id="user-users-info"
-        aria-labelledby="user-users-info-heading"
-        className="w-full overflow-hidden"
-      >
-        <React.Suspense
-          fallback={
-            <DataTableSkeleton
-              columnCount={6}
-              isNewRowCreatable={true}
-              isRowsDeletable={true}
-            />
-          }
-        >
-          <UsersTableShell transaction={transaction} limit={limit} />
-        </React.Suspense>
-      </section>
-    </Shell>
+    <React.Suspense
+      fallback={
+        <DataTableSkeleton
+          columnCount={6}
+          isNewRowCreatable={true}
+          isRowsDeletable={true}
+        />
+      }
+    >
+      <UsersTableShell transaction={transaction} limit={limit} />
+    </React.Suspense>
   )
 }
