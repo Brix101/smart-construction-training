@@ -17,7 +17,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   DropdownMenu,
@@ -59,6 +58,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
   const { items: data, count } = React.use(transaction)
   const pageCount = Math.ceil(count / limit)
 
+  const [isOpen, setOpen] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
 
   // Memoize the columns so they don't re-render on every render
@@ -123,8 +123,6 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
       {
         id: "actions",
         cell: ({ row: { original } }) => {
-          const [isOpen, setOpen] = React.useState(false)
-
           const emails = original.emailAddresses
           const email =
             emails.find(e => e.id === original.primaryEmailAddressId)
