@@ -12,7 +12,6 @@ import "@/styles/globals.css"
 
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
-import QueryProviders from "@/providers/query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -34,18 +33,16 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <QueryProviders>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <TailwindIndicator />
-            </ThemeProvider>
-            <Toaster />
-          </QueryProviders>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <TailwindIndicator />
+          </ThemeProvider>
+          <Toaster />
           {env.NODE_ENV === "production" && (
             <>
               <Analytics />
