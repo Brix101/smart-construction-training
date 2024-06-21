@@ -20,7 +20,12 @@ export default authMiddleware({
     // Handle users who aren't authenticated
     if (!auth.isPublicRoute && !auth.userId) {
       //  redirect them to the sign in page
+
       url.pathname = "/sign-in"
+      url.search = new URLSearchParams({
+        redirects: req.nextUrl.pathname,
+      }).toString()
+
       return NextResponse.redirect(url)
     }
 
