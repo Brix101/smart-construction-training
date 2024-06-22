@@ -21,10 +21,15 @@ export default authMiddleware({
     if (!auth.isPublicRoute && !auth.userId) {
       //  redirect them to the sign in page
 
+      const pathname = req.nextUrl.pathname
+
       url.pathname = "/sign-in"
-      url.search = new URLSearchParams({
-        redirects: req.nextUrl.pathname,
-      }).toString()
+
+      if (!pathname.includes("sign")) {
+        url.search = new URLSearchParams({
+          redirects: pathname,
+        }).toString()
+      }
 
       return NextResponse.redirect(url)
     }
