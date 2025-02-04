@@ -33,11 +33,10 @@ async function getCourseFromParams({ params }: TopicsPageProps) {
         where: eq(topics.isActive, true),
         // orderBy: asc(topics.name),
         orderBy: sql`
-    CASE 
-      WHEN ${topics.name} ~ '^[0-9]+' 
-      THEN CAST(SPLIT_PART(${topics.name}, '.', 1) AS INTEGER) 
-      ELSE 999999 
-    END
+    COALESCE(
+      SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER, 
+      99999999
+    )
   `,
       },
     },
