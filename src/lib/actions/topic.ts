@@ -134,11 +134,11 @@ export async function deleteTopic(rawInput: z.infer<typeof getTopicSchema>) {
     throw new Error("Topic not found.")
   }
 
-  await db.delete(topics).where(eq(topics.id, input.id))
-  // await db
-  //   .update(topics)
-  //   .set({ isActive: false })
-  //   .where(eq(topics.id, input.id))
+  // await db.delete(topics).where(eq(topics.id, input.id))
+  await db
+    .update(topics)
+    .set({ isActive: false })
+    .where(eq(topics.id, input.id))
 
   revalidatePath(`/dashboard/courses/${input.courseId}/topics`)
 }
