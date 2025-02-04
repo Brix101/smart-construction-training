@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import { notFound } from "next/navigation"
 
 import { TopicPlayerHeader } from "@/app/(player)/_components/topic-player-header"
@@ -25,7 +25,16 @@ async function getTopic({ params }: UpdateTopicPageProps) {
       },
       course: {
         with: {
-          topics: true,
+          topics: {
+            where: eq(topics.isActive, true),
+            // orderBy: asc(topics.name),
+            orderBy: sql`
+    COALESCE(
+      SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER, 
+      99999999
+    )
+  `,
+          },
         },
       },
     },
