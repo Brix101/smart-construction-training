@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -65,6 +66,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
       }
     })
   }
+  // TODO update this form field same as add
 
   return (
     <Form {...form}>
@@ -84,17 +86,28 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           </FormControl>
           <FormMessage />
         </FormItem>
-        <FormItem className="w-full">
-          <FormLabel>Youtube url</FormLabel>
-          <FormControl>
-            <Input
-              placeholder="Type topic youtube url here."
-              {...form.register("youtubeUrl")}
-              defaultValue={topic.youtubeUrl ?? ""}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
+        <FormField
+          control={form.control}
+          name="youtubeUrl"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Youtube url</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Type topic youtube url here."
+                  value={field.value}
+                  onChange={e => {
+                    const splitUrl = e.target.value.split("/")
+                    const youtubeId = splitUrl[splitUrl.length - 1]
+                    form.setValue("youtubeId", youtubeId)
+                    field.onChange(e)
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormItem className="w-full">
           <FormLabel>Youtube Id</FormLabel>
           <FormControl>
