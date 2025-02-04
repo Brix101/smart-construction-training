@@ -45,7 +45,7 @@ export async function getPublishedCourses() {
             lte(courses.level, publicMetadata.level),
           ),
         )
-        .orderBy(desc(courses.createdAt))
+        .orderBy(asc(courses.name))
     },
     ["published-courses"],
     {

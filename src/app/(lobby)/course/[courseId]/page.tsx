@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm"
+import { asc, eq, sql } from "drizzle-orm"
 import { notFound } from "next/navigation"
 
 import { TopicCard } from "@/components/cards/topic-card"
@@ -31,7 +31,14 @@ async function getCourseFromParams({ params }: TopicsPageProps) {
     with: {
       topics: {
         where: eq(topics.isActive, true),
-        orderBy: asc(topics.name),
+        // orderBy: asc(topics.name),
+        orderBy: sql`
+    CASE 
+      WHEN ${topics.name} ~ '^[0-9]+' 
+      THEN CAST(SPLIT_PART(${topics.name}, '.', 1) AS INTEGER) 
+      ELSE 999999 
+    END
+  `,
       },
     },
   })
