@@ -9,6 +9,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string().min(1),
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+    IS_ANALYTICS_ENABLED: z.coerce.boolean().default(false),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().url(),
@@ -24,6 +25,7 @@ export const env = createEnv({
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    IS_ANALYTICS_ENABLED: process.env.IS_ANALYTICS_ENABLED,
   },
 
   /**

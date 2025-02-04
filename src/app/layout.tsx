@@ -43,12 +43,12 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
             <TailwindIndicator />
           </ThemeProvider>
           <Toaster />
-{/*           {env.NODE_ENV === "production" && (
+          {env.IS_ANALYTICS_ENABLED && (
             <>
               <Analytics />
               <SpeedInsights />
             </>
-          )} */}
+          )}
         </body>
       </html>
     </ClerkProvider>
