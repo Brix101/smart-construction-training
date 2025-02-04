@@ -2,7 +2,7 @@
 
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { and, asc, eq, lte, not, sql } from "drizzle-orm"
+import { and, asc, desc, eq, lte, not, sql } from "drizzle-orm"
 import { unstable_cache as cache, revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -45,7 +45,7 @@ export async function getPublishedCourses() {
             lte(courses.level, publicMetadata.level),
           ),
         )
-        .orderBy(asc(courses.name))
+        .orderBy(desc(courses.createdAt))
     },
     ["published-courses"],
     {
