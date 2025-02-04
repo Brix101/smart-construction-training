@@ -15,6 +15,7 @@ export const courses = pgTable("courses", {
   name: varchar("name", { length: 256 }).notNull(),
   description: text("description"),
   level: integer("level").notNull().default(1),
+  sequence: integer("sequence").notNull().default(0),
   isPublished: boolean("is_published").notNull().default(false),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
