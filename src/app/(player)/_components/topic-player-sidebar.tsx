@@ -26,7 +26,7 @@ export function TopicPlayerSideBar({ topics }: TopicPlayerSideBarProps) {
         open ? "ml-0" : "-ml-72",
       )}
     >
-      <ScrollArea className="pt-4">
+      <ScrollArea className="h-[calc(100vh-5rem)] pt-4">
         <CourseSidebarNav items={navItems} className="p-1" />
       </ScrollArea>
     </aside>
