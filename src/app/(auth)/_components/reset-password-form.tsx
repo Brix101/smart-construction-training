@@ -48,7 +48,7 @@ export function ResetPasswordForm() {
         })
 
         if (firstFactor.status === "needs_first_factor") {
-          router.push("/sign-in/reset-password/step2")
+          router.push("/sign-in/reset-password/confirm")
           toast.message("Check your email", {
             description: "We sent you a 6-digit verification code.",
           })
@@ -72,7 +72,7 @@ export function ResetPasswordForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="rodneymullen180@gmail.com" {...field} />
+                <Input placeholder="john.doe@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

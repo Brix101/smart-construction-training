@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,10 +23,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { catchClerkError } from "@/lib/utils"
 import { resetPasswordSchema } from "@/lib/validations/auth"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
 
 type Inputs = z.infer<typeof resetPasswordSchema>
 
-export function ResetPasswordStep2Form() {
+export function ResetPasswordConfirmForm() {
   const router = useRouter()
   const { isLoaded, signIn, setActive } = useSignIn()
   const [isPending, startTransition] = React.useTransition()
@@ -76,6 +82,31 @@ export function ResetPasswordStep2Form() {
       >
         <FormField
           control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>One-Time Password</FormLabel>
+              <FormControl>
+                <InputOTP maxLength={6} {...field}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormDescription>
+                Please enter the one-time password sent to your email.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
@@ -95,26 +126,6 @@ export function ResetPasswordStep2Form() {
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <PasswordInput placeholder="*********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="code"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Code</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="169420"
-                  {...field}
-                  onChange={e => {
-                    e.target.value = e.target.value.trim()
-                    field.onChange(e)
-                  }}
-                />
               </FormControl>
               <FormMessage />
             </FormItem>

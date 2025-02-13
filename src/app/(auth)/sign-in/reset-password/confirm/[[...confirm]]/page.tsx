@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { ResetPasswordStep2Form } from "@/app/(auth)/_components/reset-password-form-step2"
+import { ResetPasswordConfirmForm } from "@/app/(auth)/_components/reset-password-confirm-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -24,11 +24,12 @@ export default function ResetPasswordStep2Page() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Reset password</CardTitle>
           <CardDescription>
-            Enter your email address and we will send you a verification code
+            Enter the verification code and your new password to reset your
+            account access. Please confirm your new password to proceed.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResetPasswordStep2Form />
+          <ResetPasswordConfirmForm />
         </CardContent>
       </Card>
     </Shell>
