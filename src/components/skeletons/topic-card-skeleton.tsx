@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function TopicCardSkeleton() {
   return (
-    <Card className="h-full overflow-hidden rounded-sm">
+    <Card className="h-full overflow-hidden">
       <AspectRatio ratio={4 / 3}>
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-zinc-950/50" />
         <Skeleton className="absolute right-2 top-2 h-6 w-14 rounded-sm px-2 py-1" />

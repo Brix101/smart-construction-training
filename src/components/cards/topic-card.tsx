@@ -7,25 +7,17 @@ import * as React from "react"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Topic } from "@/db/schema"
-import { cn } from "@/lib/utils"
 
-interface CourseCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TopicCardProps {
   topic: Topic
   href: string
 }
 
-export function TopicCard({
-  topic,
-  href,
-  className,
-  ...props
-}: CourseCardProps) {
+export function TopicCard({ topic, href }: TopicCardProps) {
   return (
     <Link href={href}>
-      <Card
-        className={cn("h-full w-full overflow-hidden rounded-sm", className)}
-        {...props}
-      >
+      <span className="sr-only">{topic.name}</span>
+      <Card className="h-full w-full overflow-hidden transition-colors hover:bg-muted/50">
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={4 / 3}>
             <Image
