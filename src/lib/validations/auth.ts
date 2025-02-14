@@ -48,6 +48,6 @@ export const userPrivateMetadataSchema = z.object({
   // stripeCurrentPeriodEnd: z.string().optional().nullable(),
 })
 
-export const userPublicMetadataSchema = z.object({
+export const publicMetadataSchema = z.object({
   level: z.coerce.number().default(1),
 })
