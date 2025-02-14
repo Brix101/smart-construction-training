@@ -1,23 +1,23 @@
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
 
 import { DownloadMaterialButton } from "@/app/(player)/_components/download-material-button"
 import { TopicPlayerHeader } from "@/app/(player)/_components/topic-player-header"
 import { TopicSideBar } from "@/app/(player)/_components/topic-sidebar"
+import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card } from "@/components/ui/card"
 import { getCourse } from "@/lib/queries/course"
 import { getTopic } from "@/lib/queries/topic"
-import { Suspense } from "react"
-import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
 
 interface UpdateTopicPageProps {
-  params: {
+  params: Promise<{
     topicId: string
-  }
+  }>
 }
 
 export default async function TopicPage(props: UpdateTopicPageProps) {
-  const topic = await getTopic(Number(props.params.topicId))
+  const topic = await getTopic(Number((await props.params).topicId))
 
   if (!topic) {
     notFound()

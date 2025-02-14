@@ -1,7 +1,7 @@
+import type { getPublishedCourses } from "@/lib/actions/course"
 import { CourseCard } from "@/components/cards/course-card"
 import { ContentSection } from "@/components/content-section"
-import { Shell } from "@/components/shells/shell"
-import { getPublishedCourses } from "@/lib/actions/course"
+import { Shell } from "@/components/shell"
 
 interface LobbyProps {
   coursesPromises: ReturnType<typeof getPublishedCourses>
@@ -15,7 +15,7 @@ export async function Lobby({ coursesPromises }: LobbyProps) {
         title="Courses"
         description="Explore available courses for you"
       >
-        {allCourses.map(course => (
+        {allCourses.map((course) => (
           <CourseCard
             key={course.id}
             course={course}

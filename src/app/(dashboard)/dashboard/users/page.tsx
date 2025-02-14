@@ -1,10 +1,11 @@
-import { env } from "@/env.mjs"
-import { clerkClient } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import * as React from "react"
+import { clerkClient } from "@clerk/nextjs/server"
 
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
+import { env } from "@/env"
 import { searchParamsSchema } from "@/lib/validations/params"
+
 import { UsersTableShell } from "../_components/users-table-shell"
 
 export const metadata: Metadata = {
@@ -14,12 +15,15 @@ export const metadata: Metadata = {
 }
 
 interface UsersPageProps {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined
-  }
+  }>
 }
 
-export default async function UsersPage({ searchParams }: UsersPageProps) {
+export const dynamic = "force-dynamic"
+
+export default async function UsersPage(props: UsersPageProps) {
+  const searchParams = await props.searchParams
   const { page, per_page, firstName } = searchParamsSchema.parse(searchParams)
 
   // Fallback page for invalid page numbers
@@ -32,8 +36,9 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   // Number of items to skip
   const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0
 
-  const count = await clerkClient.users.getCount()
-  const userList = await clerkClient.users.getUserList({
+  const client = await clerkClient()
+  const count = await client.users.getCount()
+  const userList = await client.users.getUserList({
     limit,
     offset,
     query: firstName,

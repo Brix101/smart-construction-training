@@ -6,8 +6,8 @@ import { siteConfig } from "@/config/site"
 
 export function TopicPlayerHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-background">
-      <nav className="flex w-full justify-between bg-background px-4 py-2">
+    <header className="bg-background sticky top-0 z-50 w-full">
+      <nav className="bg-background flex w-full justify-between px-4 py-2">
         <Link href="/" className="flex items-center space-x-2">
           <Icons.logo className="h-6 w-6" aria-hidden="true" />
           <span className="hidden text-2xl font-bold lg:inline-block">

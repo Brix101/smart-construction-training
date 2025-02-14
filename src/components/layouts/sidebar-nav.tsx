@@ -1,13 +1,12 @@
 "use client"
 
-import type { SidebarNavItem } from "@/types"
-import { ChevronLeftIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ChevronLeftIcon } from "@radix-ui/react-icons"
 
-import { cn } from "@/lib/utils"
-
+import type { SidebarNavItem } from "@/types"
 import { Icons } from "@/components/icons"
+import { cn } from "@/lib/utils"
 
 export interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
   items: SidebarNavItem[]
@@ -33,11 +32,11 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
           >
             <span
               className={cn(
-                "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+                "group hover:bg-muted hover:text-foreground flex w-full items-center rounded-md border border-transparent px-2 py-1",
                 pathname.includes(item.href)
-                  ? "bg-muted font-medium text-foreground"
+                  ? "bg-muted text-foreground font-medium"
                   : "text-muted-foreground",
-                item.disabled && "pointer-events-none opacity-60",
+                item.disabled && "pointer-events-none opacity-60"
               )}
             >
               <Icon className="mr-2 h-4 w-4" aria-hidden="true" />
@@ -47,7 +46,7 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
         ) : (
           <span
             key={index}
-            className="flex w-full cursor-not-allowed items-center rounded-md p-2 text-muted-foreground hover:underline"
+            className="text-muted-foreground flex w-full cursor-not-allowed items-center rounded-md p-2 hover:underline"
           >
             {item.title}
           </span>

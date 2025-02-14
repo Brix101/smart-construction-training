@@ -1,7 +1,8 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as React from "react"
+import Link from "next/link"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
@@ -21,7 +22,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { addTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
-import Link from "next/link"
 
 interface AddTopicFormProps {
   courseId: number
@@ -89,7 +89,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
                 <Input
                   placeholder="Type topic youtube url here."
                   value={field.value}
-                  onChange={e => {
+                  onChange={(e) => {
                     const splitUrl = e.target.value.split("/")
                     const youtubeId = splitUrl[splitUrl.length - 1]
                     form.setValue("youtubeId", youtubeId)

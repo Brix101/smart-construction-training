@@ -1,8 +1,8 @@
+import type * as z from "zod"
+
 import type { Icons } from "@/components/icons"
-import { userPrivateMetadataSchema } from "@/lib/validations/auth"
-import { EmailAddress, User } from "@clerk/nextjs/server"
-import { HandleOAuthCallbackParams } from "@clerk/types"
-import * as z from "zod"
+import type { userPrivateMetadataSchema } from "@/lib/validations/auth"
+import type { HandleOAuthCallbackParams } from "@clerk/types"
 
 export interface NavItem {
   title: string

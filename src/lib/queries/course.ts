@@ -1,14 +1,16 @@
 "use server"
 
-import { db } from "@/db"
-import { Course, courses, topics } from "@/db/schema"
-import { currentUser } from "@clerk/nextjs"
-import { and, eq, lte, sql } from "drizzle-orm"
 import { unstable_cache } from "next/cache"
+import { and, eq, lte, sql } from "drizzle-orm"
+
+import type { Course, Topic } from "@/db/schema"
+import { db } from "@/db"
+import { courses, topics } from "@/db/schema"
+import { getCacheduser } from "@/lib/actions/auth"
 import { publicMetadataSchema } from "@/lib/validations/auth"
 
 export async function getCourse(courseId: Course["id"]) {
-  const user = await currentUser()
+  const user = await getCacheduser()
   const metadata = publicMetadataSchema.parse(user?.publicMetadata)
 
   return await unstable_cache(
@@ -18,7 +20,7 @@ export async function getCourse(courseId: Course["id"]) {
           where: and(
             eq(courses.id, courseId),
             eq(courses.isPublished, true),
-            lte(courses.level, metadata.level),
+            lte(courses.level, metadata.level)
           ),
           with: {
             topics: {
@@ -35,6 +37,22 @@ export async function getCourse(courseId: Course["id"]) {
       }
     },
     ["course ", String(courseId)],
-    { revalidate: 1, tags: ["course", String(courseId)] },
+    { revalidate: 1, tags: ["course", String(courseId)] }
   )()
+}
+
+export async function getCourseTopic(
+  couseId: Course["id"],
+  topicId: Topic["id"]
+) {
+  return await db.query.topics.findFirst({
+    where: and(eq(topics.courseId, couseId), eq(topics.id, topicId)),
+    with: {
+      materials: {
+        with: {
+          material: true,
+        },
+      },
+    },
+  })
 }

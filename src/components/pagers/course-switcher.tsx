@@ -1,14 +1,13 @@
 "use client"
 
-import { type Course } from "@/db/schema"
+import * as React from "react"
+import { usePathname, useRouter } from "next/navigation"
 import {
   CaretSortIcon,
   CheckIcon,
   CircleIcon,
   PlusCircledIcon,
 } from "@radix-ui/react-icons"
-import { usePathname, useRouter } from "next/navigation"
-import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { type Course } from "@/db/schema"
 import { cn } from "@/lib/utils"
 
 interface CourseSwitcherProps
@@ -58,7 +58,7 @@ export function CourseSwitcher({
             aria-label="Select a course"
             className={cn(
               "xxs:w-[180px] w-full justify-between px-3",
-              className,
+              className
             )}
             {...props}
           >
@@ -76,15 +76,15 @@ export function CourseSwitcher({
               <CommandInput placeholder="Search course..." />
               <CommandEmpty>No course found.</CommandEmpty>
               <CommandGroup>
-                {courses.map(course => (
+                {courses.map((course) => (
                   <CommandItem
                     key={course.id}
                     onSelect={() => {
                       router.push(
                         pathname.replace(
                           String(currentCourse.id),
-                          String(course.id),
-                        ),
+                          String(course.id)
+                        )
                       )
                       setIsOpen(false)
                     }}
@@ -97,7 +97,7 @@ export function CourseSwitcher({
                         "ml-auto h-4 w-4",
                         currentCourse.id === course.id
                           ? "opacity-100"
-                          : "opacity-0",
+                          : "opacity-0"
                       )}
                       aria-hidden="true"
                     />

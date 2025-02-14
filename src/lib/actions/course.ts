@@ -1,15 +1,16 @@
 "use server"
 
-import { db } from "@/db"
-import { courses, topics } from "@/db/schema"
-import { and, asc, desc, eq, lte, not, sql } from "drizzle-orm"
+import type { z } from "zod"
 import { unstable_cache as cache, revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { z } from "zod"
+import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 
+import type { courseSchema } from "@/lib/validations/course"
+import { db } from "@/db"
+import { courses, topics } from "@/db/schema"
+import { getCacheduser } from "@/lib/actions/auth"
 import { publicMetadataSchema } from "@/lib/validations/auth"
-import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
-import { currentUser } from "@clerk/nextjs"
+import { updateCourseSchema } from "@/lib/validations/course"
 
 export async function getAllCourses() {
   return await cache(
@@ -20,12 +21,12 @@ export async function getAllCourses() {
     {
       revalidate: 1,
       tags: ["all-courses"],
-    },
+    }
   )()
 }
 
 export async function getPublishedCourses() {
-  const user = await currentUser()
+  const user = await getCacheduser()
   const publicMetadata = publicMetadataSchema.parse(user?.publicMetadata)
 
   return await cache(
@@ -42,8 +43,8 @@ export async function getPublishedCourses() {
         .where(
           and(
             eq(courses.isPublished, true),
-            lte(courses.level, publicMetadata.level),
-          ),
+            lte(courses.level, publicMetadata.level)
+          )
         )
         .orderBy(asc(courses.name))
     },
@@ -51,7 +52,7 @@ export async function getPublishedCourses() {
     {
       revalidate: 1,
       tags: ["published-courses"],
-    },
+    }
   )()
 }
 
@@ -70,7 +71,7 @@ export async function getPublishedCourse() {
     {
       revalidate: 1,
       tags: ["courses-published-countt"],
-    },
+    }
   )()
 }
 

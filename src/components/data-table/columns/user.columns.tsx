@@ -1,10 +1,9 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-
+import type { User } from "@clerk/nextjs/server"
+import type { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions.tsx"
-import { User } from "@clerk/nextjs/server"
 
 export const userColumns: ColumnDef<User>[] = [
   //   {

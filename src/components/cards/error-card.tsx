@@ -1,6 +1,6 @@
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
-import Link from "next/link"
 import * as React from "react"
+import Link from "next/link"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 
 import { ClientButton } from "@/components/client-button"
 import { buttonVariants } from "@/components/ui/button"
@@ -42,7 +42,7 @@ export function ErrorCard({
       {...props}
     >
       <CardHeader>
-        <div className="grid h-20 w-20 place-items-center rounded-full bg-muted">
+        <div className="bg-muted grid h-20 w-20 place-items-center rounded-full">
           <Icon className="h-10 w-10" aria-hidden="true" />
         </div>
       </CardHeader>
@@ -59,7 +59,7 @@ export function ErrorCard({
             className={cn(
               buttonVariants({
                 variant: "ghost",
-              }),
+              })
             )}
           >
             {retryLinkText}

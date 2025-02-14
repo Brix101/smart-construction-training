@@ -1,4 +1,3 @@
-import { type Option } from "@/types"
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons"
 import { type Column } from "@tanstack/react-table"
 
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { type Option } from "@/types"
 
 interface DataTableFacetedFilter<TData, TValue> {
   column?: Column<TData, TValue>
@@ -64,8 +64,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter(option => selectedValues.has(option.value))
-                    .map(option => (
+                    .filter((option) => selectedValues.has(option.value))
+                    .map((option) => (
                       <Badge
                         variant="secondary"
                         key={option.value}
@@ -86,7 +86,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map(option => {
+              {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
                 return (
                   <CommandItem
@@ -99,23 +99,23 @@ export function DataTableFacetedFilter<TData, TValue>({
                       }
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
+                        filterValues.length ? filterValues : undefined
                       )
                     }}
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                         isSelected
                           ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible",
+                          : "opacity-50 [&_svg]:invisible"
                       )}
                     >
                       <CheckIcon className={cn("h-4 w-4")} aria-hidden="true" />
                     </div>
                     {option.icon && (
                       <option.icon
-                        className="mr-2 h-4 w-4 text-muted-foreground"
+                        className="text-muted-foreground mr-2 h-4 w-4"
                         aria-hidden="true"
                       />
                     )}

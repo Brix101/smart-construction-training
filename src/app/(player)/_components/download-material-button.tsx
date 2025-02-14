@@ -1,9 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Material } from "@/db/schema"
-import { cn } from "@/lib/utils"
 import { Download } from "lucide-react"
+
+import type { Material } from "@/db/schema"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface TopicPlayerHeaderProps {
   materials: { material: Material }[]
@@ -24,7 +25,7 @@ export function DownloadMaterialButton({ materials }: TopicPlayerHeaderProps) {
       variant="outline"
       className={cn(
         "flex items-center rounded-2xl",
-        isDisabled && "custom-cursor-not-allowed",
+        isDisabled && "custom-cursor-not-allowed"
       )}
       disabled={isDisabled}
     >

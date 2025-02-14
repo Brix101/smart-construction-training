@@ -1,5 +1,5 @@
 import { ContentSection } from "@/components/content-section"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 
 export async function LobbySkeleton() {

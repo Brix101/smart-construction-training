@@ -1,11 +1,12 @@
 "use client"
 
-import { User } from "@clerk/nextjs/server"
+import * as React from "react"
+import Link from "next/link"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type ColumnDef } from "@tanstack/react-table"
-import * as React from "react"
 import { toast } from "sonner"
 
+import type { User } from "@clerk/nextjs/server"
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -22,7 +23,6 @@ import { deleteUser } from "@/lib/actions/user"
 import { formatSignInDate } from "@/lib/date-utils"
 import { catchError } from "@/lib/utils"
 import { publicMetadataSchema } from "@/lib/validations/auth"
-import Link from "next/link"
 
 type AwaitedUser = Pick<
   User,
@@ -62,7 +62,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
         cell: ({ row: { original } }) => {
           const emails = original.emailAddresses
           const email =
-            emails.find(e => e.id === original.primaryEmailAddressId)
+            emails.find((e) => e.id === original.primaryEmailAddressId)
               ?.emailAddress ?? ""
           return (
             <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                   original.lastName ?? ""
                 }`}</p>
                 <ul className="text-muted-foreground">
-                  {emails.map(email => {
+                  {emails.map((email) => {
                     return <li key={email.id}>{email.emailAddress}</li>
                   })}
                 </ul>
@@ -91,7 +91,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
         ),
         cell: ({ row: { original } }) => {
           const publicMetadata = publicMetadataSchema.parse(
-            original.publicMetadata,
+            original.publicMetadata
           )
           return <span>{publicMetadata.level}</span>
         },
@@ -119,7 +119,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                   <Button
                     aria-label="Open menu"
                     variant="ghost"
-                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                    className="data-[state=open]:bg-muted flex h-8 w-8 p-0"
                   >
                     <DotsHorizontalIcon
                       className="h-4 w-4"
@@ -156,7 +156,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
         },
       },
     ],
-    [isPending],
+    [isPending]
   )
 
   return (

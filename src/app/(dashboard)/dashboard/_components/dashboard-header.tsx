@@ -1,9 +1,9 @@
 import Link from "next/link"
-import type { User } from "@clerk/nextjs/server"
 
-import { siteConfig } from "@/config/site"
+import type { User } from "@clerk/nextjs/server"
 import { Icons } from "@/components/icons"
 import { AuthDropdown } from "@/components/layouts/auth-dropdown"
+import { siteConfig } from "@/config/site"
 
 interface DashboardHeaderProps {
   user: User | null
@@ -12,7 +12,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user, children }: DashboardHeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className="bg-background sticky top-0 z-50 w-full border-b">
       <div className="container flex h-16 items-center">
         <Link href="/" className="hidden items-center space-x-2 lg:flex">
           <Icons.logo className="size-6" aria-hidden="true" />

@@ -1,4 +1,5 @@
-import { getCourse } from "@/lib/queries/course"
+import type { getCourse } from "@/lib/queries/course"
+
 import { PlayerNavItems } from "./player-nav-items"
 
 interface TopicPlayerSideBarProps {

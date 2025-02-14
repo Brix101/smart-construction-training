@@ -1,13 +1,13 @@
+import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
 import { Icons } from "@/components/icons"
 import { Skeleton } from "@/components/ui/skeleton"
 import { siteConfig } from "@/config/site"
-import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
 
 export default function LoadingPage() {
   return (
     <div className="container flex w-full flex-col gap-6">
-      <header className="sticky top-0 z-50 w-full bg-background">
-        <nav className="flex w-full justify-between bg-background px-4 py-2">
+      <header className="bg-background sticky top-0 z-50 w-full">
+        <nav className="bg-background flex w-full justify-between px-4 py-2">
           <div className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6" aria-hidden="true" />
             <span className="hidden text-2xl font-bold lg:inline-block">
@@ -23,7 +23,7 @@ export default function LoadingPage() {
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <Skeleton className="mb-4 aspect-video w-full rounded-xl" />
-          <Skeleton className="mb-2 mt-10 h-8 w-3/4" />
+          <Skeleton className="mt-10 mb-2 h-8 w-3/4" />
           <div className="mb-4 flex items-center justify-between">
             <Skeleton className="h-8 w-1/4 rounded-2xl" />
           </div>

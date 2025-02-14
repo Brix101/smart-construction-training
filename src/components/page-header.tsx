@@ -1,9 +1,10 @@
-// Modified from: https://github.com/shadcn-ui/ui/blob/main/apps/www/components/page-header.tsx
+import type { VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+
+// Modified from: https://github.com/shadcn-ui/ui/blob/main/apps/www/components/page-header.tsx
 
 interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   as?: React.ElementType
@@ -38,7 +39,7 @@ const headingVariants = cva(
     defaultVariants: {
       size: "default",
     },
-  },
+  }
 )
 
 interface PageHeaderHeadingProps
@@ -71,7 +72,7 @@ const descriptionVariants = cva(
     defaultVariants: {
       size: "default",
     },
-  },
+  }
 )
 
 interface PageHeaderDescriptionProps

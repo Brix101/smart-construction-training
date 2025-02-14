@@ -1,7 +1,3 @@
-import { db } from "@/db"
-import { topics } from "@/db/schema"
-import { env } from "@/env.mjs"
-import { and, eq } from "drizzle-orm"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -14,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { env } from "@/env"
+import { getCourseTopic } from "@/lib/queries/course"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -22,30 +20,16 @@ export const metadata: Metadata = {
 }
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     courseId: string
     topicId: string
-  }
-}
-
-async function getTopic({ params }: TopicPageProps) {
-  const courseId = Number(params.courseId)
-  const topicId = Number(params.topicId)
-
-  return await db.query.topics.findFirst({
-    where: and(eq(topics.id, topicId), eq(topics.courseId, courseId)),
-    with: {
-      materials: {
-        with: {
-          material: true,
-        },
-      },
-    },
-  })
+  }>
 }
 
 export default async function TopicPage(props: TopicPageProps) {
-  const topic = await getTopic(props)
+  const { courseId, topicId } = await props.params
+
+  const topic = await getCourseTopic(Number(courseId), Number(topicId))
 
   if (!topic) {
     notFound()

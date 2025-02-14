@@ -1,9 +1,9 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import { z } from "zod"
+
 import { publicMetadataSchema } from "@/lib/validations/auth"
 
 const updateUserParams = publicMetadataSchema.extend({
@@ -14,12 +14,14 @@ export async function updateUser({
   userId,
   ...publicMetadata
 }: z.infer<typeof updateUserParams>) {
-  await clerkClient.users.updateUserMetadata(userId, { publicMetadata })
+  const client = await clerkClient()
+  await client.users.updateUserMetadata(userId, { publicMetadata })
   revalidatePath(`/dashboard/users`)
 }
 
 export async function deleteUser(userId: string) {
-  await clerkClient.users.deleteUser(userId)
+  const client = await clerkClient()
+  await client.users.deleteUser(userId)
   revalidatePath(`/dashboard/users`)
 }
 

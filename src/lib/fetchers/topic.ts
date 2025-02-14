@@ -1,12 +1,12 @@
 "use server"
 
 import { unstable_noStore as noStore } from "next/cache"
+import { and, asc, desc, eq, gt, lt } from "drizzle-orm"
 import { z } from "zod"
 
 import { db } from "@/db"
 import { topics } from "@/db/schema"
 import { getTopicSchema } from "@/lib/validations/topic"
-import { and, asc, desc, eq, gt, lt } from "drizzle-orm"
 
 // export async function getTopics(rawInput: z.infer<typeof getTopicsSchema>) {
 //   noStore()
@@ -133,13 +133,13 @@ export async function getNextTopicId(rawInput: z.infer<typeof getTopicSchema>) {
     throw err instanceof Error
       ? err.message
       : err instanceof z.ZodError
-        ? err.issues.map(issue => issue.message).join("\n")
+        ? err.issues.map((issue) => issue.message).join("\n")
         : new Error("Unknown error.")
   }
 }
 
 export async function getPreviousTopicId(
-  rawInput: z.infer<typeof getTopicSchema>,
+  rawInput: z.infer<typeof getTopicSchema>
 ) {
   try {
     const input = getTopicSchema.parse(rawInput)
@@ -162,7 +162,7 @@ export async function getPreviousTopicId(
     throw err instanceof Error
       ? err.message
       : err instanceof z.ZodError
-        ? err.issues.map(issue => issue.message).join("\n")
+        ? err.issues.map((issue) => issue.message).join("\n")
         : new Error("Unknown error.")
   }
 }

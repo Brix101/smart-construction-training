@@ -1,11 +1,11 @@
 "use client"
 
-import type { MainNavItem, SidebarNavItem } from "@/types"
-import { ViewVerticalIcon } from "@radix-ui/react-icons"
+import * as React from "react"
 import Link from "next/link"
 import { useSelectedLayoutSegment } from "next/navigation"
-import * as React from "react"
+import { ViewVerticalIcon } from "@radix-ui/react-icons"
 
+import type { MainNavItem, SidebarNavItem } from "@/types"
 import { Icons } from "@/components/icons"
 import {
   Accordion,
@@ -34,7 +34,9 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
       title: "Courses",
       items: sidebarNavItems,
     }
-    const myAccountIndex = items.findIndex(item => item.title === "My Account")
+    const myAccountIndex = items.findIndex(
+      (item) => item.title === "My Account"
+    )
     if (myAccountIndex !== -1) {
       items.splice(myAccountIndex, 1)
     }
@@ -53,7 +55,7 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pl-1 pr-0">
+      <SheetContent side="left" className="pr-0 pl-1">
         <div className="px-7">
           <Link
             href="/"
@@ -66,10 +68,10 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
           </Link>
         </div>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-          <div className="pl-1 pr-7">
+          <div className="pr-7 pl-1">
             <Accordion
               type="multiple"
-              defaultValue={navItems.map(item => item.title)}
+              defaultValue={navItems.map((item) => item.title)}
               className="w-full"
             >
               {navItems?.map((item, index) => (
@@ -99,7 +101,7 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
                           >
                             {item.title}
                           </div>
-                        ),
+                        )
                       )}
                     </div>
                   </AccordionContent>
@@ -131,9 +133,9 @@ function MobileLink({
     <Link
       href={href}
       className={cn(
-        "text-foreground/70 transition-colors hover:text-foreground",
+        "text-foreground/70 hover:text-foreground transition-colors",
         href.includes(segment) && "text-foreground",
-        disabled && "pointer-events-none opacity-60",
+        disabled && "pointer-events-none opacity-60"
       )}
       onClick={() => setIsOpen(false)}
     >

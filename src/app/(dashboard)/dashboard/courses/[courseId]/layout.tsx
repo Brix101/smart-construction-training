@@ -1,5 +1,3 @@
-import { db } from "@/db"
-import { courses } from "@/db/schema"
 import { notFound, redirect } from "next/navigation"
 
 import {
@@ -9,19 +7,22 @@ import {
 } from "@/components/page-header"
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
 import { CourseTabs } from "@/components/pagers/course-tabs"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
+import { db } from "@/db"
+import { courses } from "@/db/schema"
 import { getCacheduser } from "@/lib/actions/auth"
 
 interface CourseLayoutProps extends React.PropsWithChildren {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
-export default async function CourseLayout({
-  children,
-  params,
-}: CourseLayoutProps) {
+export default async function CourseLayout(props: CourseLayoutProps) {
+  const params = await props.params
+
+  const { children } = props
+
   const courseId = Number(params.courseId)
 
   const user = await getCacheduser()
@@ -38,7 +39,7 @@ export default async function CourseLayout({
     .from(courses)
     .orderBy(courses.name)
 
-  const course = allcourses.find(course => course.id === courseId)
+  const course = allcourses.find((course) => course.id === courseId)
 
   if (!course) {
     notFound()

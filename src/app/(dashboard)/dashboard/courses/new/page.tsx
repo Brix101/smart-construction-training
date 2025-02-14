@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
@@ -8,7 +7,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import {
   Card,
   CardContent,
@@ -16,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { env } from "@/env"
 import { getCacheduser } from "@/lib/actions/auth"
 
 export const metadata: Metadata = {
@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   title: "New Course",
   description: "Add a new course",
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function NewCoursePage() {
   const user = await getCacheduser()

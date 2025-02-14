@@ -1,11 +1,11 @@
 "use client"
 
+import type { z } from "zod"
+import * as React from "react"
+import { useRouter } from "next/navigation"
 import { useSignUp } from "@clerk/nextjs"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import * as React from "react"
 import { useForm } from "react-hook-form"
-import type { z } from "zod"
 
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -76,7 +76,7 @@ export function VerifyEmailForm() {
                 <Input
                   placeholder="169420"
                   {...field}
-                  onChange={e => {
+                  onChange={(e) => {
                     e.target.value = e.target.value.trim()
                     field.onChange(e)
                   }}

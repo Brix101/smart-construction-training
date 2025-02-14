@@ -1,7 +1,9 @@
-import { Icons } from "@/components/icons"
-import { Shell } from "@/components/shells/shell"
-import { siteConfig } from "@/config/site"
 import Link from "next/link"
+
+import { Icons } from "@/components/icons"
+import { Shell } from "@/components/shell"
+import { siteConfig } from "@/config/site"
+
 import { ModeToggle } from "./mode-toggle"
 
 export function SiteFooter() {

@@ -80,9 +80,9 @@ export const topicsToMaterials = pgTable(
       .notNull()
       .references(() => materials.id),
   },
-  t => ({
+  (t) => ({
     pk: primaryKey({ columns: [t.topicId, t.materialId] }),
-  }),
+  })
 )
 
 export type NewTopicsToMaterials = typeof topicsToMaterials.$inferInsert
@@ -98,5 +98,5 @@ export const topicsToMaterialsRelations = relations(
       fields: [topicsToMaterials.topicId],
       references: [topics.id],
     }),
-  }),
+  })
 )

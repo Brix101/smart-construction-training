@@ -1,14 +1,11 @@
 import Link from "next/link"
-import type { User } from "@clerk/nextjs/server"
 import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
 
-import { cn, getUserEmail } from "@/lib/utils"
+import type { ButtonProps } from "@/components/ui/button"
+import type { User } from "@clerk/nextjs/server"
+import { Icons } from "@/components/icons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Button,
-  buttonVariants,
-  type ButtonProps,
-} from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,13 +16,19 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Icons } from "@/components/icons"
+import { cn, getUserEmail } from "@/lib/utils"
 
 interface AuthDropdownProps extends ButtonProps {
   user: User | null
+  isAdmin?: boolean
 }
 
-export function AuthDropdown({ user, className, ...props }: AuthDropdownProps) {
+export function AuthDropdown({
+  user,
+  isAdmin,
+  className,
+  ...props
+}: AuthDropdownProps) {
   if (!user) {
     return (
       <Link
@@ -42,7 +45,6 @@ export function AuthDropdown({ user, className, ...props }: AuthDropdownProps) {
 
   const email = getUserEmail(user)
   const initials = `${email.charAt(0) ?? ""}`.toUpperCase()
-  const role = (user.privateMetadata.role as String) ?? ""
 
   return (
     <DropdownMenu>
@@ -71,7 +73,7 @@ export function AuthDropdown({ user, className, ...props }: AuthDropdownProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {role.includes("admin") ? (
+          {isAdmin ? (
             <>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/courses">

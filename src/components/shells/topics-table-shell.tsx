@@ -1,10 +1,9 @@
 "use client"
 
-import { type Topic } from "@/db/schema"
+import * as React from "react"
+import Link from "next/link"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type ColumnDef } from "@tanstack/react-table"
-import Link from "next/link"
-import * as React from "react"
 import { toast } from "sonner"
 
 import { DataTable } from "@/components/data-table/data-table"
@@ -19,6 +18,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { type Topic } from "@/db/schema"
 import { deleteTopic } from "@/lib/actions/topic"
 import { catchError, formatDate } from "@/lib/utils"
 
@@ -55,10 +55,10 @@ export function TopicsTableShell({
         header: ({ table }) => (
           <Checkbox
             checked={table.getIsAllPageRowsSelected()}
-            onCheckedChange={value => {
+            onCheckedChange={(value) => {
               table.toggleAllPageRowsSelected(!!value)
-              setSelectedRowIds(prev =>
-                prev.length === data.length ? [] : data.map(row => row.id),
+              setSelectedRowIds((prev) =>
+                prev.length === data.length ? [] : data.map((row) => row.id)
               )
             }}
             aria-label="Select all"
@@ -68,12 +68,12 @@ export function TopicsTableShell({
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
-            onCheckedChange={value => {
+            onCheckedChange={(value) => {
               row.toggleSelected(!!value)
-              setSelectedRowIds(prev =>
+              setSelectedRowIds((prev) =>
                 value
                   ? [...prev, row.original.id]
-                  : prev.filter(id => id !== row.original.id),
+                  : prev.filter((id) => id !== row.original.id)
               )
             }}
             aria-label="Select row"
@@ -118,7 +118,7 @@ export function TopicsTableShell({
               <Button
                 aria-label="Open menu"
                 variant="ghost"
-                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                className="data-[state=open]:bg-muted flex h-8 w-8 p-0"
               >
                 <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
               </Button>
@@ -149,7 +149,7 @@ export function TopicsTableShell({
                         loading: "Deleting...",
                         success: () => "Topic deleted successfully.",
                         error: (err: unknown) => catchError(err),
-                      },
+                      }
                     )
                   })
                 }}
@@ -163,18 +163,18 @@ export function TopicsTableShell({
         ),
       },
     ],
-    [data, isPending, courseId],
+    [data, isPending, courseId]
   )
 
   function deleteSelectedRows() {
     toast.promise(
       Promise.all(
-        selectedRowIds.map(id =>
+        selectedRowIds.map((id) =>
           deleteTopic({
             id,
             courseId,
-          }),
-        ),
+          })
+        )
       ),
       {
         loading: "Deleting...",
@@ -186,7 +186,7 @@ export function TopicsTableShell({
           setSelectedRowIds([])
           return catchError(err)
         },
-      },
+      }
     )
   }
 

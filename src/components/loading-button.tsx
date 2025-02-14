@@ -3,15 +3,12 @@
 import * as React from "react"
 import { useFormStatus } from "react-dom"
 
-import { cn } from "@/lib/utils"
-import { useMounted } from "@/hooks/use-mounted"
-import {
-  Button,
-  buttonVariants,
-  type ButtonProps,
-} from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
+import type { ButtonProps } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useMounted } from "@/hooks/use-mounted"
+import { cn } from "@/lib/utils"
 
 const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, className, variant, size, ...props }, ref) => {
@@ -23,7 +20,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Skeleton
           className={cn(
             buttonVariants({ variant, size, className }),
-            "bg-muted text-muted-foreground",
+            "bg-muted text-muted-foreground"
           )}
         >
           {children}
@@ -46,7 +43,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </Button>
     )
-  },
+  }
 )
 LoadingButton.displayName = "LoadingButton"
 

@@ -1,12 +1,12 @@
 "use client"
 
+import type { z } from "zod"
+import * as React from "react"
+import { useRouter } from "next/navigation"
 import { useSignIn } from "@clerk/nextjs"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import * as React from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import type { z } from "zod"
 
 import { Icons } from "@/components/icons"
 import { PasswordInput } from "@/components/password-input"
@@ -20,14 +20,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { catchClerkError } from "@/lib/utils"
-import { resetPasswordSchema } from "@/lib/validations/auth"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { catchClerkError } from "@/lib/utils"
+import { resetPasswordSchema } from "@/lib/validations/auth"
 
 type Inputs = z.infer<typeof resetPasswordSchema>
 

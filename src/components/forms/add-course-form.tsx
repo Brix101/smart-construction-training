@@ -1,11 +1,11 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
+import type { z } from "zod"
 import * as React from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import type { z } from "zod"
 
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -23,11 +23,9 @@ import { addCourse } from "@/lib/actions/course"
 import { catchError } from "@/lib/utils"
 import { courseSchema } from "@/lib/validations/course"
 
-interface AddCourseFormProps {}
-
 type Inputs = z.infer<typeof courseSchema>
 
-export function AddCourseForm({}: AddCourseFormProps) {
+export function AddCourseForm() {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 

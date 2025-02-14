@@ -1,20 +1,13 @@
-import { db } from "@/db"
-import { courses } from "@/db/schema"
-import { notFound, redirect } from "next/navigation"
-
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { CourseSwitcher } from "@/components/pagers/course-switcher"
-import { CourseTabs } from "@/components/pagers/course-tabs"
-import { Shell } from "@/components/shells/shell"
-import { getCacheduser } from "@/lib/actions/auth"
+import { Shell } from "@/components/shell"
 
-interface CourseLayoutProps extends React.PropsWithChildren {}
-
-export default async function CourseLayout({ children }: CourseLayoutProps) {
+export default async function CourseLayout({
+  children,
+}: React.PropsWithChildren) {
   return (
     <Shell variant="sidebar">
       <PageHeader

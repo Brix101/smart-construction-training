@@ -1,17 +1,18 @@
-import { siteConfig } from "@/config/site"
-import { env } from "@/env.mjs"
-import { ThemeProvider } from "@/providers/theme-provider"
 import { ClerkProvider } from "@clerk/nextjs"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { Toaster } from "@/components/ui/toaster"
+import { siteConfig } from "@/config/site"
+import { env } from "@/env"
 
 import "@/styles/globals.css"
 
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
+
+import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,7 +32,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"

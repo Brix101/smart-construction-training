@@ -1,10 +1,10 @@
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function AccountLoading() {
   return (

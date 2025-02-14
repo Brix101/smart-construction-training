@@ -1,10 +1,9 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-
+import type { Course } from "@/db/schema"
+import type { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions.tsx"
-import { Course } from "@/db/schema"
 
 export const courseColumns: ColumnDef<Course>[] = [
   //   {

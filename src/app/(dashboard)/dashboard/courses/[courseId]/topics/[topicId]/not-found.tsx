@@ -1,8 +1,9 @@
 "use client"
 
-import { ErrorCard } from "@/components/cards/error-card"
-import { Shell } from "@/components/shells/shell"
 import { useParams } from "next/navigation"
+
+import { ErrorCard } from "@/components/cards/error-card"
+import { Shell } from "@/components/shell"
 
 export default function TopicNotFound() {
   const params = useParams()
