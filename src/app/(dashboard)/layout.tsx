@@ -13,7 +13,6 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen flex-col">
-        {/* <DashboardHeader user={user} /> */}
         <SiteHeader user={user} />
         <div className="container flex-1 items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
           <DashboardSidebar
