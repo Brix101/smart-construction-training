@@ -17,7 +17,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
 
   const navItems = allCourses.map(course => ({
     title: course.name,
-    href: `/courses/${course.id}`,
+    href: `/course/${course.id}`,
     items: [],
   }))
 
