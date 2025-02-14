@@ -1,17 +1,20 @@
 "use server"
 
-import { db } from "@/db"
-import { courses, topics } from "@/db/schema"
-import { and, asc, eq, ilike, lte, or } from "drizzle-orm"
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
+import { and, asc, eq, ilike, lte, or } from "drizzle-orm"
 import { z } from "zod"
 
+import type { TopicGroup } from "@/types/topic"
+import { db } from "@/db"
+import { courses, topics } from "@/db/schema"
+import { getCacheduser } from "@/lib/actions/auth"
+import {
+  addTopicMaterialsLink,
+  updateTopicMaterialsLink,
+} from "@/lib/actions/material"
 import { getErrorMessage } from "@/lib/handle-error"
 import { publicMetadataSchema } from "@/lib/validations/auth"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
-import { TopicGroup } from "@/types/topic"
-import { currentUser } from "@clerk/nextjs"
-import { addTopicMaterialsLink, updateTopicMaterialsLink } from "./material"
 
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
@@ -21,7 +24,7 @@ type GroupedTopics = Record<number, TopicGroup>
 
 export async function filterTopics({ query }: { query: string }) {
   noStore()
-  const user = await currentUser()
+  const user = await getCacheduser()
   const publicMetadata = publicMetadataSchema.parse(user?.publicMetadata)
 
   try {
@@ -49,9 +52,9 @@ export async function filterTopics({ query }: { query: string }) {
           eq(courses.isPublished, true),
           or(
             ilike(courses.name, `%${query}%`),
-            ilike(topics.name, `%${query}%`),
-          ),
-        ),
+            ilike(topics.name, `%${query}%`)
+          )
+        )
       )
       .orderBy(asc(topics.name))
       .limit(10)
@@ -94,14 +97,13 @@ export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
   revalidatePath(`/dashboard/courses/${input.courseId}/topics.`)
 }
 
-const extendedTopicSchemaWithId = extendedTopicSchema.extend({
+const _extendedTopicSchemaWithId = extendedTopicSchema.extend({
   id: z.number(),
 })
 
-export async function updateTopic({
-  materials,
-  ...input
-}: z.infer<typeof extendedTopicSchemaWithId>) {
+type UpdateTopicInput = z.infer<typeof _extendedTopicSchemaWithId>
+
+export async function updateTopic({ materials, ...input }: UpdateTopicInput) {
   const topic = await db.query.topics.findFirst({
     where: and(eq(topics.id, input.id), eq(topics.courseId, input.courseId)),
   })

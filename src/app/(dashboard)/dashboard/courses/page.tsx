@@ -1,7 +1,7 @@
-import { env } from "@/env.mjs"
 import type { Metadata } from "next"
-import Link from "next/link"
 import * as React from "react"
+import Link from "next/link"
+import { RocketIcon } from "@radix-ui/react-icons"
 
 import { CourseCard } from "@/components/cards/course-card"
 import {
@@ -13,9 +13,9 @@ import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
+import { env } from "@/env"
 import { getAllCourses, getPublishedCourse } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
-import { RocketIcon } from "@radix-ui/react-icons"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -48,7 +48,7 @@ export default async function CoursesPage() {
             className={cn(
               buttonVariants({
                 size: "sm",
-              }),
+              })
             )}
           >
             Create course
@@ -84,7 +84,7 @@ export default async function CoursesPage() {
             <CourseCardSkeleton key={i} />
           ))}
         >
-          {allCourses.map(course => (
+          {allCourses.map((course) => (
             <CourseCard
               key={course.id}
               course={course}

@@ -1,7 +1,8 @@
-import { env } from "@/env.mjs"
 import { type Metadata } from "next"
 import Link from "next/link"
 
+import { OAuthSignIn } from "@/app/(auth)/_components/oauth-signin"
+import { SignUpForm } from "@/app/(auth)/_components/signup-form"
 import { Shell } from "@/components/shells/shell"
 import {
   Card,
@@ -11,8 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { OAuthSignIn } from "@/app/(auth)/_components/oauth-signin"
-import { SignUpForm } from "@/app/(auth)/_components/signup-form"
+import { env } from "@/env"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -37,7 +37,7 @@ export default function SignUpPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-background text-muted-foreground px-2">
                 Or continue with
               </span>
             </div>
@@ -45,7 +45,7 @@ export default function SignUpPage() {
           <SignUpForm />
         </CardContent>
         <CardFooter>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             Already have an account?{" "}
             <Link
               aria-label="Sign in"

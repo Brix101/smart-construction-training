@@ -1,9 +1,6 @@
-import { db } from "@/db"
-import { courses } from "@/db/schema"
-import { env } from "@/env.mjs"
-import { eq } from "drizzle-orm"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
+import { eq } from "drizzle-orm"
 
 import { PublishCourseButton } from "@/components/activate-course-button"
 import { LoadingButton } from "@/components/loading-button"
@@ -18,6 +15,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
+import { db } from "@/db"
+import { courses } from "@/db/schema"
+import { env } from "@/env"
 import { deleteCourse, updateCourse } from "@/lib/actions/course"
 
 export const metadata: Metadata = {
@@ -27,14 +27,13 @@ export const metadata: Metadata = {
 }
 
 interface UpdatecoursePageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
-export default async function UpdatecoursePage({
-  params,
-}: UpdatecoursePageProps) {
+export default async function UpdatecoursePage(props: UpdatecoursePageProps) {
+  const params = await props.params
   const courseId = Number(params.courseId)
 
   const course = await db.query.courses.findFirst({
@@ -55,11 +54,7 @@ export default async function UpdatecoursePage({
   return (
     <div className="space-y-10">
       {!course.isPublished && (
-        <Card
-          as="section"
-          id="publish-course"
-          aria-labelledby="publish-couse-heading"
-        >
+        <Card id="publish-course" aria-labelledby="publish-couse-heading">
           <CardHeader className="space-y-1">
             <CardTitle className="line-clamp-1 text-2xl">
               Publish Course
@@ -73,7 +68,7 @@ export default async function UpdatecoursePage({
           </CardContent>
         </Card>
       )}
-      <Card as="section">
+      <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update your course</CardTitle>
           <CardDescription>Update your course, or delete it</CardDescription>

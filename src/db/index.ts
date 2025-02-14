@@ -1,7 +1,8 @@
-import { env } from "@/env.mjs"
-import { Pool, neon } from "@neondatabase/serverless"
+import { neon, Pool } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
 import { drizzle as pgDrizzle } from "drizzle-orm/node-postgres"
+
+import { env } from "@/env"
 
 import * as schema from "./schema"
 

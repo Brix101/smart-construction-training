@@ -1,9 +1,8 @@
 "use client"
 
-import { type Material, type Topic } from "@/db/schema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
 import * as React from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { type Material, type Topic } from "@/db/schema"
 import { deleteTopic, updateTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
@@ -96,7 +96,7 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
                 <Input
                   placeholder="Type topic youtube url here."
                   value={field.value}
-                  onChange={e => {
+                  onChange={(e) => {
                     const splitUrl = e.target.value.split("/")
                     const youtubeId = splitUrl[splitUrl.length - 1]
                     form.setValue("youtubeId", youtubeId)

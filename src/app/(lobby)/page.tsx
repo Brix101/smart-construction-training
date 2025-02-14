@@ -1,8 +1,8 @@
 import React from "react"
 
-import { getPublishedCourses } from "@/lib/actions/course"
 import { Lobby } from "@/app/(lobby)/_components/lobby"
 import { LobbySkeleton } from "@/app/(lobby)/_components/lobby-skeleton"
+import { getPublishedCourses } from "@/lib/actions/course"
 
 export default async function IndexPage() {
   /**

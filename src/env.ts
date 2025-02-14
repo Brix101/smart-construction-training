@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 import { createEnv } from "@t3-oss/env-nextjs"
 import { z } from "zod"
 
@@ -8,11 +9,11 @@ export const env = createEnv({
       .default("development"),
     DATABASE_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string().min(1),
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
     IS_ANALYTICS_ENABLED: z.coerce.boolean().default(false),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().url(),
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
   },
   // For Next.js >= 13.4.4, you only need to destructure client variables:
   // experimental__runtimeEnv: {

@@ -1,14 +1,14 @@
 "use client"
 
+import * as React from "react"
+import Link from "next/link"
+import { Cross2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons"
+
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
 } from "@/types"
-import { Cross2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons"
 import type { Table } from "@tanstack/react-table"
-import Link from "next/link"
-import * as React from "react"
-
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -38,7 +38,7 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
-            column =>
+            (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
                 <Input
                   key={String(column.id)}
@@ -48,18 +48,18 @@ export function DataTableToolbar<TData>({
                       .getColumn(String(column.id))
                       ?.getFilterValue() as string) ?? ""
                   }
-                  onChange={event =>
+                  onChange={(event) =>
                     table
                       .getColumn(String(column.id))
                       ?.setFilterValue(event.target.value)
                   }
                   className="h-8 w-[150px] lg:w-[250px]"
                 />
-              ),
+              )
           )}
         {filterableColumns.length > 0 &&
           filterableColumns.map(
-            column =>
+            (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
                 <DataTableFacetedFilter
                   key={String(column.id)}
@@ -67,7 +67,7 @@ export function DataTableToolbar<TData>({
                   title={column.title}
                   options={column.options}
                 />
-              ),
+              )
           )}
         {isFiltered && (
           <Button
@@ -88,7 +88,7 @@ export function DataTableToolbar<TData>({
             variant="outline"
             size="sm"
             className="h-8"
-            onClick={event => {
+            onClick={(event) => {
               startTransition(() => {
                 table.toggleAllPageRowsSelected(false)
                 deleteRowsAction(event)
@@ -107,7 +107,7 @@ export function DataTableToolbar<TData>({
                   variant: "outline",
                   size: "sm",
                   className: "h-8",
-                }),
+                })
               )}
             >
               <PlusCircledIcon className="mr-2 h-4 w-4" aria-hidden="true" />

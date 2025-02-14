@@ -1,13 +1,13 @@
 "use client"
 
-import { type Topic } from "@/db/schema"
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
-import { useRouter } from "next/navigation"
 import * as React from "react"
-import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 
 import { Button } from "@/components/ui/button"
+import { type Topic } from "@/db/schema"
 import { getNextTopicId, getPreviousTopicId } from "@/lib/fetchers/topic"
+import { catchError } from "@/lib/utils"
 
 interface TopicPagerProps {
   topic: Topic
@@ -30,12 +30,10 @@ export function TopicPager({ topic }: TopicPagerProps) {
                 courseId: topic.courseId,
               })
               router.push(
-                `/dashboard/courses/${topic.courseId}/topics/${prevTopicId}`,
+                `/dashboard/courses/${topic.courseId}/topics/${prevTopicId}`
               )
-            } catch (error) {
-              error instanceof Error
-                ? toast.error(error.message)
-                : toast.error("Something went wrong, please try again.")
+            } catch (err) {
+              catchError(err)
             }
           })
         }}
@@ -55,12 +53,10 @@ export function TopicPager({ topic }: TopicPagerProps) {
                 courseId: topic.courseId,
               })
               router.push(
-                `/dashboard/courses/${topic.courseId}/topics/${nextTopicId}`,
+                `/dashboard/courses/${topic.courseId}/topics/${nextTopicId}`
               )
-            } catch (error) {
-              error instanceof Error
-                ? toast.error(error.message)
-                : toast.error("Something went wrong, please try again.")
+            } catch (err) {
+              catchError(err)
             }
           })
         }}

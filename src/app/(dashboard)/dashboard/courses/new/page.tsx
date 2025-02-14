@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
@@ -16,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { env } from "@/env"
 import { getCacheduser } from "@/lib/actions/auth"
 
 export const metadata: Metadata = {

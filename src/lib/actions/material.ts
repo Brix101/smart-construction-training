@@ -1,28 +1,30 @@
 "use server"
 
-import { db } from "@/db"
-import { NewMaterial, materials, topicsToMaterials } from "@/db/schema"
+import type { z } from "zod"
 import { and, eq } from "drizzle-orm"
-import { z } from "zod"
-import { materialSchema } from "@/lib/validations/material"
+
+import type { NewMaterial } from "@/db/schema"
+import type { materialSchema } from "@/lib/validations/material"
+import { db } from "@/db"
+import { materials, topicsToMaterials } from "@/db/schema"
 
 function parseMaterialLinks(input: string): NewMaterial[] {
   const uniqueMaterials = [
     ...new Set(
       input
         .split(",")
-        .map(value => value.trim())
-        .filter(value => value !== ""),
+        .map((value) => value.trim())
+        .filter((value) => value !== "")
     ),
   ]
 
-  return uniqueMaterials.map(value => ({
+  return uniqueMaterials.map((value) => ({
     link: value,
   }))
 }
 
 export async function addTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>,
+  input: z.infer<typeof materialSchema>
 ) {
   if (input.materials !== "") {
     const materialLinks = parseMaterialLinks(input.materials)
@@ -33,7 +35,7 @@ export async function addTopicMaterialsLink(
       .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
       .returning({ id: materials.id })
 
-    const newTopicToMaterials = insertedMaterials.map(material => {
+    const newTopicToMaterials = insertedMaterials.map((material) => {
       return { materialId: material.id, topicId: input.topicId }
     })
 
@@ -42,7 +44,7 @@ export async function addTopicMaterialsLink(
 }
 
 export async function updateTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>,
+  input: z.infer<typeof materialSchema>
 ) {
   if (input.materials !== "") {
     const materialLinks = parseMaterialLinks(input.materials)
@@ -57,7 +59,7 @@ export async function updateTopicMaterialsLink(
       .where(eq(topicsToMaterials.topicId, input.topicId))
 
     const toInsert = materialLinks.filter(
-      item => !topicsMaterials.find(({ link }) => link === item.link),
+      (item) => !topicsMaterials.find(({ link }) => link === item.link)
     )
 
     if (toInsert.length > 0) {
@@ -67,7 +69,7 @@ export async function updateTopicMaterialsLink(
         .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
         .returning({ id: materials.id })
 
-      const newTopicToMaterials = insertedMaterials.map(material => {
+      const newTopicToMaterials = insertedMaterials.map((material) => {
         return { materialId: material.id, topicId: input.topicId }
       })
       await db
@@ -77,7 +79,7 @@ export async function updateTopicMaterialsLink(
     }
 
     const toDelete = topicsMaterials.filter(
-      item => !materialLinks.find(({ link }) => link === item.link),
+      (item) => !materialLinks.find(({ link }) => link === item.link)
     )
     await Promise.all(
       toDelete.map(async ({ materialId }) => {
@@ -86,10 +88,10 @@ export async function updateTopicMaterialsLink(
           .where(
             and(
               eq(topicsToMaterials.topicId, input.topicId),
-              eq(topicsToMaterials.materialId, materialId),
-            ),
+              eq(topicsToMaterials.materialId, materialId)
+            )
           )
-      }),
+      })
     )
   }
 }

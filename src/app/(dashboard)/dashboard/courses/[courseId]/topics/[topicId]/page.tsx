@@ -1,9 +1,6 @@
-import { db } from "@/db"
-import { topics } from "@/db/schema"
-import { env } from "@/env.mjs"
-import { and, eq } from "drizzle-orm"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
+import { and, eq } from "drizzle-orm"
 
 import { UpdateTopicForm } from "@/components/forms/update-topic-form"
 import { TopicPager } from "@/components/pagers/topic-pager"
@@ -14,6 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { db } from "@/db"
+import { topics } from "@/db/schema"
+import { env } from "@/env"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -22,18 +22,20 @@ export const metadata: Metadata = {
 }
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     courseId: string
     topicId: string
-  }
+  }>
 }
 
 async function getTopic({ params }: TopicPageProps) {
-  const courseId = Number(params.courseId)
-  const topicId = Number(params.topicId)
+  const { courseId, topicId } = await params
 
   return await db.query.topics.findFirst({
-    where: and(eq(topics.id, topicId), eq(topics.courseId, courseId)),
+    where: and(
+      eq(topics.id, Number(topicId)),
+      eq(topics.courseId, Number(courseId))
+    ),
     with: {
       materials: {
         with: {
@@ -45,7 +47,10 @@ async function getTopic({ params }: TopicPageProps) {
 }
 
 export default async function TopicPage(props: TopicPageProps) {
-  const topic = await getTopic(props)
+  const topic = await getTopic(
+    /* @next-codemod-error 'props' is passed as an argument. Any asynchronous properties of 'props' must be awaited when accessed. */
+    props
+  )
 
   if (!topic) {
     notFound()

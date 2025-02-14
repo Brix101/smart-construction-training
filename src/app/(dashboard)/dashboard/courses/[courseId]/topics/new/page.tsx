@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
@@ -10,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { env } from "@/env"
 import { getCacheduser } from "@/lib/actions/auth"
 
 export const metadata: Metadata = {
@@ -19,12 +19,13 @@ export const metadata: Metadata = {
 }
 
 interface NewTopicPageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
-export default async function NewTopicPage({ params }: NewTopicPageProps) {
+export default async function NewTopicPage(props: NewTopicPageProps) {
+  const params = await props.params
   const courseId = Number(params.courseId)
 
   const user = await getCacheduser()

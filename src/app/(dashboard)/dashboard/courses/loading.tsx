@@ -1,3 +1,5 @@
+import { RocketIcon } from "@radix-ui/react-icons"
+
 import {
   PageHeader,
   PageHeaderDescription,
@@ -7,7 +9,6 @@ import { Shell } from "@/components/shells/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
-import { RocketIcon } from "@radix-ui/react-icons"
 
 export default function CoursesLoading() {
   return (

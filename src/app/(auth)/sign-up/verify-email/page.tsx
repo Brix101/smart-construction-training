@@ -1,6 +1,6 @@
-import { env } from "@/env.mjs"
 import { type Metadata } from "next"
 
+import { VerifyEmailForm } from "@/app/(auth)/_components/verify-email-form"
 import { Shell } from "@/components/shells/shell"
 import {
   Card,
@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { VerifyEmailForm } from "@/app/(auth)/_components/verify-email-form"
+import { env } from "@/env"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),

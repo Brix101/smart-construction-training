@@ -1,7 +1,5 @@
-import type {
-  DataTableFilterableColumn,
-  DataTableSearchableColumn,
-} from "@/types"
+import * as React from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
   flexRender,
   getCoreRowModel,
@@ -11,15 +9,19 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-  type PaginationState,
-  type SortingState,
-  type VisibilityState,
 } from "@tanstack/react-table"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import * as React from "react"
 
+import type {
+  DataTableFilterableColumn,
+  DataTableSearchableColumn,
+} from "@/types"
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table"
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar"
 import {
@@ -81,7 +83,7 @@ export function DataTable<TData, TValue>({
 
       return newSearchParams.toString()
     },
-    [searchParams],
+    [searchParams]
   )
 
   // Table states
@@ -89,7 +91,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+    []
   )
 
   // Handle server-side pagination
@@ -104,7 +106,7 @@ export function DataTable<TData, TValue>({
       pageIndex,
       pageSize,
     }),
-    [pageIndex, pageSize],
+    [pageIndex, pageSize]
   )
 
   React.useEffect(() => {
@@ -122,7 +124,7 @@ export function DataTable<TData, TValue>({
       })}`,
       {
         scroll: false,
-      },
+      }
     )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +148,7 @@ export function DataTable<TData, TValue>({
       })}`,
       {
         scroll: false,
-      },
+      }
     )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,16 +158,16 @@ export function DataTable<TData, TValue>({
   const debouncedSearchableColumnFilters = JSON.parse(
     useDebounce(
       JSON.stringify(
-        columnFilters.filter(filter => {
-          return searchableColumns.find(column => column.id === filter.id)
-        }),
+        columnFilters.filter((filter) => {
+          return searchableColumns.find((column) => column.id === filter.id)
+        })
       ),
-      500,
-    ),
+      500
+    )
   ) as ColumnFiltersState
 
-  const filterableColumnFilters = columnFilters.filter(filter => {
-    return filterableColumns.find(column => column.id === filter.id)
+  const filterableColumnFilters = columnFilters.filter((filter) => {
+    return filterableColumns.find((column) => column.id === filter.id)
   })
 
   React.useEffect(() => {
@@ -178,15 +180,15 @@ export function DataTable<TData, TValue>({
           })}`,
           {
             scroll: false,
-          },
+          }
         )
       }
     }
 
     for (const key of searchParams.keys()) {
       if (
-        searchableColumns.find(column => column.id === key) &&
-        !debouncedSearchableColumnFilters.find(column => column.id === key)
+        searchableColumns.find((column) => column.id === key) &&
+        !debouncedSearchableColumnFilters.find((column) => column.id === key)
       ) {
         router.push(
           `${pathname}?${createQueryString({
@@ -195,7 +197,7 @@ export function DataTable<TData, TValue>({
           })}`,
           {
             scroll: false,
-          },
+          }
         )
       }
     }
@@ -212,15 +214,15 @@ export function DataTable<TData, TValue>({
           })}`,
           {
             scroll: false,
-          },
+          }
         )
       }
     }
 
     for (const key of searchParams.keys()) {
       if (
-        filterableColumns.find(column => column.id === key) &&
-        !filterableColumnFilters.find(column => column.id === key)
+        filterableColumns.find((column) => column.id === key) &&
+        !filterableColumnFilters.find((column) => column.id === key)
       ) {
         router.push(
           `${pathname}?${createQueryString({
@@ -229,7 +231,7 @@ export function DataTable<TData, TValue>({
           })}`,
           {
             scroll: false,
-          },
+          }
         )
       }
     }
@@ -276,16 +278,16 @@ export function DataTable<TData, TValue>({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
+                {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} className="whitespace-nowrap">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   )
@@ -295,16 +297,16 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}

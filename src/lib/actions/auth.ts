@@ -1,7 +1,7 @@
 import "server-only"
 
 import { cache } from "react"
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs/server"
 
 export const getCacheduser = cache(async () => {
   try {

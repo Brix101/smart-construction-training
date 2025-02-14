@@ -1,13 +1,12 @@
-import { currentUser } from "@clerk/nextjs"
-
 import { DashboardSidebar } from "@/app/(dashboard)/dashboard/_components/dashboard-sidebar"
 import { SiteHeader } from "@/components/layouts/site-header"
+import { getCacheduser } from "@/lib/actions/auth"
 import { SidebarProvider } from "@/providers/sidebar-provider"
 
 export default async function DashboardLayout({
   children,
 }: React.PropsWithChildren) {
-  const user = await currentUser()
+  const user = await getCacheduser()
 
   return (
     <SidebarProvider>

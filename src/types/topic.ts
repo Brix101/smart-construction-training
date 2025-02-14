@@ -1,4 +1,4 @@
-import { Course, Topic } from "@/db/schema"
+import type { Course, Topic } from "@/db/schema"
 
 export interface TopicGroup {
   courseId: Course["id"]

@@ -1,6 +1,6 @@
-import { env } from "@/env.mjs"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
+import { clerkClient } from "@clerk/nextjs/server"
 
 import { LoadingButton } from "@/components/loading-button"
 import {
@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { env } from "@/env"
 import { deleteUser, updateUserForm } from "@/lib/actions/user"
 import { publicMetadataSchema } from "@/lib/validations/auth"
-import { clerkClient } from "@clerk/nextjs/server"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -23,21 +23,23 @@ export const metadata: Metadata = {
 }
 
 interface UpdateuserPageProps {
-  params: {
+  params: Promise<{
     userId: string
-  }
+  }>
 }
 
 async function getUser(userId: string) {
   try {
-    const user = await clerkClient.users.getUser(userId)
+    const cClient = await clerkClient()
+    const user = await cClient.users.getUser(userId)
     return user
   } catch {
     return null
   }
 }
 
-export default async function UpdateUserPage({ params }: UpdateuserPageProps) {
+export default async function UpdateUserPage(props: UpdateuserPageProps) {
+  const params = await props.params
   const userId = params.userId
 
   const user = await getUser(userId)
@@ -48,13 +50,13 @@ export default async function UpdateUserPage({ params }: UpdateuserPageProps) {
 
   const emails = user.emailAddresses
   const email =
-    emails.find(e => e.id === user.primaryEmailAddressId)?.emailAddress ?? ""
+    emails.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ?? ""
 
   const publicMetadata = publicMetadataSchema.parse(user.publicMetadata)
 
   return (
     <div className="space-y-10">
-      <Card as="section">
+      <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Update user</CardTitle>
           <CardDescription>Update your user, or delete it</CardDescription>

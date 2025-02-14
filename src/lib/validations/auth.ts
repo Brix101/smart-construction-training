@@ -35,7 +35,7 @@ export const resetPasswordSchema = z
     confirmPassword: authSchema.shape.password,
     code: verifyEmailSchema.shape.code,
   })
-  .refine(data => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   })

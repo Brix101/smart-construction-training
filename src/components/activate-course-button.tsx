@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+
+import type { Course } from "@/db/schema"
 import { Icons } from "@/components/icons"
-import { Course } from "@/db/schema"
+import { Button } from "@/components/ui/button"
 import { publishCourse } from "@/lib/actions/course"
 import { catchError } from "@/lib/utils"
 
@@ -29,7 +30,7 @@ export function PublishCourseButton({ courseId }: PublishCourseButtonProps) {
     >
       {isPending && (
         <Icons.spinner
-          className="size-4 mr-2 animate-spin"
+          className="mr-2 size-4 animate-spin"
           aria-hidden="true"
         />
       )}

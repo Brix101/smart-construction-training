@@ -446,7 +446,7 @@ const patterns = [
 const bgPattern = (
   pattern: (typeof patterns)[number],
   fgColor: string,
-  opacity: number,
+  opacity: number
 ) => {
   const svg = pattern.image
     .replace('fill="#000"', `fill="${fgColor}" fill-opacity="${opacity}"`)

@@ -1,16 +1,17 @@
-import { db, dbPool } from "@/db"
-import { courses, topics, type Topic } from "@/db/schema"
-import { env } from "@/env.mjs"
-import { and, asc, desc, eq, like, sql } from "drizzle-orm"
+import * as React from "react"
 import { type Metadata } from "next"
 import { unstable_noStore as noStore } from "next/cache"
 import { notFound } from "next/navigation"
-import * as React from "react"
+import { and, asc, desc, eq, like, sql } from "drizzle-orm"
 
+import type { Topic } from "@/db/schema"
+import type { SearchParams } from "@/types"
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { TopicsTableShell } from "@/components/shells/topics-table-shell"
+import { db, dbPool } from "@/db"
+import { courses, topics } from "@/db/schema"
+import { env } from "@/env"
 import { searchParamsSchema } from "@/lib/validations/params"
-import { SearchParams } from "@/types"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -19,16 +20,15 @@ export const metadata: Metadata = {
 }
 
 interface TopicsPageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
-  searchParams: SearchParams
+  }>
+  searchParams: Promise<SearchParams>
 }
 
-export default async function TopicsPage({
-  params,
-  searchParams,
-}: TopicsPageProps) {
+export default async function TopicsPage(props: TopicsPageProps) {
+  const searchParams = await props.searchParams
+  const params = await props.params
   const courseId = Number(params.courseId)
 
   // Parse search params using zod schema
@@ -64,7 +64,7 @@ export default async function TopicsPage({
   // Transaction is used to ensure both queries are executed in a single transaction
   noStore()
 
-  const transaction = dbPool.transaction(async tx => {
+  const transaction = dbPool.transaction(async (tx) => {
     const items = await tx
       .select({
         id: topics.id,
@@ -81,15 +81,15 @@ export default async function TopicsPage({
           eq(topics.isActive, true),
           eq(topics.courseId, courseId),
           // Filter by name
-          name ? like(topics.name, `%${name}%`) : undefined,
-        ),
+          name ? like(topics.name, `%${name}%`) : undefined
+        )
       )
       .orderBy(
         column && column in topics
           ? order === "asc"
             ? asc(topics[column])
             : desc(topics[column])
-          : desc(topics.createdAt),
+          : desc(topics.createdAt)
       )
 
     const count = await tx
@@ -101,10 +101,10 @@ export default async function TopicsPage({
         and(
           eq(topics.courseId, courseId),
           // Filter by name
-          name ? like(topics.name, `%${name}%`) : undefined,
-        ),
+          name ? like(topics.name, `%${name}%`) : undefined
+        )
       )
-      .then(res => res[0]?.count ?? 0)
+      .then((res) => res[0]?.count ?? 0)
 
     return {
       items,

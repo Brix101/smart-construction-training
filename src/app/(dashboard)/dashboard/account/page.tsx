@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs"
 import type { Metadata } from "next"
 
 import {
@@ -7,6 +6,8 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
+import { env } from "@/env"
+
 import { UserProfile } from "./_components/user-profile"
 
 export const metadata: Metadata = {

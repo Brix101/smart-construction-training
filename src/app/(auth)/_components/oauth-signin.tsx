@@ -1,13 +1,12 @@
 "use client"
 
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
-import { type OAuthStrategy } from "@clerk/types"
 import * as React from "react"
-import { toast } from "sonner"
+import { useSignIn } from "@clerk/nextjs"
+import { type OAuthStrategy } from "@clerk/types"
 
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
-import { useSearchParams } from "next/navigation"
+import { showErrorToast } from "@/lib/handle-error"
 
 const oauthProviders = [
   { name: "Google", strategy: "oauth_google", icon: "google" },
@@ -22,9 +21,6 @@ const oauthProviders = [
 export function OAuthSignIn() {
   const [isLoading, setIsLoading] = React.useState<OAuthStrategy | null>(null)
   const { signIn, isLoaded: signInLoaded } = useSignIn()
-  const searchParams = useSearchParams()
-
-  const redirects = searchParams.get("redirects")
 
   async function oauthSignIn(provider: OAuthStrategy) {
     if (!signInLoaded) return null
@@ -33,16 +29,12 @@ export function OAuthSignIn() {
       await signIn.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: redirects ?? "/",
+        redirectUrlComplete: "/",
       })
-    } catch (error) {
+    } catch (err) {
+      showErrorToast(err)
+    } finally {
       setIsLoading(null)
-
-      const unknownError = "Something went wrong, please try again."
-
-      isClerkAPIResponseError(error)
-        ? toast.error(error.errors[0]?.longMessage ?? unknownError)
-        : toast.error(unknownError)
     }
   }
 
@@ -50,7 +42,7 @@ export function OAuthSignIn() {
     <div
       className={`grid grid-cols-1 gap-2 sm:grid-cols-${oauthProviders.length} sm:gap-4`}
     >
-      {oauthProviders.map(provider => {
+      {oauthProviders.map((provider) => {
         const Icon = Icons[provider.icon]
 
         return (
@@ -58,7 +50,7 @@ export function OAuthSignIn() {
             aria-label={`Sign in with ${provider.name}`}
             key={provider.strategy}
             variant="outline"
-            className="w-full bg-background sm:w-auto"
+            className="bg-background w-full sm:w-auto"
             onClick={() => void oauthSignIn(provider.strategy)}
             disabled={isLoading !== null}
           >

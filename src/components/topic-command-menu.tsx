@@ -1,8 +1,10 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import React from "react"
+import { useRouter } from "next/navigation"
+import { CircleIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
 
+import type { TopicGroup } from "@/types/topic"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -16,8 +18,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useDebounce } from "@/hooks/use-debounce"
 import { filterTopics } from "@/lib/actions/topic"
 import { catchError, cn, isMacOs } from "@/lib/utils"
-import { TopicGroup } from "@/types/topic"
-import { CircleIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
+
+import { Kbd } from "./kbd"
 
 export function TopicCommandMenu() {
   const router = useRouter()
@@ -51,7 +53,7 @@ export function TopicCommandMenu() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        setOpen(open => !open)
+        setOpen((open) => !open)
       }
     }
     window.addEventListener("keydown", handleKeyDown)
@@ -73,25 +75,21 @@ export function TopicCommandMenu() {
         <MagnifyingGlassIcon className="size-4 xl:mr-2" aria-hidden="true" />
         <span className="hidden xl:inline-flex">Start typing...</span>
         <span className="sr-only">Start typing</span>
-        <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100 xl:flex">
-          <abbr
-            title={isMacOs() ? "Command" : "Control"}
-            className="no-underline"
-          >
-            {isMacOs() ? "⌘" : "Ctrl"}
-          </abbr>
-          K
-        </kbd>
+        <Kbd
+          title={isMacOs() ? "Command" : "Control"}
+          className="pointer-events-none absolute top-1.5 right-1.5 hidden xl:block"
+        >
+          {isMacOs() ? "⌘" : "Ctrl"} K
+        </Kbd>
       </Button>
       <CommandDialog
         open={open}
-        onOpenChange={open => {
+        onOpenChange={(open) => {
           setOpen(open)
           if (!open) {
             setQuery("")
           }
         }}
-        className="top-48 translate-y-0"
       >
         <CommandInput
           placeholder="Start typing..."
@@ -111,13 +109,13 @@ export function TopicCommandMenu() {
               <Skeleton className="h-8 rounded-sm" />
             </div>
           ) : (
-            data?.map(group => (
+            data?.map((group) => (
               <CommandGroup
                 key={group.course}
                 className="capitalize"
                 heading={group.course}
               >
-                {group.topics.map(item => {
+                {group.topics.map((item) => {
                   return (
                     <CommandItem
                       key={item.id}
@@ -128,7 +126,7 @@ export function TopicCommandMenu() {
                       }
                     >
                       <CircleIcon
-                        className="size-3 mr-2.5 text-muted-foreground"
+                        className="text-muted-foreground mr-2.5 size-3"
                         aria-hidden="true"
                       />
                       <span className="truncate">{item.name}</span>

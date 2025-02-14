@@ -1,14 +1,10 @@
-import { currentUser } from "@clerk/nextjs"
-
 import { SiteHeader } from "@/components/layouts/site-header"
+import { getCacheduser } from "@/lib/actions/auth"
 
-interface LobyLayoutProps
-  extends React.PropsWithChildren<{
-    // modal: React.ReactNode
-  }> {}
-
-export default async function LobyLayout({ children }: LobyLayoutProps) {
-  const user = await currentUser()
+export default async function LobyLayout({
+  children,
+}: React.PropsWithChildren) {
+  const user = await getCacheduser()
 
   return (
     <div className="flex min-h-screen flex-col">
