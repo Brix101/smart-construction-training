@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { TopicCard } from "@/components/cards/topic-card"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,7 +44,7 @@ export default async function TopicsPage(props: TopicsPageProps) {
         <div className="flex w-full flex-col gap-4">
           <div className="space-y-2">
             <h2 className="line-clamp-1 text-2xl font-bold">{course.name}</h2>
-            <p className="text-muted-foreground text-base">
+            <p className="text-base text-muted-foreground">
               {course.description}
             </p>
           </div>

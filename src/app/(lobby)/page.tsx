@@ -4,6 +4,8 @@ import { Lobby } from "@/app/(lobby)/_components/lobby"
 import { LobbySkeleton } from "@/app/(lobby)/_components/lobby-skeleton"
 import { getPublishedCourses } from "@/lib/actions/course"
 
+export const dynamic = "force-dynamic"
+
 export default async function IndexPage() {
   /**
    * To avoid sequential waterfall requests, multiple promises are passed to fetch data parallelly.

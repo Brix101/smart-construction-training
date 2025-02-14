@@ -1,4 +1,4 @@
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import { TopicCardSkeleton } from "@/components/skeletons/topic-card-skeleton"
 import {
   Breadcrumb,
@@ -17,13 +17,13 @@ export default async function LoadingPage() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbPage>
-              <Skeleton className="bg-foreground h-4 w-20" />
+              <Skeleton className="h-4 w-20 bg-foreground" />
             </BreadcrumbPage>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>
-              <Skeleton className="bg-foreground h-4 w-20" />
+              <Skeleton className="h-4 w-20 bg-foreground" />
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -32,11 +32,11 @@ export default async function LoadingPage() {
         <div className="flex w-full flex-col gap-4">
           <div className="space-y-2">
             <h2 className="line-clamp-1 text-2xl font-bold">
-              <Skeleton className="bg-foreground h-7 w-44" />
+              <Skeleton className="h-7 w-44 bg-foreground" />
             </h2>
-            <p className="text-mu4ted-foreground text-base">
-              <Skeleton className="bg-foreground h-4 w-44" />
-            </p>
+            <div className="text-mu4ted-foreground text-base">
+              <Skeleton className="h-4 w-44 bg-foreground" />
+            </div>
           </div>
           <Separator className="my-1.5" />
           <div className="grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

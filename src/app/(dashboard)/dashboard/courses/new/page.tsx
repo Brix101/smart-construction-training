@@ -7,7 +7,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import {
   Card,
   CardContent,
@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   title: "New Course",
   description: "Add a new course",
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function NewCoursePage() {
   const user = await getCacheduser()

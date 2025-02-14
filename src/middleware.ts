@@ -6,9 +6,26 @@ const isPublicRoute = createRouteMatcher([
   "/sso-callback(.*)",
 ])
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
+const isProtectedRoute = createRouteMatcher([
+  "/dashboard/courses(.*)",
+  "/dashboard/users(.*)",
+])
+
+export default clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) {
     await auth.protect()
+  }
+
+  // Restrict admin routes to users with specific permissions
+  if (isProtectedRoute(req)) {
+    await auth.protect()
+
+    // await auth.protect((has) => {
+    //   return (
+    //     has({ permission: "org:admin:example1" }) ||
+    //     has({ permission: "org:admin:example2" })
+    //   )
+    // })
   }
 })
 

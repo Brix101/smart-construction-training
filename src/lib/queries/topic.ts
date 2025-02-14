@@ -15,14 +15,6 @@ export async function getTopic(topicId: Topic["id"]) {
           material: true,
         },
       },
-      // course: {
-      //   with: {
-      //     topics: {
-      //       where: eq(topics.isActive, true),
-      //       orderBy: sql`COALESCE(SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER,99999999)`,
-      //     },
-      //   },
-      // },
     },
   })
 }

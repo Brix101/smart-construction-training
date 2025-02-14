@@ -3,7 +3,7 @@
 import { unstable_cache } from "next/cache"
 import { and, eq, lte, sql } from "drizzle-orm"
 
-import type { Course } from "@/db/schema"
+import type { Course, Topic } from "@/db/schema"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
 import { getCacheduser } from "@/lib/actions/auth"
@@ -39,4 +39,20 @@ export async function getCourse(courseId: Course["id"]) {
     ["course ", String(courseId)],
     { revalidate: 1, tags: ["course", String(courseId)] }
   )()
+}
+
+export async function getCourseTopic(
+  couseId: Course["id"],
+  topicId: Topic["id"]
+) {
+  return await db.query.topics.findFirst({
+    where: and(eq(topics.courseId, couseId), eq(topics.id, topicId)),
+    with: {
+      materials: {
+        with: {
+          material: true,
+        },
+      },
+    },
+  })
 }

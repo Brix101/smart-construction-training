@@ -9,7 +9,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
@@ -22,6 +22,8 @@ export const metadata: Metadata = {
   title: "Courses",
   description: "Manage your courses settings",
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function CoursesPage() {
   const coursePromises = await getAllCourses()

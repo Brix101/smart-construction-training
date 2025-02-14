@@ -20,6 +20,8 @@ interface UsersPageProps {
   }>
 }
 
+export const dynamic = "force-dynamic"
+
 export default async function UsersPage(props: UsersPageProps) {
   const searchParams = await props.searchParams
   const { page, per_page, firstName } = searchParamsSchema.parse(searchParams)

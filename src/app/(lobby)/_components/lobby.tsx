@@ -1,7 +1,7 @@
 import type { getPublishedCourses } from "@/lib/actions/course"
 import { CourseCard } from "@/components/cards/course-card"
 import { ContentSection } from "@/components/content-section"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 
 interface LobbyProps {
   coursesPromises: ReturnType<typeof getPublishedCourses>

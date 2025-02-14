@@ -5,7 +5,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import { env } from "@/env"
 
 import { UserProfile } from "./_components/user-profile"
@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   title: "Account",
   description: "Manage your account information",
 }
+
+export const dynamic = "force-dynamic"
 
 export default function AccountPage() {
   return (

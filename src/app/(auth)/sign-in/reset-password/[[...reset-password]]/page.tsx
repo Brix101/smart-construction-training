@@ -1,7 +1,7 @@
 import { type Metadata } from "next"
 
 import { ResetPasswordForm } from "@/app/(auth)/_components/reset-password-form"
-import { Shell } from "@/components/shells/shell"
+import { Shell } from "@/components/shell"
 import {
   Card,
   CardContent,
