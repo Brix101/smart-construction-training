@@ -7,7 +7,7 @@ import { unstable_cache as cache, revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { publicMetadataSchema } from "@/lib/validations/auth"
 import { courseSchema, updateCourseSchema } from "@/lib/validations/course"
 import { currentUser } from "@clerk/nextjs"
 
@@ -26,7 +26,7 @@ export async function getAllCourses() {
 
 export async function getPublishedCourses() {
   const user = await currentUser()
-  const publicMetadata = userPublicMetadataSchema.parse(user?.publicMetadata)
+  const publicMetadata = publicMetadataSchema.parse(user?.publicMetadata)
 
   return await cache(
     async () => {

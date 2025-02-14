@@ -7,7 +7,7 @@ import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { z } from "zod"
 
 import { getErrorMessage } from "@/lib/handle-error"
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { publicMetadataSchema } from "@/lib/validations/auth"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { TopicGroup } from "@/types/topic"
 import { currentUser } from "@clerk/nextjs"
@@ -22,7 +22,7 @@ type GroupedTopics = Record<number, TopicGroup>
 export async function filterTopics({ query }: { query: string }) {
   noStore()
   const user = await currentUser()
-  const publicMetadata = userPublicMetadataSchema.parse(user?.publicMetadata)
+  const publicMetadata = publicMetadataSchema.parse(user?.publicMetadata)
 
   try {
     if (query.length === 0) {

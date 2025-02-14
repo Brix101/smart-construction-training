@@ -4,9 +4,9 @@ import { revalidatePath } from "next/cache"
 
 import { clerkClient } from "@clerk/nextjs"
 import { z } from "zod"
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { publicMetadataSchema } from "@/lib/validations/auth"
 
-const updateUserParams = userPublicMetadataSchema.extend({
+const updateUserParams = publicMetadataSchema.extend({
   userId: z.string(),
 })
 

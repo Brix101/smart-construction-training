@@ -11,14 +11,6 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -26,13 +18,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { deleteUser, updateUserForm } from "@/lib/actions/user"
+import { deleteUser } from "@/lib/actions/user"
 import { formatSignInDate } from "@/lib/date-utils"
 import { catchError } from "@/lib/utils"
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
-import { LoadingButton } from "@/components/loading-button"
+import { publicMetadataSchema } from "@/lib/validations/auth"
 import Link from "next/link"
 
 type AwaitedUser = Pick<
@@ -101,7 +90,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
           <DataTableColumnHeader column={column} title="Level" />
         ),
         cell: ({ row: { original } }) => {
-          const publicMetadata = userPublicMetadataSchema.parse(
+          const publicMetadata = publicMetadataSchema.parse(
             original.publicMetadata,
           )
           return <span>{publicMetadata.level}</span>

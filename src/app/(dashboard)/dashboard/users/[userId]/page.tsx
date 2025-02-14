@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { deleteUser, updateUserForm } from "@/lib/actions/user"
-import { userPublicMetadataSchema } from "@/lib/validations/auth"
+import { publicMetadataSchema } from "@/lib/validations/auth"
 import { clerkClient } from "@clerk/nextjs/server"
 
 export const metadata: Metadata = {
@@ -50,7 +50,7 @@ export default async function UpdateUserPage({ params }: UpdateuserPageProps) {
   const email =
     emails.find(e => e.id === user.primaryEmailAddressId)?.emailAddress ?? ""
 
-  const publicMetadata = userPublicMetadataSchema.parse(user.publicMetadata)
+  const publicMetadata = publicMetadataSchema.parse(user.publicMetadata)
 
   return (
     <div className="space-y-10">
