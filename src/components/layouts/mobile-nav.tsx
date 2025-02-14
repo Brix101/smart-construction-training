@@ -88,7 +88,9 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
                             setIsOpen={setIsOpen}
                             disabled={subItem.disabled}
                           >
-                            {subItem.title}
+                            <span className="line-clamp-1 overflow-ellipsis">
+                              {subItem.title}
+                            </span>
                           </MobileLink>
                         ) : (
                           <div

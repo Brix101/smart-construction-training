@@ -10,7 +10,7 @@ export default function LoadingPage() {
         <nav className="flex w-full justify-between bg-background px-4 py-2">
           <div className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6" aria-hidden="true" />
-            <span className="hidden font-bold lg:inline-block">
+            <span className="hidden text-2xl font-bold lg:inline-block">
               {siteConfig.name}
             </span>
             <span className="sr-only">Home</span>
