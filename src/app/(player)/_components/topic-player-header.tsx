@@ -1,65 +1,29 @@
-"use client"
-
 import Link from "next/link"
 
+import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
-import { Course, Material } from "@/db/schema"
-import { useSidebar } from "@/providers/sidebar-provider"
-import {
-  ArrowRightIcon,
-  DoubleArrowLeftIcon,
-  DownloadIcon,
-  HamburgerMenuIcon,
-} from "@radix-ui/react-icons"
+import { siteConfig } from "@/config/site"
 
-interface TopicPlayerHeaderProps {
-  course: Course
-  materials: { material: Material }[]
-}
-
-export function TopicPlayerHeader({
-  materials,
-  course,
-}: TopicPlayerHeaderProps) {
-  const { open, setOpen } = useSidebar()
-
-  function openLinks() {
-    materials.forEach(({ material }) => {
-      window.open(material.link, "_blank")
-    })
-  }
-
+export function TopicPlayerHeader() {
   return (
-    <nav className="flex w-full justify-between border-b bg-background px-4 py-2">
-      <div>
-        <Button variant="secondary" onClick={() => setOpen(prev => !prev)}>
-          <span className="size-4 mr-2">
-            {open ? (
-              <DoubleArrowLeftIcon aria-hidden="true" />
-            ) : (
-              <HamburgerMenuIcon aria-hidden="true" />
-            )}
+    <header className="sticky top-0 z-50 w-full bg-background">
+      <nav className="flex w-full justify-between bg-background px-4 py-2">
+        <Link href="/" className="hidden items-center space-x-2 lg:flex">
+          <Icons.logo className="h-6 w-6" aria-hidden="true" />
+          <span className="hidden font-bold lg:inline-block">
+            {siteConfig.name}
           </span>
-          Topics
-          <span className="sr-only">Topics</span>
-        </Button>
-      </div>
-      <div className="flex gap-4">
-        {materials.length > 0 && (
-          <Button onClick={openLinks}>
-            Download Topics and Materials
-            <DownloadIcon className="size-4 ml-2" aria-hidden="true" />
-            <span className="sr-only">Download Topics and Materials</span>
+          <span className="sr-only">Home</span>
+        </Link>
+        <div className="flex gap-4">
+          <Button variant="secondary" asChild>
+            <Link href="/">
+              View Courses
+              <span className="sr-only">View Courses</span>
+            </Link>
           </Button>
-        )}
-        <Button variant="secondary" asChild>
-          <Link href={`/course/${course.id}`}>
-            Back to course
-            <ArrowRightIcon className="size-4 ml-2" aria-hidden="true" />
-            <span className="sr-only">Back to course</span>
-          </Link>
-        </Button>
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </header>
   )
 }

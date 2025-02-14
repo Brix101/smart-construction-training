@@ -1,34 +1,36 @@
-"use client"
-
-import { CourseSidebarNav } from "@/app/(player)/_components/course-sidebar-nav"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Topic } from "@/db/schema"
-import { cn } from "@/lib/utils"
-import { useSidebar } from "@/providers/sidebar-provider"
+import Image from "next/image"
+import Link from "next/link"
 
 interface TopicPlayerSideBarProps {
   topics: Topic[]
 }
 
 export function TopicPlayerSideBar({ topics }: TopicPlayerSideBarProps) {
-  const { open } = useSidebar()
-
-  const navItems = topics.map(topic => ({
-    title: topic.name,
-    href: `/topic/${topic.id}`,
-    items: [],
-  }))
-
   return (
-    <aside
-      className={cn(
-        "h-screen flex-shrink-0 border-r transition-all duration-300",
-        open ? "ml-0" : "-ml-72",
-      )}
-    >
-      <ScrollArea className="h-[calc(100vh-5rem)] pt-4">
-        <CourseSidebarNav items={navItems} className="p-1" />
-      </ScrollArea>
-    </aside>
+    <ScrollArea className="h-[calc(100vh-10rem)]">
+      {topics.map(topic => (
+        <Link key={topic.id} href={`/topic/${topic.id}`}>
+          <div className="mb-4 flex">
+            <Image
+              src={`https://img.youtube.com/vi/${topic.youtubeId}/hqdefault.jpg`}
+              alt={topic.name}
+              // sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
+              width={160}
+              height={90}
+              loading="lazy"
+              className="mr-2 rounded-lg object-cover"
+            />
+            <div>
+              <h4 className="max-w-[10rem] text-sm font-semibold">
+                {topic.name}
+              </h4>
+              {/* <p className="text-xs text-gray-500">Channel Name</p> */}
+            </div>
+          </div>
+        </Link>
+      ))}
+    </ScrollArea>
   )
 }
