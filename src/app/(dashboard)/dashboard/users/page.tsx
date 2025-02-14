@@ -37,7 +37,6 @@ export default async function UsersPage(props: UsersPageProps) {
   const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0
 
   const client = await clerkClient()
-  const count = await client.users.getCount()
   const userList = await client.users.getUserList({
     limit,
     offset,
@@ -46,7 +45,7 @@ export default async function UsersPage(props: UsersPageProps) {
 
   const transaction = Promise.resolve({
     items: JSON.parse(JSON.stringify(userList.data)),
-    count,
+    count: userList.totalCount,
   })
 
   return (
