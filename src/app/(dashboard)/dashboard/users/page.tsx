@@ -43,8 +43,9 @@ export default async function UsersPage(props: UsersPageProps) {
     offset,
     query: firstName,
   })
+
   const transaction = Promise.resolve({
-    items: JSON.parse(JSON.stringify(userList)),
+    items: JSON.parse(JSON.stringify(userList.data)),
     count,
   })
 
