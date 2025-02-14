@@ -11,7 +11,7 @@ interface TopicPlayerSideBarProps {
   topics: Topic[]
 }
 
-export function TopicPlayerSideBar({ topics }: TopicPlayerSideBarProps) {
+export function PlayerNavItems({ topics }: TopicPlayerSideBarProps) {
   const pathname = usePathname()
 
   return (

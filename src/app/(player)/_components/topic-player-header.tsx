@@ -8,7 +8,7 @@ export function TopicPlayerHeader() {
   return (
     <header className="sticky top-0 z-50 w-full bg-background">
       <nav className="flex w-full justify-between bg-background px-4 py-2">
-        <Link href="/" className="hidden items-center space-x-2 lg:flex">
+        <Link href="/" className="flex items-center space-x-2">
           <Icons.logo className="h-6 w-6" aria-hidden="true" />
           <span className="hidden font-bold lg:inline-block">
             {siteConfig.name}
