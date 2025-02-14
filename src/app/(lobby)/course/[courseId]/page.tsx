@@ -1,4 +1,3 @@
-import { asc, eq, sql } from "drizzle-orm"
 import { notFound } from "next/navigation"
 
 import { TopicCard } from "@/components/cards/topic-card"
@@ -12,8 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import { db } from "@/db"
-import { courses, topics } from "@/db/schema"
+import { getCourse } from "@/lib/queries/course"
 
 export const dynamic = "force-dynamic"
 
@@ -23,28 +21,8 @@ interface TopicsPageProps {
   }
 }
 
-async function getCourseFromParams({ params }: TopicsPageProps) {
-  const courseId = Number(params.courseId)
-
-  return await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-    with: {
-      topics: {
-        where: eq(topics.isActive, true),
-        // orderBy: asc(topics.name),
-        orderBy: sql`
-    COALESCE(
-      SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER, 
-      99999999
-    )
-  `,
-      },
-    },
-  })
-}
-
 export default async function TopicsPage(props: TopicsPageProps) {
-  const course = await getCourseFromParams(props)
+  const course = await getCourse(Number(props.params.courseId))
   if (!course) {
     notFound()
   }
