@@ -1,36 +1,46 @@
+"use client"
+
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Topic } from "@/db/schema"
-import Image from "next/image"
+import { cn } from "@/lib/utils"
+import { PlayIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 interface TopicPlayerSideBarProps {
   topics: Topic[]
 }
 
 export function TopicPlayerSideBar({ topics }: TopicPlayerSideBarProps) {
+  const pathname = usePathname()
+
   return (
     <ScrollArea className="h-[calc(100vh-10rem)]">
-      {topics.map(topic => (
-        <Link key={topic.id} href={`/topic/${topic.id}`}>
-          <div className="mb-4 flex">
-            <Image
-              src={`https://img.youtube.com/vi/${topic.youtubeId}/hqdefault.jpg`}
-              alt={topic.name}
-              // sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-              width={160}
-              height={90}
-              loading="lazy"
-              className="mr-2 rounded-lg object-cover"
-            />
-            <div>
-              <h4 className="max-w-[10rem] text-sm font-semibold">
-                {topic.name}
-              </h4>
-              {/* <p className="text-xs text-gray-500">Channel Name</p> */}
-            </div>
-          </div>
-        </Link>
-      ))}
+      <div className="flex flex-col gap-2">
+        {topics.map(topic => {
+          const href = `/topic/${topic.id}`
+          const isActive = href.includes(pathname)
+          return (
+            <Link aria-label={topic.name} key={topic.id} href={href}>
+              <span
+                className={cn(
+                  "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
+                  isActive
+                    ? "bg-muted font-medium text-foreground"
+                    : "text-muted-foreground",
+                )}
+              >
+                <div className="w-8">
+                  <PlayIcon className={cn(isActive ? "" : "invisible")} />
+                </div>
+                <span className="line-clamp-1 overflow-ellipsis">
+                  {topic.name}
+                </span>
+              </span>
+            </Link>
+          )
+        })}
+      </div>
     </ScrollArea>
   )
 }

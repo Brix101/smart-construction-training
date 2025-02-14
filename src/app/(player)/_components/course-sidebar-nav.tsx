@@ -20,7 +20,7 @@ export function CourseSidebarNav({
   if (!items?.length) return null
 
   return (
-    <div className={cn("flex w-72 flex-col gap-2", className)} {...props}>
+    <div className={cn("flex flex-col gap-2", className)} {...props}>
       {items.map((item, index) => {
         return item.href ? (
           <Link
@@ -39,7 +39,7 @@ export function CourseSidebarNav({
                 item.disabled && "pointer-events-none opacity-60",
               )}
             >
-              <span className="line-clamp-1 w-72 overflow-ellipsis">
+              <span className="line-clamp-1 overflow-ellipsis">
                 {item.title}
               </span>
             </span>

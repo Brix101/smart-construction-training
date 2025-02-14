@@ -31,8 +31,10 @@ export default async function TopicPage(props: UpdateTopicPageProps) {
               <AspectRatio ratio={16 / 9}>
                 <iframe
                   className="h-full w-full"
-                  src={`https://www.youtube.com/embed/${topic.youtubeId}`}
+                  src={`https://www.youtube.com/embed/${topic.youtubeId}?modestbranding=1&rel=0&autoplay=0&controls=1&disablekb=1&fs=1`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  sandbox="allow-same-origin allow-scripts allow-presentation"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                   title={topic.name}
                 />
