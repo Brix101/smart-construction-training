@@ -1,11 +1,9 @@
+import { auth } from "@clerk/nextjs/server"
+
 import type { Roles } from "@/types/globals"
 
-import { getCacheduser } from "./actions/auth"
-
 export const checkRole = async (role: Roles) => {
-  const user = await getCacheduser()
+  const { sessionClaims } = await auth()
 
-  console.log(user?.publicMetadata)
-
-  return user?.publicMetadata.role === role
+  return sessionClaims?.metadata.role === role
 }
