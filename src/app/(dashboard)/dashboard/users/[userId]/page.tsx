@@ -30,8 +30,8 @@ interface UpdateuserPageProps {
 
 async function getUser(userId: string) {
   try {
-    const cClient = await clerkClient()
-    const user = await cClient.users.getUser(userId)
+    const client = await clerkClient()
+    const user = await client.users.getUser(userId)
     return user
   } catch {
     return null

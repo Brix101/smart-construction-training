@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server"
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 
 const isPublicRoute = createRouteMatcher([
@@ -6,26 +7,23 @@ const isPublicRoute = createRouteMatcher([
   "/sso-callback(.*)",
 ])
 
-const isProtectedRoute = createRouteMatcher([
+const isAdminRoute = createRouteMatcher([
   "/dashboard/courses(.*)",
   "/dashboard/users(.*)",
 ])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    await auth.protect()
+  // Restrict admin routes to users with specific permissions
+  if (
+    isAdminRoute(req) &&
+    (await auth()).sessionClaims?.metadata?.role !== "admin"
+  ) {
+    const url = new URL("/", req.url)
+    return NextResponse.redirect(url)
   }
 
-  // Restrict admin routes to users with specific permissions
-  if (isProtectedRoute(req)) {
+  if (!isPublicRoute(req)) {
     await auth.protect()
-
-    // await auth.protect((has) => {
-    //   return (
-    //     has({ permission: "org:admin:example1" }) ||
-    //     has({ permission: "org:admin:example2" })
-    //   )
-    // })
   }
 })
 

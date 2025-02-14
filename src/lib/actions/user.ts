@@ -14,14 +14,14 @@ export async function updateUser({
   userId,
   ...publicMetadata
 }: z.infer<typeof updateUserParams>) {
-  const cClient = await clerkClient()
-  await cClient.users.updateUserMetadata(userId, { publicMetadata })
+  const client = await clerkClient()
+  await client.users.updateUserMetadata(userId, { publicMetadata })
   revalidatePath(`/dashboard/users`)
 }
 
 export async function deleteUser(userId: string) {
-  const cClient = await clerkClient()
-  await cClient.users.deleteUser(userId)
+  const client = await clerkClient()
+  await client.users.deleteUser(userId)
   revalidatePath(`/dashboard/users`)
 }
 

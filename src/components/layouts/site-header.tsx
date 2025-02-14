@@ -9,9 +9,10 @@ import { getPublishedCourses } from "@/lib/actions/course"
 
 interface SiteHeaderProps {
   user: User | null
+  isAdmin?: boolean
 }
 
-export async function SiteHeader({ user }: SiteHeaderProps) {
+export async function SiteHeader({ user, isAdmin }: SiteHeaderProps) {
   const coursePromises = await getPublishedCourses()
   const [allCourses] = await Promise.all([coursePromises])
 
@@ -22,7 +23,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
   }))
 
   return (
-    <header className="bg-background sticky top-0 z-50 w-full border-b">
+    <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
         <MainNav items={siteConfig.mainNav} />
         <MobileNav sidebarNavItems={navItems} />
@@ -30,7 +31,7 @@ export async function SiteHeader({ user }: SiteHeaderProps) {
           <nav className="flex items-center space-x-2">
             <TopicCommandMenu />
             <ModeToggle />
-            <AuthDropdown user={user} />
+            <AuthDropdown user={user} isAdmin={isAdmin} />
           </nav>
         </div>
       </div>

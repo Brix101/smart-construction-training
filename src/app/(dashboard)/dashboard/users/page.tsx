@@ -36,9 +36,9 @@ export default async function UsersPage(props: UsersPageProps) {
   // Number of items to skip
   const offset = fallbackPage > 0 ? (fallbackPage - 1) * limit : 0
 
-  const cClient = await clerkClient()
-  const count = await cClient.users.getCount()
-  const userList = await cClient.users.getUserList({
+  const client = await clerkClient()
+  const count = await client.users.getCount()
+  const userList = await client.users.getUserList({
     limit,
     offset,
     query: firstName,
