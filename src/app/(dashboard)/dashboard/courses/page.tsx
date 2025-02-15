@@ -14,7 +14,6 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shell"
-import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
 import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
 import { getCourseAlertCount, getCourses } from "@/lib/actions/course"
