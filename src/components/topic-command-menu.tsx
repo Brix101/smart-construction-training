@@ -77,7 +77,7 @@ export function TopicCommandMenu() {
         <span className="sr-only">Start typing</span>
         <Kbd
           title={isMacOs() ? "Command" : "Control"}
-          className="pointer-events-none absolute top-1.5 right-1.5 hidden xl:block"
+          className="pointer-events-none absolute right-1.5 top-1.5 hidden xl:block"
         >
           {isMacOs() ? "⌘" : "Ctrl"} K
         </Kbd>
@@ -126,7 +126,7 @@ export function TopicCommandMenu() {
                       }
                     >
                       <CircleIcon
-                        className="text-muted-foreground mr-2.5 size-3"
+                        className="mr-2.5 size-3 text-muted-foreground"
                         aria-hidden="true"
                       />
                       <span className="truncate">{item.name}</span>

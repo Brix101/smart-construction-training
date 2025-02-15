@@ -25,9 +25,9 @@ export function PlayerNavItems({ topics }: TopicPlayerSideBarProps) {
             <Link aria-label={topic.name} key={topic.id} href={href}>
               <span
                 className={cn(
-                  "group hover:bg-muted hover:text-foreground flex w-full items-center rounded-md border border-transparent px-2 py-1",
+                  "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
                   isActive
-                    ? "bg-muted text-foreground font-medium"
+                    ? "bg-muted font-medium text-foreground"
                     : "text-muted-foreground"
                 )}
               >

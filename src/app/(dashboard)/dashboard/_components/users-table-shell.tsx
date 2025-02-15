@@ -119,7 +119,7 @@ export function UsersTableShell({ transaction, limit }: UsersTableShellProps) {
                   <Button
                     aria-label="Open menu"
                     variant="ghost"
-                    className="data-[state=open]:bg-muted flex h-8 w-8 p-0"
+                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
                   >
                     <DotsHorizontalIcon
                       className="h-4 w-4"

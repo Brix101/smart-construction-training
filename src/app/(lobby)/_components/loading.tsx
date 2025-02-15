@@ -12,11 +12,11 @@ export default async function LoadingPage() {
           backgroundPosition: "80% 20%",
         }}
       >
-        <div className="relative container">
-          <h1 className="text-background hidden text-left text-3xl leading-tight font-bold tracking-tighter md:block md:text-6xl lg:leading-[1.1]">
+        <div className="container relative">
+          <h1 className="hidden text-left text-3xl font-bold leading-tight tracking-tighter text-background md:block md:text-6xl lg:leading-[1.1]">
             All Courses
           </h1>
-          <div className="absolute container w-full translate-y-2 p-0">
+          <div className="container absolute w-full translate-y-2 p-0">
             <div className="mr-16 flex justify-between rounded-sm border bg-white p-2 shadow-lg">
               <div></div>
               <div>

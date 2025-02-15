@@ -45,10 +45,10 @@ export function CourseTabs({ courseId }: CourseTabsProps) {
   return (
     <Tabs
       defaultValue={tabs.find((tab) => tab.isActive)?.href ?? tabs[0]?.href}
-      className="bg-background sticky top-0 z-30 w-full overflow-auto px-1"
+      className="sticky top-0 z-30 w-full overflow-auto bg-background px-1"
       onValueChange={(value) => router.push(value)}
     >
-      <TabsList className="text-muted-foreground inline-flex items-center justify-center space-x-1.5">
+      <TabsList className="inline-flex items-center justify-center space-x-1.5 text-muted-foreground">
         {tabs.map((tab) => (
           <div
             role="none"
@@ -61,7 +61,7 @@ export function CourseTabs({ courseId }: CourseTabsProps) {
             <TabsTrigger
               value={tab.href}
               className={cn(
-                "text-muted-foreground ring-offset-background hover:bg-muted hover:text-primary focus-visible:ring-ring inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none",
+                "inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-all hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
                 tab.isActive && "text-foreground"
               )}
             >

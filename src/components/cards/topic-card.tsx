@@ -17,7 +17,7 @@ export function TopicCard({ topic, href }: TopicCardProps) {
   return (
     <Link href={href}>
       <span className="sr-only">{topic.name}</span>
-      <Card className="hover:bg-muted/50 h-full w-full overflow-hidden transition-colors">
+      <Card className="h-full w-full overflow-hidden transition-colors hover:bg-muted/50">
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={4 / 3}>
             <Image

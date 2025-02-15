@@ -12,7 +12,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user, children }: DashboardHeaderProps) {
   return (
-    <header className="bg-background sticky top-0 z-50 w-full border-b">
+    <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
         <Link href="/" className="hidden items-center space-x-2 lg:flex">
           <Icons.logo className="size-6" aria-hidden="true" />

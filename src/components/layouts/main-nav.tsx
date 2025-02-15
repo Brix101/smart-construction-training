@@ -44,13 +44,13 @@ export function MainNav({ items }: MainNavProps) {
                     <NavigationMenuLink asChild>
                       <Link
                         href="/"
-                        className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-gradient-to-b p-6 no-underline outline-none select-none focus:shadow-md"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                       >
                         <Icons.logo className="h-6 w-6" aria-hidden="true" />
-                        <div className="mt-4 mb-2 text-lg font-medium">
+                        <div className="mb-2 mt-4 text-lg font-medium">
                           {siteConfig.name}
                         </div>
-                        <p className="text-muted-foreground text-sm leading-tight">
+                        <p className="text-sm leading-tight text-muted-foreground">
                           {siteConfig.description}
                         </p>
                         <span className="sr-only">Home</span>
@@ -123,13 +123,13 @@ const ListItem = React.forwardRef<
           ref={ref}
           href={String(href)}
           className={cn(
-            "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
           {...props}
         >
-          <div className="text-sm leading-none font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </Link>

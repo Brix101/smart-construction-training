@@ -55,7 +55,7 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 pl-1">
+      <SheetContent side="left" className="pl-1 pr-0">
         <div className="px-7">
           <Link
             href="/"
@@ -68,7 +68,7 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
           </Link>
         </div>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-          <div className="pr-7 pl-1">
+          <div className="pl-1 pr-7">
             <Accordion
               type="multiple"
               defaultValue={navItems.map((item) => item.title)}
@@ -133,7 +133,7 @@ function MobileLink({
     <Link
       href={href}
       className={cn(
-        "text-foreground/70 hover:text-foreground transition-colors",
+        "text-foreground/70 transition-colors hover:text-foreground",
         href.includes(segment) && "text-foreground",
         disabled && "pointer-events-none opacity-60"
       )}

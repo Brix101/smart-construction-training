@@ -1,10 +1,10 @@
-import type { getPublishedCourses } from "@/lib/actions/course"
+import type { getCourseList } from "@/lib/actions/course"
 import { CourseCard } from "@/components/cards/course-card"
 import { ContentSection } from "@/components/content-section"
 import { Shell } from "@/components/shell"
 
 interface LobbyProps {
-  coursesPromises: ReturnType<typeof getPublishedCourses>
+  coursesPromises: ReturnType<typeof getCourseList>
 }
 
 export async function Lobby({ coursesPromises }: LobbyProps) {

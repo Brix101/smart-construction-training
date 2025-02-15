@@ -42,7 +42,7 @@ export function ErrorCard({
       {...props}
     >
       <CardHeader>
-        <div className="bg-muted grid h-20 w-20 place-items-center rounded-full">
+        <div className="grid h-20 w-20 place-items-center rounded-full bg-muted">
           <Icon className="h-10 w-10" aria-hidden="true" />
         </div>
       </CardHeader>

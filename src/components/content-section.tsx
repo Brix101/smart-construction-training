@@ -31,11 +31,11 @@ export function ContentSection({
     <section className={cn("space-y-6", className)} {...props}>
       <div className="flex items-center justify-between gap-4">
         <div className="max-w-[58rem] flex-1 space-y-1">
-          <h2 className="font-heading text-3xl leading-[1.1] font-bold md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold leading-[1.1] md:text-4xl">
             {title}
           </h2>
           {description ? (
-            <p className="text-muted-foreground max-w-[46rem] leading-normal text-balance sm:text-lg sm:leading-7">
+            <p className="max-w-[46rem] text-balance leading-normal text-muted-foreground sm:text-lg sm:leading-7">
               {description}
             </p>
           ) : null}

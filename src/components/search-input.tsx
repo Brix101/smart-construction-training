@@ -48,7 +48,7 @@ const SearchInput = React.forwardRef<
     <form className="relative" onSubmit={handleFilterSubmit}>
       <Input
         ref={ref}
-        className="bg-background h-12 rounded pr-14"
+        className="h-12 rounded bg-background pr-14"
         value={filter}
         type="search"
         onChange={(e) => setFilter(e.target.value)}
@@ -58,7 +58,7 @@ const SearchInput = React.forwardRef<
         type="submit"
         variant="ghost"
         size="sm"
-        className="absolute top-0 right-0 h-full px-3 py-1"
+        className="absolute right-0 top-0 h-full px-3 py-1"
       >
         <Icons.magnifyingGlass />
       </Button>

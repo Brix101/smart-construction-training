@@ -22,10 +22,10 @@ export function PlaceholderImage({
         aria-label="Placeholder"
         role="img"
         aria-roledescription="placeholder"
-        className="bg-secondary flex h-full w-full items-center justify-center rounded-lg"
+        className="flex h-full w-full items-center justify-center rounded-lg bg-secondary"
       >
         <Icons.placeholder
-          className="text-muted-foreground h-9 w-9"
+          className="h-9 w-9 text-muted-foreground"
           aria-hidden="true"
         />
       </div>

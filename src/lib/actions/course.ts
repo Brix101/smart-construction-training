@@ -1,19 +1,54 @@
 "use server"
 
 import type { z } from "zod"
-import { unstable_cache as cache, revalidatePath } from "next/cache"
+import { revalidatePath, unstable_cache } from "next/cache"
 import { redirect } from "next/navigation"
+import { auth } from "@clerk/nextjs/server"
 import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 
 import type { courseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { getCacheduser } from "@/lib/actions/auth"
-import { publicMetadataSchema } from "@/lib/validations/auth"
+import { checkRole } from "@/lib/roles"
 import { updateCourseSchema } from "@/lib/validations/course"
 
-export async function getAllCourses() {
-  return await cache(
+export async function getCourseList() {
+  const { sessionClaims } = await auth()
+  const level = sessionClaims?.metadata?.level ?? 1
+
+  return await unstable_cache(
+    async () => {
+      try {
+        return await db
+          .select({
+            id: courses.id,
+            name: courses.name,
+            description: courses.description,
+            active: courses.isActive,
+            level: courses.level,
+          })
+          .from(courses)
+          .where(and(eq(courses.isPublished, true), lte(courses.level, level)))
+          .orderBy(asc(courses.name))
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+    },
+    ["courses-list"],
+    {
+      revalidate: 1,
+      tags: ["courses-list"],
+    }
+  )()
+}
+
+export async function getCourses() {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
+  return await unstable_cache(
     async () => {
       return db.select().from(courses).orderBy(asc(courses.name))
     },
@@ -25,39 +60,12 @@ export async function getAllCourses() {
   )()
 }
 
-export async function getPublishedCourses() {
-  const user = await getCacheduser()
-  const publicMetadata = publicMetadataSchema.parse(user?.publicMetadata)
+export async function getCourseAlertCount() {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
 
-  return await cache(
-    async () => {
-      return db
-        .select({
-          id: courses.id,
-          name: courses.name,
-          description: courses.description,
-          active: courses.isActive,
-          level: courses.level,
-        })
-        .from(courses)
-        .where(
-          and(
-            eq(courses.isPublished, true),
-            lte(courses.level, publicMetadata.level)
-          )
-        )
-        .orderBy(asc(courses.name))
-    },
-    ["published-courses"],
-    {
-      revalidate: 1,
-      tags: ["published-courses"],
-    }
-  )()
-}
-
-export async function getPublishedCourse() {
-  return await cache(
+  return await unstable_cache(
     async () => {
       return db
         .select({
@@ -67,15 +75,19 @@ export async function getPublishedCourse() {
         .from(courses)
         .groupBy(sql`${courses.isPublished}`)
     },
-    ["courses-published-count"],
+    ["courses-alert-count"],
     {
       revalidate: 1,
-      tags: ["courses-published-countt"],
+      tags: ["courses-alert-countt"],
     }
   )()
 }
 
 export async function addCourse(input: z.infer<typeof courseSchema>) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   const courseWithSameName = await db.query.courses.findFirst({
     where: eq(courses.name, input.name),
   })
@@ -93,6 +105,10 @@ export async function addCourse(input: z.infer<typeof courseSchema>) {
 }
 
 export async function publishCourse(courseId: number) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   await db
     .update(courses)
     .set({
@@ -104,6 +120,10 @@ export async function publishCourse(courseId: number) {
 }
 
 export async function updateCourse(courseId: number, fd: FormData) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   const input = updateCourseSchema.parse({
     name: fd.get("name"),
     description: fd.get("description"),
@@ -136,6 +156,10 @@ export async function updateCourse(courseId: number, fd: FormData) {
 }
 
 export async function deleteCourse(courseId: number) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
     columns: {

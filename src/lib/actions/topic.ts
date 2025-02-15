@@ -16,6 +16,8 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { publicMetadataSchema } from "@/lib/validations/auth"
 import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 
+import { checkRole } from "../roles"
+
 const extendedTopicSchema = topicSchema.extend({
   courseId: z.number(),
 })
@@ -81,6 +83,10 @@ export async function filterTopics({ query }: { query: string }) {
 }
 
 export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   const newTopic = await db
     .insert(topics)
     .values({
@@ -104,6 +110,10 @@ const _extendedTopicSchemaWithId = extendedTopicSchema.extend({
 type UpdateTopicInput = z.infer<typeof _extendedTopicSchemaWithId>
 
 export async function updateTopic({ materials, ...input }: UpdateTopicInput) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
   const topic = await db.query.topics.findFirst({
     where: and(eq(topics.id, input.id), eq(topics.courseId, input.courseId)),
   })

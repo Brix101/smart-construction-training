@@ -2,7 +2,7 @@ import React from "react"
 
 import { Lobby } from "@/app/(lobby)/_components/lobby"
 import { LobbySkeleton } from "@/app/(lobby)/_components/lobby-skeleton"
-import { getPublishedCourses } from "@/lib/actions/course"
+import { getCourseList } from "@/lib/actions/course"
 
 export const dynamic = "force-dynamic"
 
@@ -13,7 +13,7 @@ export default async function IndexPage() {
    * @see https://www.youtube.com/shorts/A7GGjutZxrs
    * @see https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#parallel-data-fetching
    */
-  const coursesPromises = getPublishedCourses()
+  const coursesPromises = getCourseList()
 
   return (
     <React.Suspense fallback={<LobbySkeleton />}>

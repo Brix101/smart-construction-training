@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
 import * as React from "react"
 import Link from "next/link"
-import { RocketIcon } from "@radix-ui/react-icons"
 
-import { CourseCard } from "@/components/cards/course-card"
+import { CourseAlertCount } from "@/app/(dashboard)/_components/course-alert-count"
+import CourseAlertSkeleton from "@/app/(dashboard)/_components/course-alert-skeleton"
+import { CourseContainer } from "@/app/(dashboard)/_components/course-container"
 import {
   PageHeader,
   PageHeaderDescription,
@@ -11,10 +12,9 @@ import {
 } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
-import { getAllCourses, getPublishedCourse } from "@/lib/actions/course"
+import { getCourseAlertCount, getCourses } from "@/lib/actions/course"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -26,12 +26,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"
 
 export default async function CoursesPage() {
-  const coursePromises = await getAllCourses()
-  const publishPromises = await getPublishedCourse()
-  const [allCourses, publishCount] = await Promise.all([
-    coursePromises,
-    publishPromises,
-  ])
+  const coursesPromise = getCourses()
+  const alertCountPromise = getCourseAlertCount()
 
   return (
     <Shell variant="sidebar">
@@ -60,40 +56,16 @@ export default async function CoursesPage() {
           View and manage courses
         </PageHeaderDescription>
       </PageHeader>
-      <Alert>
-        <RocketIcon className="size-4" aria-hidden="true" />
-        <AlertTitle>Heads up!</AlertTitle>
-        <AlertDescription>
-          there are{" "}
-          {publishCount.length > 0
-            ? publishCount.map((count, index) => (
-                <React.Fragment key={index}>
-                  currently
-                  <span className="font-semibold">
-                    {count.count}{" "}
-                    {count.isPublished ? "published" : "unplublish"}
-                  </span>
-                  {index !== publishCount.length - 1 && " and "}
-                </React.Fragment>
-              ))
-            : "no"}{" "}
-          courses.
-        </AlertDescription>
-      </Alert>
+      <React.Suspense fallback={<CourseAlertSkeleton />}>
+        <CourseAlertCount alertCountPromise={alertCountPromise} />
+      </React.Suspense>
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <React.Suspense
           fallback={Array.from({ length: 3 }).map((_, i) => (
             <CourseCardSkeleton key={i} />
           ))}
         >
-          {allCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              href={`/dashboard/courses/${course.id}`}
-              hasBadge
-            />
-          ))}
+          <CourseContainer coursesPromise={coursesPromise} />
         </React.Suspense>
       </section>
     </Shell>

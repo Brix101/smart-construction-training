@@ -32,9 +32,9 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
           >
             <span
               className={cn(
-                "group hover:bg-muted hover:text-foreground flex w-full items-center rounded-md border border-transparent px-2 py-1",
+                "group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:bg-muted hover:text-foreground",
                 pathname.includes(item.href)
-                  ? "bg-muted text-foreground font-medium"
+                  ? "bg-muted font-medium text-foreground"
                   : "text-muted-foreground",
                 item.disabled && "pointer-events-none opacity-60"
               )}
@@ -46,7 +46,7 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
         ) : (
           <span
             key={index}
-            className="text-muted-foreground flex w-full cursor-not-allowed items-center rounded-md p-2 hover:underline"
+            className="flex w-full cursor-not-allowed items-center rounded-md p-2 text-muted-foreground hover:underline"
           >
             {item.title}
           </span>
