@@ -1,17 +1,16 @@
 "use server"
 
 import { unstable_cache } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 import { and, eq, lte, sql } from "drizzle-orm"
 
 import type { Course, Topic } from "@/db/schema"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
-import { getCacheduser } from "@/lib/actions/auth"
-import { publicMetadataSchema } from "@/lib/validations/auth"
 
 export async function getCourse(courseId: Course["id"]) {
-  const user = await getCacheduser()
-  const metadata = publicMetadataSchema.parse(user?.publicMetadata)
+  const { sessionClaims } = await auth()
+  const level = sessionClaims?.metadata?.level ?? 1
 
   return await unstable_cache(
     async () => {
@@ -20,7 +19,7 @@ export async function getCourse(courseId: Course["id"]) {
           where: and(
             eq(courses.id, courseId),
             eq(courses.isPublished, true),
-            lte(courses.level, metadata.level)
+            lte(courses.level, level)
           ),
           with: {
             topics: {

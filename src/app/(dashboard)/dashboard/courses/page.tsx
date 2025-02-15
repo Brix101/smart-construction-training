@@ -4,7 +4,10 @@ import Link from "next/link"
 
 import { CourseAlertCount } from "@/app/(dashboard)/_components/course-alert-count"
 import CourseAlertSkeleton from "@/app/(dashboard)/_components/course-alert-skeleton"
-import { CourseContainer } from "@/app/(dashboard)/_components/course-container"
+import {
+  CourseListContainer,
+  CourseListContainerLoader,
+} from "@/app/(dashboard)/_components/course-list-container"
 import {
   PageHeader,
   PageHeaderDescription,
@@ -59,15 +62,9 @@ export default async function CoursesPage() {
       <React.Suspense fallback={<CourseAlertSkeleton />}>
         <CourseAlertCount alertCountPromise={alertCountPromise} />
       </React.Suspense>
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <React.Suspense
-          fallback={Array.from({ length: 3 }).map((_, i) => (
-            <CourseCardSkeleton key={i} />
-          ))}
-        >
-          <CourseContainer coursesPromise={coursesPromise} />
-        </React.Suspense>
-      </section>
+      <React.Suspense fallback={<CourseListContainerLoader />}>
+        <CourseListContainer coursesPromise={coursesPromise} />
+      </React.Suspense>
     </Shell>
   )
 }

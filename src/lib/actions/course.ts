@@ -50,6 +50,7 @@ export async function getCourses() {
 
   return await unstable_cache(
     async () => {
+      await new Promise((resolve) => setTimeout(resolve, 10000))
       return db.select().from(courses).orderBy(asc(courses.name))
     },
     ["all-courses"],

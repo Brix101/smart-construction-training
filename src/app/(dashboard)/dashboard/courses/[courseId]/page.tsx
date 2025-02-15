@@ -1,6 +1,5 @@
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
-import { eq } from "drizzle-orm"
 
 import { PublishCourseButton } from "@/components/activate-course-button"
 import { LoadingButton } from "@/components/loading-button"
@@ -15,10 +14,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { db } from "@/db"
-import { courses } from "@/db/schema"
 import { env } from "@/env"
 import { deleteCourse, updateCourse } from "@/lib/actions/course"
+import { getCourse } from "@/lib/queries/course"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -36,16 +34,7 @@ export default async function UpdatecoursePage(props: UpdatecoursePageProps) {
   const params = await props.params
   const courseId = Number(params.courseId)
 
-  const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-    columns: {
-      id: true,
-      name: true,
-      description: true,
-      level: true,
-      isPublished: true,
-    },
-  })
+  const course = await getCourse(courseId)
 
   if (!course) {
     notFound()
