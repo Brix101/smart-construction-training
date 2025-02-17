@@ -31,7 +31,7 @@ export function DownloadMaterialButton({ materials }: TopicPlayerHeaderProps) {
     >
       <Download className="mr-2 h-4 w-4" />
       Download Topics and Materials
-      <span className="sr-only">Download Topics and Materials</span>
+      <span className="sr-only">Download Training Materials</span>
     </Button>
   )
 }
