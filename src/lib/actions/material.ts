@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm"
 import type { NewMaterial } from "@/db/schema"
 import type { materialSchema } from "@/lib/validations/material"
 import { db } from "@/db"
-import { materials, topicsToMaterials } from "@/db/schema"
+import { materials, topicMaterials } from "@/db/schema"
 
 function parseMaterialLinks(input: string): NewMaterial[] {
   const uniqueMaterials = [
@@ -39,7 +39,7 @@ export async function addTopicMaterialsLink(
       return { materialId: material.id, topicId: input.topicId }
     })
 
-    await db.insert(topicsToMaterials).values(newTopicToMaterials)
+    await db.insert(topicMaterials).values(newTopicToMaterials)
   }
 }
 
@@ -51,12 +51,12 @@ export async function updateTopicMaterialsLink(
 
     const topicsMaterials = await db
       .select({
-        materialId: topicsToMaterials.materialId,
+        materialId: topicMaterials.materialId,
         link: materials.link,
       })
-      .from(topicsToMaterials)
-      .leftJoin(materials, eq(materials.id, topicsToMaterials.materialId))
-      .where(eq(topicsToMaterials.topicId, input.topicId))
+      .from(topicMaterials)
+      .leftJoin(materials, eq(materials.id, topicMaterials.materialId))
+      .where(eq(topicMaterials.topicId, input.topicId))
 
     const toInsert = materialLinks.filter(
       (item) => !topicsMaterials.find(({ link }) => link === item.link)
@@ -73,7 +73,7 @@ export async function updateTopicMaterialsLink(
         return { materialId: material.id, topicId: input.topicId }
       })
       await db
-        .insert(topicsToMaterials)
+        .insert(topicMaterials)
         .values(newTopicToMaterials)
         .onConflictDoNothing()
     }
@@ -84,11 +84,11 @@ export async function updateTopicMaterialsLink(
     await Promise.all(
       toDelete.map(async ({ materialId }) => {
         await db
-          .delete(topicsToMaterials)
+          .delete(topicMaterials)
           .where(
             and(
-              eq(topicsToMaterials.topicId, input.topicId),
-              eq(topicsToMaterials.materialId, materialId)
+              eq(topicMaterials.topicId, input.topicId),
+              eq(topicMaterials.materialId, materialId)
             )
           )
       })

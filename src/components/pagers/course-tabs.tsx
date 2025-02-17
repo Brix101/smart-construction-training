@@ -3,11 +3,12 @@
 import { useRouter, useSelectedLayoutSegment } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
 
+import type { Course } from "@/db/schema"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 
 interface CourseTabsProps {
-  courseId: number
+  courseId: Course["id"]
 }
 
 export function CourseTabs({ courseId }: CourseTabsProps) {
@@ -25,21 +26,6 @@ export function CourseTabs({ courseId }: CourseTabsProps) {
       href: `/dashboard/courses/${courseId}/topics`,
       isActive: segment === "topics",
     },
-    // {
-    //   title: "Orders",
-    //   href: `/dashboard/courses/${courseId}/orders`,
-    //   isActive: segment === "orders",
-    // },
-    // {
-    //   title: "Customers",
-    //   href: `/dashboard/courses/${courseId}/customers`,
-    //   isActive: segment === "customers",
-    // },
-    // {
-    //   title: "Analytics",
-    //   href: `/dashboard/courses/${courseId}/analytics`,
-    //   isActive: segment === "analytics",
-    // },
   ]
 
   return (

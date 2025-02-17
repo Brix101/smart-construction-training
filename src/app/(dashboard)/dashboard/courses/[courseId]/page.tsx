@@ -31,8 +31,7 @@ interface UpdatecoursePageProps {
 }
 
 export default async function UpdatecoursePage(props: UpdatecoursePageProps) {
-  const params = await props.params
-  const courseId = Number(params.courseId)
+  const { courseId } = await props.params
 
   const course = await getCourse(courseId)
 

@@ -1,15 +1,14 @@
 import * as React from "react"
 import { type Metadata } from "next"
 import { unstable_noStore as noStore } from "next/cache"
-import { notFound } from "next/navigation"
 import { and, asc, desc, eq, like, sql } from "drizzle-orm"
 
 import type { Topic } from "@/db/schema"
 import type { SearchParams } from "@/types"
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { TopicsTableShell } from "@/components/shells/topics-table-shell"
-import { db, dbPool } from "@/db"
-import { courses, topics } from "@/db/schema"
+import { db } from "@/db"
+import { topics } from "@/db/schema"
 import { env } from "@/env"
 import { searchParamsSchema } from "@/lib/validations/params"
 
@@ -28,23 +27,10 @@ interface TopicsPageProps {
 
 export default async function TopicsPage(props: TopicsPageProps) {
   const searchParams = await props.searchParams
-  const params = await props.params
-  const courseId = Number(params.courseId)
+  const { courseId } = await props.params
 
   // Parse search params using zod schema
   const { page, per_page, sort, name } = searchParamsSchema.parse(searchParams)
-
-  const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-    columns: {
-      id: true,
-      name: true,
-    },
-  })
-
-  if (!course) {
-    notFound()
-  }
 
   // Fallback page for invalid page numbers
   const pageAsNumber = Number(page)
@@ -64,12 +50,11 @@ export default async function TopicsPage(props: TopicsPageProps) {
   // Transaction is used to ensure both queries are executed in a single transaction
   noStore()
 
-  const transaction = dbPool.transaction(async (tx) => {
+  const transaction = db.transaction(async (tx) => {
     const items = await tx
       .select({
         id: topics.id,
         name: topics.name,
-        youtubeId: topics.youtubeId,
         youtubeUrl: topics.youtubeUrl,
         createdAt: topics.createdAt,
       })

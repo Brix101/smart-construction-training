@@ -4,8 +4,10 @@ import type { z } from "zod"
 import { revalidatePath, unstable_cache } from "next/cache"
 import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
+import { NeonDbError } from "@neondatabase/serverless"
 import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 
+import type { Course } from "@/db/schema"
 import type { courseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
 import { courses, topics } from "@/db/schema"
@@ -84,27 +86,33 @@ export async function getCourseAlertCount() {
 }
 
 export async function addCourse(input: z.infer<typeof courseSchema>) {
-  if (!checkRole("admin")) {
-    throw new Error("Unauthorized")
+  try {
+    if (!checkRole("admin")) {
+      throw new Error("Unauthorized")
+    }
+
+    await db.insert(courses).values({
+      name: input.name,
+      description: input.description,
+    })
+
+    revalidatePath("/dashboard/courses")
+  } catch (error) {
+    if (error instanceof NeonDbError) {
+      switch (error.code) {
+        case "23505":
+          throw new Error("Course name already taken.")
+        default:
+          console.error(error)
+          throw new Error("An error occurred while adding the course.")
+      }
+    }
+
+    throw error
   }
-
-  const courseWithSameName = await db.query.courses.findFirst({
-    where: eq(courses.name, input.name),
-  })
-
-  if (courseWithSameName) {
-    throw new Error("Course name already taken.")
-  }
-
-  await db.insert(courses).values({
-    name: input.name,
-    description: input.description,
-  })
-
-  revalidatePath("/dashboard/courses")
 }
 
-export async function publishCourse(courseId: number) {
+export async function publishCourse(courseId: Course["id"]) {
   if (!checkRole("admin")) {
     throw new Error("Unauthorized")
   }
@@ -119,7 +127,7 @@ export async function publishCourse(courseId: number) {
   revalidatePath(`/dashboard/courses/${courseId}`)
 }
 
-export async function updateCourse(courseId: number, fd: FormData) {
+export async function updateCourse(courseId: Course["id"], fd: FormData) {
   if (!checkRole("admin")) {
     throw new Error("Unauthorized")
   }
@@ -155,7 +163,7 @@ export async function updateCourse(courseId: number, fd: FormData) {
   revalidatePath(`/dashboard/courses/${courseId}`)
 }
 
-export async function deleteCourse(courseId: number) {
+export async function deleteCourse(courseId: Course["id"]) {
   if (!checkRole("admin")) {
     throw new Error("Unauthorized")
   }
