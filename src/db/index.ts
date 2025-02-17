@@ -16,4 +16,5 @@ const connection = neon(env.DATABASE_URL!)
 export const db = drizzle(connection, {
   schema,
   logger: env.NODE_ENV === "development",
+  casing: "snake_case",
 })
