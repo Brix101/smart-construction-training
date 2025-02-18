@@ -14,6 +14,12 @@ interface TopicCardProps {
 }
 
 export function TopicCard({ topic, href }: TopicCardProps) {
+  const match = topic.youtubeUrl.match(/(?<=youtu\.be\/)[\w-]+/)
+  const youtubeId = match ? match[0] : null
+
+  const imageSrc = youtubeId
+    ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+    : "/placeholder.svg"
   return (
     <Link href={href}>
       <span className="sr-only">{topic.name}</span>
@@ -21,7 +27,7 @@ export function TopicCard({ topic, href }: TopicCardProps) {
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={4 / 3}>
             <Image
-              src={`https://img.youtube.com/vi/${topic.youtubeId}/hqdefault.jpg`}
+              src={imageSrc}
               alt={topic.name}
               className="object-cover"
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"

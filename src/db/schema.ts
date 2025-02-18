@@ -25,7 +25,7 @@ export const coursesRelations = relations(courses, ({ many }) => ({
 export const topics = pgTable("topics", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   name: t.varchar({ length: 256 }).notNull(),
-  youtubeUrl: t.text(),
+  youtubeUrl: t.text().notNull(),
   description: t.text(),
   courseId: t
     .uuid()
