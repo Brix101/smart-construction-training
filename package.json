@@ -17,7 +17,8 @@
     "db:generate": "dotenv drizzle-kit generate:pg",
     "db:push": "dotenv drizzle-kit push:pg",
     "db:introspect": "dotenv drizzle-kit introspect:pg",
-    "db:studio": "dotenv drizzle-kit studio --verbose"
+    "db:studio": "dotenv drizzle-kit studio --verbose",
+    "db:seed": "dotenv tsx ./src/scripts/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.11.3",

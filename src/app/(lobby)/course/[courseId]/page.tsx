@@ -22,9 +22,9 @@ interface TopicsPageProps {
 }
 
 export default async function TopicsPage(props: TopicsPageProps) {
-  const params = await props.params
+  const { courseId } = await props.params
 
-  const course = await getCourse(Number(params.courseId))
+  const course = await getCourse(courseId)
   if (!course) {
     notFound()
   }
