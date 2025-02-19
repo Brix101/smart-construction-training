@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -23,20 +24,17 @@ import { addTopic } from "@/lib/actions/topic"
 import { catchError } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 
-interface AddTopicFormProps {
-  courseId: number
-}
-
 type Inputs = z.infer<typeof topicSchema>
 
-export function AddTopicForm({ courseId }: AddTopicFormProps) {
+export function AddTopicForm() {
+  const { courseId } = useParams<{ courseId: string }>()
+
   const [isPending, startTransition] = React.useTransition()
 
   const form = useForm<Inputs>({
     resolver: zodResolver(topicSchema),
     defaultValues: {
       name: "",
-      youtubeId: "",
       youtubeUrl: "",
       description: "",
       materials: "",
@@ -86,29 +84,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
             <FormItem className="w-full">
               <FormLabel>Youtube url</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Type topic youtube url here."
-                  value={field.value}
-                  onChange={(e) => {
-                    const splitUrl = e.target.value.split("/")
-                    const youtubeId = splitUrl[splitUrl.length - 1]
-                    form.setValue("youtubeId", youtubeId)
-                    field.onChange(e)
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="youtubeId"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Youtube Id</FormLabel>
-              <FormControl>
-                <Input placeholder="Type topic youtube Id here." {...field} />
+                <Input placeholder="Type topic youtube url here." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -149,12 +125,7 @@ export function AddTopicForm({ courseId }: AddTopicFormProps) {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             onClick={() =>
-              void form.trigger([
-                "name",
-                "youtubeId",
-                "youtubeUrl",
-                "description",
-              ])
+              void form.trigger(["name", "youtubeUrl", "description"])
             }
             className="w-fit"
             disabled={isPending}

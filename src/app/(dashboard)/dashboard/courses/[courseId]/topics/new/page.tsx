@@ -18,16 +18,7 @@ export const metadata: Metadata = {
   description: "Add a new topic",
 }
 
-interface NewTopicPageProps {
-  params: Promise<{
-    courseId: string
-  }>
-}
-
-export default async function NewTopicPage(props: NewTopicPageProps) {
-  const params = await props.params
-  const courseId = Number(params.courseId)
-
+export default async function NewTopicPage() {
   const user = await getCacheduser()
 
   if (!user) {
@@ -41,7 +32,7 @@ export default async function NewTopicPage(props: NewTopicPageProps) {
         <CardDescription>Add a new topic to your course</CardDescription>
       </CardHeader>
       <CardContent>
-        <AddTopicForm courseId={courseId} />
+        <AddTopicForm />
       </CardContent>
     </Card>
   )

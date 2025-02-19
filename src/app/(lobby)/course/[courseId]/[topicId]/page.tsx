@@ -1,13 +1,8 @@
-import { Suspense } from "react"
 import { notFound } from "next/navigation"
 
 import { DownloadMaterialButton } from "@/app/(lobby)/_components/download-material-button"
-import { TopicSideBar } from "@/app/(lobby)/_components/topic-sidebar"
-import { TopicSidebarLoader } from "@/app/(lobby)/_components/topic-sidebar-loader"
-import { Shell } from "@/components/shell"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card } from "@/components/ui/card"
-import { getCourse } from "@/lib/queries/course"
 import { getTopic } from "@/lib/queries/topic"
 import { getYouTubeId } from "@/lib/youtube"
 
