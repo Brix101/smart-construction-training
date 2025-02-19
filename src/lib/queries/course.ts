@@ -60,8 +60,28 @@ export async function getCourse(courseId: Course["id"]) {
         return null
       }
     },
-    ["published-course ", courseId],
-    { revalidate: 1, tags: ["published-course", courseId] }
+    ["course", courseId],
+    { revalidate: 1, tags: ["course", courseId] }
+  )()
+}
+
+export async function getCourseTopics(courseId: Course["id"]) {
+  return await unstable_cache(
+    async () => {
+      try {
+        const courseTopics = await db.query.topics.findMany({
+          where: and(eq(topics.courseId, courseId), eq(topics.isActive, true)),
+          orderBy: sql`COALESCE(SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER,99999999)`,
+        })
+
+        return courseTopics
+      } catch (err) {
+        console.error(err)
+        return []
+      }
+    },
+    ["course-topics", courseId],
+    { revalidate: 1, tags: ["course-topics", courseId] }
   )()
 }
 
