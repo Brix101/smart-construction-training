@@ -1,6 +1,6 @@
-import { neon, Pool } from "@neondatabase/serverless"
-import { drizzle } from "drizzle-orm/neon-http"
+import { Pool } from "@neondatabase/serverless"
 import { drizzle as pgDrizzle } from "drizzle-orm/node-postgres"
+import { drizzle } from "drizzle-orm/vercel-postgres"
 
 import { env } from "@/env"
 
@@ -10,10 +10,13 @@ const pool = new Pool({
   connectionString: env.DATABASE_URL,
 })
 
-export const dbPool = pgDrizzle(pool)
+export const dbPool = pgDrizzle(pool, {
+  logger: env.NODE_ENV === "development",
+  casing: "snake_case",
+})
 
-const connection = neon(env.DATABASE_URL!)
-export const db = drizzle(connection, {
+export const db = drizzle({
   schema,
   logger: env.NODE_ENV === "development",
+  casing: "snake_case",
 })

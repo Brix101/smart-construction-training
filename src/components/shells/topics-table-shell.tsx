@@ -6,6 +6,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type ColumnDef } from "@tanstack/react-table"
 import { toast } from "sonner"
 
+import type { Course, Topic } from "@/db/schema"
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { Button } from "@/components/ui/button"
@@ -18,14 +19,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { type Topic } from "@/db/schema"
 import { deleteTopic } from "@/lib/actions/topic"
-import { catchError, formatDate } from "@/lib/utils"
+import { catchError } from "@/lib/utils"
 
-type AwaitedTopic = Pick<
-  Topic,
-  "id" | "name" | "youtubeId" | "youtubeUrl" | "createdAt"
->
+type AwaitedTopic = Pick<Topic, "id" | "name" | "createdAt">
 
 interface TopicsTableShellProps {
   transaction: Promise<{
@@ -33,7 +30,7 @@ interface TopicsTableShellProps {
     count: number
   }>
   limit: number
-  courseId: number
+  courseId: Course["id"]
 }
 
 export function TopicsTableShell({
@@ -45,7 +42,9 @@ export function TopicsTableShell({
   const pageCount = Math.ceil(count / limit)
 
   const [isPending, startTransition] = React.useTransition()
-  const [selectedRowIds, setSelectedRowIds] = React.useState<number[]>([])
+  const [selectedRowIds, setSelectedRowIds] = React.useState<
+    AwaitedTopic["id"][]
+  >([])
 
   // Memoize the columns so they don't re-render on every render
   const columns = React.useMemo<ColumnDef<AwaitedTopic, unknown>[]>(
@@ -88,27 +87,6 @@ export function TopicsTableShell({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Name" />
         ),
-      },
-      {
-        accessorKey: "youtubeUrl",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Youtube link" />
-        ),
-      },
-      {
-        accessorKey: "youtubeId",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Youtube Id" />
-        ),
-      },
-
-      {
-        accessorKey: "createdAt",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Created At" />
-        ),
-        cell: ({ cell }) => formatDate(cell.getValue() as Date),
-        enableColumnFilter: false,
       },
       {
         id: "actions",

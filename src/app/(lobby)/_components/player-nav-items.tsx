@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useParams, usePathname } from "next/navigation"
 import { PlayIcon } from "@radix-ui/react-icons"
 
 import type { Topic } from "@/db/schema"
@@ -13,14 +13,16 @@ interface TopicPlayerSideBarProps {
 }
 
 export function PlayerNavItems({ topics }: TopicPlayerSideBarProps) {
+  const { topicId } = useParams<{ topicId: string }>()
   const pathname = usePathname()
 
   return (
     <ScrollArea className="h-[calc(100vh-10rem)]">
       <div className="flex flex-col gap-2">
         {topics.map((topic) => {
-          const href = `/topic/${topic.id}`
-          const isActive = href.includes(pathname)
+          const href = pathname.replace(topicId, topic.id)
+          const isActive = topic.id === topicId
+
           return (
             <Link aria-label={topic.name} key={topic.id} href={href}>
               <span

@@ -1,26 +1,19 @@
-import { relations } from "drizzle-orm"
-import {
-  boolean,
-  integer,
-  pgTable,
-  primaryKey,
-  serial,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core"
+import { relations, sql } from "drizzle-orm"
+import { pgEnum, pgTable, primaryKey } from "drizzle-orm/pg-core"
 
-export const courses = pgTable("courses", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  description: text("description"),
-  level: integer("level").notNull().default(1),
-  sequence: integer("sequence").notNull().default(0),
-  isPublished: boolean("is_published").notNull().default(false),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-})
+export const courses = pgTable("courses", (t) => ({
+  id: t.uuid().notNull().primaryKey().defaultRandom(),
+  name: t.varchar({ length: 256 }).unique().notNull(),
+  description: t.text(),
+  level: t.integer().notNull().default(1),
+  sequence: t.integer().notNull().default(0),
+  isPublished: t.boolean().notNull().default(false),
+  isActive: t.boolean().notNull().default(true),
+  createdAt: t.timestamp().defaultNow().notNull(),
+  updatedAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .$onUpdateFn(() => sql`now()`),
+}))
 
 export type Course = typeof courses.$inferSelect
 export type NewCourse = typeof courses.$inferInsert
@@ -29,19 +22,21 @@ export const coursesRelations = relations(courses, ({ many }) => ({
   topics: many(topics),
 }))
 
-export const topics = pgTable("topics", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  youtubeId: varchar("youtube_id", { length: 100 }).notNull(),
-  youtubeUrl: text("youtube_url"),
-  description: text("description"),
-  courseId: integer("course_id")
+export const topics = pgTable("topics", (t) => ({
+  id: t.uuid().notNull().primaryKey().defaultRandom(),
+  name: t.varchar({ length: 256 }).notNull(),
+  youtubeUrl: t.text().notNull(),
+  description: t.text(),
+  courseId: t
+    .uuid()
     .references(() => courses.id, { onDelete: "cascade" })
     .notNull(),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-})
+  isActive: t.boolean().notNull().default(true),
+  createdAt: t.timestamp().defaultNow().notNull(),
+  updatedAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .$onUpdateFn(() => sql`now()`),
+}))
 
 export type Topic = typeof topics.$inferSelect
 export type NewTopic = typeof topics.$inferInsert
@@ -51,51 +46,56 @@ export const topicsRelations = relations(topics, ({ one, many }) => ({
     fields: [topics.courseId],
     references: [courses.id],
   }),
-  materials: many(topicsToMaterials),
+  materials: many(topicMaterials),
 }))
 
-export const materials = pgTable("materials", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).default(""),
-  link: text("link").unique().notNull(),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-})
+export const materialType = pgEnum("material_type", ["upload", "download"])
+
+export const materials = pgTable("materials", (t) => ({
+  id: t.uuid().notNull().primaryKey().defaultRandom(),
+  name: t.varchar({ length: 256 }).default(""),
+  link: t.text().unique().notNull(),
+  materialType: materialType().default("download").notNull(),
+  isActive: t.boolean().notNull().default(true),
+  createdAt: t.timestamp().defaultNow().notNull(),
+  updatedAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .$onUpdateFn(() => sql`now()`),
+}))
 
 export type Material = typeof materials.$inferSelect
 export type NewMaterial = typeof materials.$inferInsert
 
 export const materialsRelations = relations(materials, ({ many }) => ({
-  topics: many(topicsToMaterials),
+  topics: many(topicMaterials),
 }))
 
-export const topicsToMaterials = pgTable(
-  "topics_to_materials",
-  {
-    topicId: integer("topic_id")
+export const topicMaterials = pgTable(
+  "topic_materials",
+  (t) => ({
+    topicId: t
+      .uuid()
       .notNull()
       .references(() => topics.id),
-    materialId: integer("material_id")
+    materialId: t
+      .uuid()
       .notNull()
       .references(() => materials.id),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.topicId, t.materialId] }),
-  })
+  }),
+  (t) => [primaryKey({ columns: [t.topicId, t.materialId] })]
 )
 
-export type NewTopicsToMaterials = typeof topicsToMaterials.$inferInsert
+export type NewTopicsToMaterials = typeof topicMaterials.$inferInsert
 
 export const topicsToMaterialsRelations = relations(
-  topicsToMaterials,
+  topicMaterials,
   ({ one }) => ({
     material: one(materials, {
-      fields: [topicsToMaterials.materialId],
+      fields: [topicMaterials.materialId],
       references: [materials.id],
     }),
     topic: one(topics, {
-      fields: [topicsToMaterials.topicId],
+      fields: [topicMaterials.topicId],
       references: [topics.id],
     }),
   })

@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default async function LoadingPage() {
+export default function CourseShellLoader() {
   return (
     <Shell>
       <Breadcrumb>

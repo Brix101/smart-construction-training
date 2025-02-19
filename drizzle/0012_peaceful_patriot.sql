@@ -1,1 +1,0 @@
-ALTER TABLE "courses" ADD COLUMN "sequence" integer DEFAULT 0 NOT NULL;

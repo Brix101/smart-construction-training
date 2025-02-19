@@ -19,10 +19,10 @@ import { getTopicSchema, topicSchema } from "@/lib/validations/topic"
 import { checkRole } from "../roles"
 
 const extendedTopicSchema = topicSchema.extend({
-  courseId: z.number(),
+  courseId: z.string(),
 })
 
-type GroupedTopics = Record<number, TopicGroup>
+type GroupedTopics = Record<string, TopicGroup>
 
 export async function filterTopics({ query }: { query: string }) {
   noStore()
@@ -104,7 +104,7 @@ export async function addTopic(input: z.infer<typeof extendedTopicSchema>) {
 }
 
 const _extendedTopicSchemaWithId = extendedTopicSchema.extend({
-  id: z.number(),
+  id: z.string(),
 })
 
 type UpdateTopicInput = z.infer<typeof _extendedTopicSchemaWithId>

@@ -26,7 +26,11 @@ import { topicSchema } from "@/lib/validations/topic"
 
 interface UpdateTopicFormProps {
   topic: Topic & {
-    materials: { topicId: number; materialId: number; material: Material }[]
+    materials: {
+      topicId: Topic["id"]
+      materialId: Material["id"]
+      material: Material
+    }[]
   }
 }
 
@@ -45,7 +49,6 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
     defaultValues: {
       name: topic.name ?? "",
       description: topic.description ?? "",
-      youtubeId: topic.youtubeId ?? "",
       youtubeUrl: topic.youtubeUrl ?? "",
       materials: materialStr,
     },
@@ -93,32 +96,12 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
             <FormItem className="w-full">
               <FormLabel>Youtube url</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Type topic youtube url here."
-                  value={field.value}
-                  onChange={(e) => {
-                    const splitUrl = e.target.value.split("/")
-                    const youtubeId = splitUrl[splitUrl.length - 1]
-                    form.setValue("youtubeId", youtubeId)
-                    field.onChange(e)
-                  }}
-                />
+                <Input placeholder="Type topic youtube url here." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormItem className="w-full">
-          <FormLabel>Youtube Id</FormLabel>
-          <FormControl>
-            <Input
-              placeholder="Type topic youtube Id here."
-              {...form.register("youtubeId")}
-              defaultValue={topic.youtubeId ?? ""}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
         <FormItem>
           <FormLabel>Materials</FormLabel>
           <FormControl>
@@ -158,7 +141,6 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
               startTransition(async () => {
                 void form.trigger([
                   "name",
-                  "youtubeId",
                   "youtubeUrl",
                   "materials",
                   "description",

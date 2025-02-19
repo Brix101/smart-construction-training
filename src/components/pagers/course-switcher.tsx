@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import {
   CaretSortIcon,
   CheckIcon,
@@ -9,6 +9,7 @@ import {
   PlusCircledIcon,
 } from "@radix-ui/react-icons"
 
+import type { getCourses } from "@/lib/actions/course"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -25,27 +26,28 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { type Course } from "@/db/schema"
 import { cn } from "@/lib/utils"
 
 interface CourseSwitcherProps
   extends React.ComponentPropsWithoutRef<typeof PopoverTrigger> {
-  currentCourse: Pick<Course, "id" | "name">
-  courses: Pick<Course, "id" | "name">[]
+  coursesPromise: ReturnType<typeof getCourses>
   dashboardRedirectPath: string
 }
 
 export function CourseSwitcher({
-  currentCourse,
-  courses,
+  coursesPromise,
   dashboardRedirectPath,
   className,
   ...props
 }: CourseSwitcherProps) {
+  const { courseId } = useParams<{ courseId: string }>()
   const router = useRouter()
   const pathname = usePathname()
   const [isOpen, setIsOpen] = React.useState(false)
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+
+  const courses = React.use(coursesPromise)
+  const selectedCourse = courses.find((course) => course.id === courseId)
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -63,7 +65,9 @@ export function CourseSwitcher({
             {...props}
           >
             <CircleIcon className="mr-2 h-4 w-4" aria-hidden="true" />
-            <span className="line-clamp-1">{currentCourse.name}</span>
+            <span className="line-clamp-1">
+              {selectedCourse?.name ?? "Select a course"}
+            </span>
             <CaretSortIcon
               className="ml-auto h-4 w-4 shrink-0 opacity-50"
               aria-hidden="true"
@@ -80,13 +84,12 @@ export function CourseSwitcher({
                   <CommandItem
                     key={course.id}
                     onSelect={() => {
-                      router.push(
-                        pathname.replace(
-                          String(currentCourse.id),
-                          String(course.id)
-                        )
-                      )
                       setIsOpen(false)
+                      if (pathname.includes(course.id)) {
+                        router.replace(pathname.replace(courseId, course.id))
+                      } else {
+                        router.push(`/dashboard/courses/${course.id}`)
+                      }
                     }}
                     className="text-sm"
                   >
@@ -95,7 +98,7 @@ export function CourseSwitcher({
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        currentCourse.id === course.id
+                        selectedCourse?.id === course.id
                           ? "opacity-100"
                           : "opacity-0"
                       )}

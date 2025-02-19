@@ -1,1 +1,0 @@
-ALTER TABLE "courses" ADD COLUMN "active" boolean DEFAULT false NOT NULL;
