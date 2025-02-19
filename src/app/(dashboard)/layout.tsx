@@ -1,8 +1,9 @@
+import { DashboardHeader } from "@/app/(dashboard)/dashboard/_components/dashboard-header"
 import { DashboardSidebar } from "@/app/(dashboard)/dashboard/_components/dashboard-sidebar"
-import { SiteHeader } from "@/components/layouts/site-header"
+import { DashboardSidebarSheet } from "@/app/(dashboard)/dashboard/_components/dashboard-sidebar-sheet"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { getCacheduser } from "@/lib/actions/auth"
 import { checkRole } from "@/lib/roles"
-import { SidebarProvider } from "@/providers/sidebar-provider"
 
 export default async function DashboardLayout({
   children,
@@ -12,16 +13,18 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader user={user} />
-        <div className="container flex-1 items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-          <DashboardSidebar
-            className="top-[calc(theme('spacing.16')_+_0.1rem)] z-30 hidden border-r lg:sticky lg:block"
-            isAdmin={isAdmin}
-          />
-          <main className="flex w-full flex-col overflow-hidden">
-            {children}
-          </main>
+      <div className="grid min-h-screen w-full lg:grid-cols-[17.5rem_1fr]">
+        <DashboardSidebar
+          isAdmin={isAdmin}
+          className="top-0 z-30 hidden flex-col gap-4 border-r border-border/60 lg:sticky lg:block"
+        />
+        <div className="flex flex-col">
+          <DashboardHeader user={user}>
+            <DashboardSidebarSheet className="lg:hidden">
+              <DashboardSidebar isAdmin={isAdmin} />
+            </DashboardSidebarSheet>
+          </DashboardHeader>
+          <main className="flex-1 overflow-hidden px-6">{children}</main>
         </div>
       </div>
     </SidebarProvider>
