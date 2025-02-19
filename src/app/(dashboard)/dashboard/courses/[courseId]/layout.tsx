@@ -1,11 +1,7 @@
 import React from "react"
 import { redirect } from "next/navigation"
 
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
 import { CourseTabs } from "@/components/pagers/course-tabs"
 import { Shell } from "@/components/shell"
@@ -36,9 +32,6 @@ export default async function CourseLayout(props: CourseLayoutProps) {
       <div className="xxs:flex-row flex flex-col gap-4 pr-1">
         <PageHeader className="flex-1">
           <PageHeaderHeading size="sm">Courses</PageHeaderHeading>
-          <PageHeaderDescription size="sm">
-            View and manage courses
-          </PageHeaderDescription>
         </PageHeader>
 
         <React.Suspense fallback={<Skeleton className="h-10 w-full" />}>

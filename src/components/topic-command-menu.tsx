@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { CircleIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
 
 import type { TopicGroup } from "@/types/topic"
+import { Kbd } from "@/components/kbd"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -14,14 +15,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { SheetTitle } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useDebounce } from "@/hooks/use-debounce"
 import { filterTopics } from "@/lib/actions/topic"
 import { catchError, cn, isMacOs } from "@/lib/utils"
-
-import { Kbd } from "./kbd"
-import { SheetTitle } from "./ui/sheet"
-import { VisuallyHidden } from "./visually-hidden"
 
 export function TopicCommandMenu() {
   const router = useRouter()

@@ -19,7 +19,7 @@ export default async function DashboardLayout({
           className="top-0 z-30 hidden flex-col gap-4 border-r border-border/60 lg:sticky lg:block"
         />
         <div className="flex flex-col">
-          <DashboardHeader user={user}>
+          <DashboardHeader user={user} isAdmin={isAdmin}>
             <DashboardSidebarSheet className="lg:hidden">
               <DashboardSidebar isAdmin={isAdmin} />
             </DashboardSidebarSheet>

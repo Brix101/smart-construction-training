@@ -1,11 +1,10 @@
 import * as React from "react"
-import { Link } from "lucide-react"
+import Link from "next/link"
 
 import { Icons } from "@/components/icons"
 import { SidebarNav } from "@/components/layouts/sidebar-nav"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { dashboardConfig } from "@/config/dashboard"
-import { siteConfig } from "@/config/site"
 import { adminRoutes } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
@@ -32,7 +31,7 @@ export function DashboardSidebar({
           className="font-heading flex w-fit items-center tracking-wider text-foreground/90 transition-colors hover:text-foreground"
         >
           <Icons.logo className="mb-1 mr-2 h-7 w-7" aria-hidden="true" />
-          {siteConfig.name}
+          SCTC
         </Link>
       </div>
       <div className="flex flex-col gap-2.5 px-4 pt-2 lg:px-6 lg:pt-4">

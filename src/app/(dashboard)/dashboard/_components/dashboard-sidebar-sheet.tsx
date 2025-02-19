@@ -9,6 +9,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useSidebar } from "@/components/ui/sidebar"
@@ -49,6 +50,7 @@ export function DashboardSidebarSheet({
         side="left"
         className="inset-y-0 flex h-auto w-[18.75rem] flex-col items-center gap-4 px-0 py-4"
       >
+        <SheetTitle className="sr-only">x</SheetTitle>
         <SheetClose asChild>
           <Link
             href="/"

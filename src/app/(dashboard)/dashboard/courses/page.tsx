@@ -8,11 +8,7 @@ import {
   CourseListContainer,
   CourseListContainerLoader,
 } from "@/app/(dashboard)/_components/course-list-container"
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
@@ -33,12 +29,8 @@ export default async function CoursesPage() {
 
   return (
     <Shell variant="sidebar">
-      <PageHeader
-        id="courses-header"
-        aria-labelledby="courses-header-heading"
-        separated
-      >
-        <div className="flex space-x-4">
+      <PageHeader id="courses-header" aria-labelledby="courses-header-heading">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <PageHeaderHeading size="sm" className="flex-1">
             Courses
           </PageHeaderHeading>
@@ -54,9 +46,6 @@ export default async function CoursesPage() {
             Create course
           </Link>
         </div>
-        <PageHeaderDescription size="sm">
-          View and manage courses
-        </PageHeaderDescription>
       </PageHeader>
       <React.Suspense fallback={<CourseAlertSkeleton />}>
         <CourseAlertCount alertCountPromise={alertCountPromise} />
