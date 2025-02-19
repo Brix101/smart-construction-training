@@ -46,8 +46,6 @@ export async function getPublishedCourse(courseId: Course["id"]) {
 export async function getCourse(courseId: Course["id"]) {
   return await unstable_cache(
     async () => {
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-
       try {
         const course = await db.query.courses.findFirst({
           where: and(eq(courses.id, courseId)),

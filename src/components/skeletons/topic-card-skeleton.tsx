@@ -6,12 +6,12 @@ export function TopicCardSkeleton() {
   return (
     <Card className="h-full w-full overflow-hidden transition-colors hover:bg-muted/50">
       <CardHeader className="border-b p-0">
-        <AspectRatio ratio={4 / 3}>
-          <div className="h-full w-full animate-pulse bg-muted" />
+        <AspectRatio ratio={21 / 9}>
+          <Skeleton className="h-full w-full" />
         </AspectRatio>
       </CardHeader>
       <CardContent className="space-y-1.5 p-4">
-        <div className="h-6 animate-pulse rounded bg-muted" />
+        <Skeleton className="h-4" />
       </CardContent>
     </Card>
   )
