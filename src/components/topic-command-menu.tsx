@@ -20,6 +20,8 @@ import { filterTopics } from "@/lib/actions/topic"
 import { catchError, cn, isMacOs } from "@/lib/utils"
 
 import { Kbd } from "./kbd"
+import { SheetTitle } from "./ui/sheet"
+import { VisuallyHidden } from "./visually-hidden"
 
 export function TopicCommandMenu() {
   const router = useRouter()
@@ -91,6 +93,7 @@ export function TopicCommandMenu() {
           }
         }}
       >
+        <SheetTitle className="sr-only">x</SheetTitle>
         <CommandInput
           placeholder="Start typing..."
           value={query}
