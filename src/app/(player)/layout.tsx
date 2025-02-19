@@ -1,5 +1,21 @@
+import { SiteHeader } from "@/components/layouts/site-header"
+import { getCacheduser } from "@/lib/actions/auth"
+import { checkRole } from "@/lib/roles"
+
 export default async function LobbyLayout({
   children,
 }: React.PropsWithChildren) {
-  return <main className="flex flex-1">{children}</main>
+  const user = await getCacheduser()
+  const isAdmin = await checkRole("admin")
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader user={user} isAdmin={isAdmin} />
+      <main className="flex-1">
+        {children}
+        {/* {modal} */}
+      </main>
+      {/* <SiteFooter /> */}
+    </div>
+  )
 }
