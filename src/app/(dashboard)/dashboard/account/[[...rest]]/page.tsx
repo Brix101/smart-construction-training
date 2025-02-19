@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic"
 
 export default function AccountPage() {
   return (
-    <Shell variant="sidebar" className="gap-0">
+    <Shell variant="sidebar">
       <PageHeader
         id="account-header"
         aria-labelledby="account-header-heading"
