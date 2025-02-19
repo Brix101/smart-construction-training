@@ -65,7 +65,7 @@ export async function getCourse(courseId: Course["id"]) {
     },
     ["course", courseId],
     {
-      revalidate: 3600, // every hour
+      revalidate: 1, // every hour
       tags: ["course", courseId],
     }
   )()
