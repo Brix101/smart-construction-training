@@ -39,7 +39,7 @@ export async function getCourseList() {
     },
     ["courses-list"],
     {
-      revalidate: 1,
+      revalidate: 3600, // every hour
       tags: ["courses-list"],
     }
   )()

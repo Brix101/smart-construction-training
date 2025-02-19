@@ -36,7 +36,10 @@ export async function getPublishedCourse(courseId: Course["id"]) {
       }
     },
     ["published-course ", courseId],
-    { revalidate: 1, tags: ["published-course", courseId] }
+    {
+      revalidate: 3600, // every hour
+      tags: ["published-course", courseId],
+    }
   )()
 }
 
@@ -61,7 +64,10 @@ export async function getCourse(courseId: Course["id"]) {
       }
     },
     ["course", courseId],
-    { revalidate: 1, tags: ["course", courseId] }
+    {
+      revalidate: 3600, // every hour
+      tags: ["course", courseId],
+    }
   )()
 }
 
@@ -81,7 +87,10 @@ export async function getCourseTopics(courseId: Course["id"]) {
       }
     },
     ["course-topics", courseId],
-    { revalidate: 1, tags: ["course-topics", courseId] }
+    {
+      revalidate: 3600, // every hour
+      tags: ["course-topics", courseId],
+    }
   )()
 }
 
