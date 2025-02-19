@@ -1,4 +1,5 @@
-import { notFound, redirect } from "next/navigation"
+import React from "react"
+import { redirect } from "next/navigation"
 
 import {
   PageHeader,
@@ -8,9 +9,9 @@ import {
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
 import { CourseTabs } from "@/components/pagers/course-tabs"
 import { Shell } from "@/components/shell"
-import { db } from "@/db"
-import { courses } from "@/db/schema"
+import { Skeleton } from "@/components/ui/skeleton"
 import { getCacheduser } from "@/lib/actions/auth"
+import { getCourses } from "@/lib/actions/course"
 
 interface CourseLayoutProps extends React.PropsWithChildren {
   params: Promise<{
@@ -24,24 +25,11 @@ export default async function CourseLayout(props: CourseLayoutProps) {
   const { children } = props
 
   const user = await getCacheduser()
+  const coursesPromise = getCourses()
 
   if (!user) {
     redirect("/sign-in")
   }
-
-  // const allcourses = await db
-  //   .select({
-  //     id: courses.id,
-  //     name: courses.name,
-  //   })
-  //   .from(courses)
-  //   .orderBy(courses.name)
-  //
-  // const course = allcourses.find((course) => course.id === courseId)
-  //
-  // if (!course) {
-  //   notFound()
-  // }
 
   return (
     <Shell variant="sidebar">
@@ -52,13 +40,13 @@ export default async function CourseLayout(props: CourseLayoutProps) {
             View and manage courses
           </PageHeaderDescription>
         </PageHeader>
-        {/* {allcourses.length > 1 ? ( */}
-        {/*   <CourseSwitcher */}
-        {/*     currentCourse={course} */}
-        {/*     courses={allcourses} */}
-        {/*     dashboardRedirectPath={"/dashboard/courses/new"} */}
-        {/*   /> */}
-        {/* ) : null} */}
+
+        <React.Suspense fallback={<Skeleton className="h-10 w-full" />}>
+          <CourseSwitcher
+            coursesPromise={coursesPromise}
+            dashboardRedirectPath={"/dashboard/courses/new"}
+          />
+        </React.Suspense>
       </div>
       <div className="space-y-8 overflow-auto">
         <CourseTabs courseId={courseId} />

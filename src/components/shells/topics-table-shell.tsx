@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { deleteTopic } from "@/lib/actions/topic"
-import { catchError, formatDate } from "@/lib/utils"
+import { catchError } from "@/lib/utils"
 
 type AwaitedTopic = Pick<Topic, "id" | "name" | "createdAt">
 
@@ -88,20 +88,6 @@ export function TopicsTableShell({
           <DataTableColumnHeader column={column} title="Name" />
         ),
       },
-      // {
-      //   accessorKey: "youtubeUrl",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title="Youtube link" />
-      //   ),
-      // },
-      // {
-      //   accessorKey: "createdAt",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title="Created At" />
-      //   ),
-      //   cell: ({ cell }) => formatDate(cell.getValue() as Date),
-      //   enableColumnFilter: false,
-      // },
       {
         id: "actions",
         cell: ({ row }) => (
