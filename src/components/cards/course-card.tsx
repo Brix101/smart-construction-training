@@ -38,15 +38,13 @@ export function CourseCard({ course, href, hasBadge }: CourseCardProps) {
           </Badge>
           <div
             className="h-full rounded-t-md border-b"
-            style={getRandomPatternStyle(String(course.id))}
+            style={getRandomPatternStyle(course.id!)}
           />
         </AspectRatio>
         <CardHeader className="space-y-2">
           <CardTitle className="line-clamp-1">{course.name}</CardTitle>
           <CardDescription className="line-clamp-1">
-            {course.description?.length
-              ? course.description
-              : `Explore ${course.name}`}
+            {course.description ? course.description : `Explore ${course.name}`}
           </CardDescription>
         </CardHeader>
       </Card>
