@@ -44,31 +44,22 @@ export async function getPublishedCourse(courseId: Course["id"]) {
 }
 
 export async function getCourse(courseId: Course["id"]) {
-  return await unstable_cache(
-    async () => {
-      try {
-        const course = await db.query.courses.findFirst({
-          where: and(eq(courses.id, courseId)),
-          with: {
-            topics: {
-              where: eq(topics.isActive, true),
-              orderBy: sql`COALESCE(SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER,99999999)`,
-            },
-          },
-        })
+  try {
+    const course = await db.query.courses.findFirst({
+      where: and(eq(courses.id, courseId)),
+      with: {
+        topics: {
+          where: eq(topics.isActive, true),
+          orderBy: sql`COALESCE(SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER,99999999)`,
+        },
+      },
+    })
 
-        return course ? course : null
-      } catch (err) {
-        console.error(err)
-        return null
-      }
-    },
-    ["course", courseId],
-    {
-      revalidate: 3600, // every hour
-      tags: ["course", courseId],
-    }
-  )()
+    return course ? course : null
+  } catch (err) {
+    console.error(err)
+    return null
+  }
 }
 
 export async function getCourseTopics(courseId: Course["id"]) {
