@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default function CourseLoading() {
+export default function CourseContainerLoader() {
   return (
     <div className="space-y-10">
       <Card>

@@ -27,12 +27,12 @@ function PageHeader({
 }
 
 const headingVariants = cva(
-  "font-bold leading-tight tracking-tighter lg:leading-[1.1]",
+  "font-bold leading-tight tracking-tight lg:leading-[1.1]",
   {
     variants: {
       size: {
         default: "text-3xl md:text-4xl",
-        sm: "text-2xl md:text-3xl",
+        sm: "text-xl md:text-2xl",
         lg: "text-4xl md:text-5xl",
       },
     },

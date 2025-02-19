@@ -1,10 +1,6 @@
 import type { Metadata } from "next"
 
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { env } from "@/env"
 
@@ -20,16 +16,9 @@ export const dynamic = "force-dynamic"
 
 export default function AccountPage() {
   return (
-    <Shell variant="sidebar" className="gap-0">
-      <PageHeader
-        id="account-header"
-        aria-labelledby="account-header-heading"
-        separated
-      >
+    <Shell variant="sidebar">
+      <PageHeader id="account-header" aria-labelledby="account-header-heading">
         <PageHeaderHeading size="sm">Account</PageHeaderHeading>
-        <PageHeaderDescription size="sm">
-          Manage your account information
-        </PageHeaderDescription>
       </PageHeader>
       <section
         id="user-account-info"

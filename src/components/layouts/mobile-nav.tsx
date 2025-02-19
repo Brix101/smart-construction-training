@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { useSelectedLayoutSegment } from "next/navigation"
-import { ViewVerticalIcon } from "@radix-ui/react-icons"
 
 import type { MainNavItem, SidebarNavItem } from "@/types"
 import { Icons } from "@/components/icons"
@@ -15,7 +14,12 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
@@ -51,11 +55,12 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden"
         >
-          <ViewVerticalIcon className="h-6 w-6" aria-hidden="true" />
+          <Icons.menu className="h-6 w-6" aria-hidden="true" />
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="pl-1 pr-0">
+        <SheetTitle className="sr-only">x</SheetTitle>
         <div className="px-7">
           <Link
             href="/"
