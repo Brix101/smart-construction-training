@@ -33,8 +33,8 @@ export function PlayerNavItems({ topics }: TopicPlayerSideBarProps) {
                     : "text-muted-foreground"
                 )}
               >
-                <div className="w-8">
-                  <PlayIcon className={cn(isActive ? "" : "invisible")} />
+                <div className={cn(isActive ? "" : "invisible")}>
+                  <PlayIcon className="w-8" />
                 </div>
                 <span className="line-clamp-1 overflow-ellipsis">
                   {topic.name}
