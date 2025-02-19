@@ -1,10 +1,10 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
 
-import { DownloadMaterialButton } from "@/app/(player)/_components/download-material-button"
-import { TopicPlayerHeader } from "@/app/(player)/_components/topic-player-header"
-import { TopicSideBar } from "@/app/(player)/_components/topic-sidebar"
-import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
+import { DownloadMaterialButton } from "@/app/(lobby)/_components/download-material-button"
+import { TopicSideBar } from "@/app/(lobby)/_components/topic-sidebar"
+import { TopicSidebarLoader } from "@/app/(lobby)/_components/topic-sidebar-loader"
+import { Shell } from "@/components/shell"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card } from "@/components/ui/card"
 import { getCourse } from "@/lib/queries/course"
@@ -31,8 +31,8 @@ export default async function TopicPage(props: UpdateTopicPageProps) {
   const youtubeId = getYouTubeId(topic.youtubeUrl)
 
   return (
-    <section className="container">
-      <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <Shell>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <Card className="w-full overflow-hidden">
             <AspectRatio ratio={16 / 9}>
@@ -60,6 +60,6 @@ export default async function TopicPage(props: UpdateTopicPageProps) {
           </Suspense>
         </div>
       </div>
-    </section>
+    </Shell>
   )
 }

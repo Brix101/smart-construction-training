@@ -25,6 +25,7 @@ export default async function TopicsPage(props: TopicsPageProps) {
   const { courseId } = await props.params
 
   const course = await getCourse(courseId)
+
   if (!course) {
     notFound()
   }

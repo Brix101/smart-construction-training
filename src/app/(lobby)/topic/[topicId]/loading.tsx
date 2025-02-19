@@ -1,10 +1,11 @@
-import { TopicSidebarLoader } from "@/app/(player)/_components/topic-sidebar-loader"
+import { TopicSidebarLoader } from "@/app/(lobby)/_components/topic-sidebar-loader"
+import { Shell } from "@/components/shell"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function LoadingPage() {
   return (
-    <section className="container">
-      <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <Shell>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <Skeleton className="mb-4 aspect-video w-full rounded-xl" />
           <Skeleton className="mb-2 mt-10 h-8 w-3/4" />
@@ -16,6 +17,6 @@ export default function LoadingPage() {
           <TopicSidebarLoader />
         </div>
       </div>
-    </section>
+    </Shell>
   )
 }
