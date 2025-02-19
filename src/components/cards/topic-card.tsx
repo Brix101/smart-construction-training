@@ -7,6 +7,7 @@ import Link from "next/link"
 import type { Topic } from "@/db/schema"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getYouTubeId } from "@/lib/youtube"
 
 interface TopicCardProps {
   topic: Topic
@@ -14,12 +15,12 @@ interface TopicCardProps {
 }
 
 export function TopicCard({ topic, href }: TopicCardProps) {
-  const match = topic.youtubeUrl.match(/(?<=youtu\.be\/)[\w-]+/)
-  const youtubeId = match ? match[0] : null
+  const youtubeId = getYouTubeId(topic.youtubeUrl)
 
   const imageSrc = youtubeId
     ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
     : "/placeholder.svg"
+
   return (
     <Link href={href}>
       <span className="sr-only">{topic.name}</span>
