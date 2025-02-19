@@ -17,13 +17,13 @@ export default function CourseShellLoader() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbPage>
-              <Skeleton className="h-4 w-20 bg-foreground" />
+              <Skeleton className="h-4 w-20" />
             </BreadcrumbPage>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>
-              <Skeleton className="h-4 w-20 bg-foreground" />
+              <Skeleton className="h-4 w-28" />
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -32,10 +32,10 @@ export default function CourseShellLoader() {
         <div className="flex w-full flex-col gap-4">
           <div className="space-y-2">
             <h2 className="line-clamp-1 text-2xl font-bold">
-              <Skeleton className="h-7 w-44 bg-foreground" />
+              <Skeleton className="h-7 w-44" />
             </h2>
             <div className="text-mu4ted-foreground text-base">
-              <Skeleton className="h-4 w-44 bg-foreground" />
+              <Skeleton className="h-4 w-44" />
             </div>
           </div>
           <Separator className="my-1.5" />

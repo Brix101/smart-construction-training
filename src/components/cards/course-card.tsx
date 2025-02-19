@@ -24,7 +24,7 @@ export function CourseCard({ course, href, hasBadge }: CourseCardProps) {
       <span className="sr-only">{course.name}</span>
       <Card className="h-full overflow-hidden transition-colors hover:bg-muted/50">
         <AspectRatio ratio={21 / 9}>
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-zinc-950/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary/70" />
           <Badge
             className={cn(
               "pointer-events-none absolute right-2 top-2 rounded-sm px-2 py-0.5 font-semibold",
@@ -38,15 +38,13 @@ export function CourseCard({ course, href, hasBadge }: CourseCardProps) {
           </Badge>
           <div
             className="h-full rounded-t-md border-b"
-            style={getRandomPatternStyle(String(course.id))}
+            style={getRandomPatternStyle(course.id!)}
           />
         </AspectRatio>
         <CardHeader className="space-y-2">
           <CardTitle className="line-clamp-1">{course.name}</CardTitle>
           <CardDescription className="line-clamp-1">
-            {course.description?.length
-              ? course.description
-              : `Explore ${course.name}`}
+            {course.description ? course.description : `Explore ${course.name}`}
           </CardDescription>
         </CardHeader>
       </Card>

@@ -1,18 +1,18 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Card, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function TopicCardSkeleton() {
   return (
-    <Card className="h-full overflow-hidden">
-      <AspectRatio ratio={4 / 3}>
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-zinc-950/50" />
-        <Skeleton className="absolute right-2 top-2 h-6 w-14 rounded-sm px-2 py-1" />
-        <Skeleton className="h-full w-full rounded-b-none" />
-      </AspectRatio>
-      <CardHeader className="space-y-2">
-        <Skeleton className="h-4 w-1/2" />
+    <Card className="h-full w-full overflow-hidden transition-colors hover:bg-muted/50">
+      <CardHeader className="border-b p-0">
+        <AspectRatio ratio={21 / 9}>
+          <Skeleton className="h-full w-full" />
+        </AspectRatio>
       </CardHeader>
+      <CardContent className="space-y-1.5 p-4">
+        <Skeleton className="h-4" />
+      </CardContent>
     </Card>
   )
 }
