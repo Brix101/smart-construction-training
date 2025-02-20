@@ -3,95 +3,59 @@
 import type { z } from "zod"
 import { and, eq } from "drizzle-orm"
 
-import type { NewMaterial } from "@/db/schema"
 import type { materialSchema } from "@/lib/validations/material"
 import { db } from "@/db"
 import { materials, topicMaterials } from "@/db/schema"
 
-function parseMaterialLinks(input: string): NewMaterial[] {
-  const uniqueMaterials = [
-    ...new Set(
-      input
-        .split(",")
-        .map((value) => value.trim())
-        .filter((value) => value !== "")
-    ),
-  ]
-
-  return uniqueMaterials.map((value) => ({
-    link: value,
-  }))
-}
-
-export async function addTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>
+export async function updateTopicMaterialsLink(
+  topicId: string,
+  inputMaterials: z.infer<typeof materialSchema>[]
 ) {
-  if (input.materials !== "") {
-    const materialLinks = parseMaterialLinks(input.materials)
+  const topicsMaterials = await db
+    .select({
+      materialId: topicMaterials.materialId,
+      link: materials.link,
+    })
+    .from(topicMaterials)
+    .leftJoin(materials, eq(materials.id, topicMaterials.materialId))
+    .where(eq(topicMaterials.topicId, topicId))
 
+  const toInsert = inputMaterials.filter(
+    (item) => !topicsMaterials.find(({ link }) => link === item.link)
+  )
+
+  if (toInsert.length > 0) {
+    //TODO: update this query to update and use the id pass from data
     const insertedMaterials = await db
       .insert(materials)
-      .values(materialLinks)
+      .values(toInsert)
       .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
       .returning({ id: materials.id })
 
     const newTopicToMaterials = insertedMaterials.map((material) => {
-      return { materialId: material.id, topicId: input.topicId }
+      return { materialId: material.id, topicId: topicId }
     })
 
-    await db.insert(topicMaterials).values(newTopicToMaterials)
+    await db
+      .insert(topicMaterials)
+      .values(newTopicToMaterials)
+      .onConflictDoNothing()
   }
-}
 
-export async function updateTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>
-) {
-  if (input.materials !== "") {
-    const materialLinks = parseMaterialLinks(input.materials)
+  const toDelete = topicsMaterials.filter(
+    (item) => !inputMaterials.find(({ link }) => link === item.link)
+  )
 
-    const topicsMaterials = await db
-      .select({
-        materialId: topicMaterials.materialId,
-        link: materials.link,
-      })
-      .from(topicMaterials)
-      .leftJoin(materials, eq(materials.id, topicMaterials.materialId))
-      .where(eq(topicMaterials.topicId, input.topicId))
-
-    const toInsert = materialLinks.filter(
-      (item) => !topicsMaterials.find(({ link }) => link === item.link)
-    )
-
-    if (toInsert.length > 0) {
-      const insertedMaterials = await db
-        .insert(materials)
-        .values(toInsert)
-        .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
-        .returning({ id: materials.id })
-
-      const newTopicToMaterials = insertedMaterials.map((material) => {
-        return { materialId: material.id, topicId: input.topicId }
-      })
+  await Promise.all(
+    toDelete.map(async ({ materialId }) => {
       await db
-        .insert(topicMaterials)
-        .values(newTopicToMaterials)
-        .onConflictDoNothing()
-    }
-
-    const toDelete = topicsMaterials.filter(
-      (item) => !materialLinks.find(({ link }) => link === item.link)
-    )
-    await Promise.all(
-      toDelete.map(async ({ materialId }) => {
-        await db
-          .delete(topicMaterials)
-          .where(
-            and(
-              eq(topicMaterials.topicId, input.topicId),
-              eq(topicMaterials.materialId, materialId)
-            )
+        .delete(topicMaterials)
+        .where(
+          and(
+            eq(topicMaterials.topicId, topicId),
+            eq(topicMaterials.materialId, materialId)
           )
-      })
-    )
-  }
+        )
+    })
+  )
 }

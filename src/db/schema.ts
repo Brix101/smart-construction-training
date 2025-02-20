@@ -53,9 +53,9 @@ export const materialType = pgEnum("material_type", ["upload", "download"])
 
 export const materials = pgTable("materials", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
-  name: t.varchar({ length: 256 }).default(""),
+  name: t.varchar({ length: 256 }).default("").notNull(),
   link: t.text().unique().notNull(),
-  materialType: materialType().default("download").notNull(),
+  type: materialType().default("download").notNull(),
   isActive: t.boolean().notNull().default(true),
   createdAt: t.timestamp().defaultNow().notNull(),
   updatedAt: t

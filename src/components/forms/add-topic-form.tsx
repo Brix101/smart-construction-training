@@ -4,7 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { PlusCircle, X } from "lucide-react"
+import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
 
@@ -19,9 +20,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { addTopic } from "@/lib/actions/topic"
-import { catchError } from "@/lib/utils"
+import { catchError, cn } from "@/lib/utils"
 import { topicSchema } from "@/lib/validations/topic"
 
 type Inputs = z.infer<typeof topicSchema>
@@ -37,17 +45,19 @@ export function AddTopicForm() {
       name: "",
       youtubeUrl: "",
       description: "",
-      materials: "",
+      materials: [],
     },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "materials",
   })
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await addTopic({
-          ...data,
-          courseId,
-        })
+        await addTopic(courseId, data)
 
         toast.success("Topic added successfully.")
 
@@ -56,6 +66,10 @@ export function AddTopicForm() {
         catchError(err)
       }
     })
+  }
+
+  function addMaterial() {
+    append({ type: "download", link: "", name: "" })
   }
 
   return (
@@ -92,22 +106,6 @@ export function AddTopicForm() {
         />
         <FormField
           control={form.control}
-          name="materials"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Materials</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Type topic materials link here split by(,) ."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -122,10 +120,91 @@ export function AddTopicForm() {
             </FormItem>
           )}
         />
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <FormLabel>Materials</FormLabel>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className={cn(fields.length > 0 ? "visible" : "hidden")}
+              onClick={addMaterial}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Material
+            </Button>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={cn("w-full", fields.length > 0 ? "hidden" : "visible")}
+            onClick={addMaterial}
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add Material
+          </Button>
+          {fields.map((field, index) => (
+            <div key={field.id} className="space-y-2">
+              <div className="flex items-start space-x-2">
+                <FormField
+                  control={form.control}
+                  name={`materials.${index}.link`}
+                  render={({ field }) => (
+                    <FormItem className="flex-grow">
+                      <FormControl>
+                        <Input placeholder="Enter a link" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`materials.${index}.type`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="download">Download</SelectItem>
+                          <SelectItem value="upload">Upload</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => remove(index)}
+                  aria-label="Remove link"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             onClick={() =>
-              void form.trigger(["name", "youtubeUrl", "description"])
+              void form.trigger([
+                "name",
+                "youtubeUrl",
+                "description",
+                "materials",
+              ])
             }
             className="w-fit"
             disabled={isPending}
