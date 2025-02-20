@@ -4,7 +4,7 @@ import type { z } from "zod"
 import { and, eq } from "drizzle-orm"
 
 import type { NewMaterial } from "@/db/schema"
-import type { materialSchema } from "@/lib/validations/material"
+import type { topicMaterialSchema } from "@/lib/validations/material"
 import { db } from "@/db"
 import { materials, topicMaterials } from "@/db/schema"
 
@@ -24,7 +24,7 @@ function parseMaterialLinks(input: string): NewMaterial[] {
 }
 
 export async function addTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>
+  input: z.infer<typeof topicMaterialSchema>
 ) {
   if (input.materials !== "") {
     const materialLinks = parseMaterialLinks(input.materials)
@@ -44,7 +44,7 @@ export async function addTopicMaterialsLink(
 }
 
 export async function updateTopicMaterialsLink(
-  input: z.infer<typeof materialSchema>
+  input: z.infer<typeof topicMaterialSchema>
 ) {
   if (input.materials !== "") {
     const materialLinks = parseMaterialLinks(input.materials)

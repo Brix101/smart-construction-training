@@ -1,10 +1,16 @@
 import * as z from "zod"
 
+import { materialSchema } from "./material"
+
 export const topicSchema = z.object({
-  name: z.string().min(3).max(256),
-  youtubeUrl: z.string().min(3).max(256),
+  name: z.string().min(3, {
+    message: "Name must be at least 3 characters long",
+  }),
+  youtubeUrl: z.string().url({
+    message: "Invalid YouTube URL",
+  }),
   description: z.string().optional(),
-  materials: z.string().optional(),
+  materials: z.array(materialSchema).optional(),
 })
 
 export const getTopicSchema = z.object({
