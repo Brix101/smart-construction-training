@@ -10,8 +10,10 @@ export const topicSchema = z.object({
     message: "Invalid YouTube URL",
   }),
   description: z.string().optional(),
-  materials: z.array(materialSchema).optional(),
+  materials: z.array(materialSchema),
 })
+
+export const updateTopicSchema = topicSchema.partial()
 
 export const getTopicSchema = z.object({
   id: z.string(),

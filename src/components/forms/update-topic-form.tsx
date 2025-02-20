@@ -3,10 +3,12 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { PlusCircle, X } from "lucide-react"
+import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
 
+import type { getCourseTopic } from "@/lib/queries/course"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,40 +20,41 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { type Material, type Topic } from "@/db/schema"
 import { deleteTopic, updateTopic } from "@/lib/actions/topic"
-import { catchError } from "@/lib/utils"
-import { topicSchema } from "@/lib/validations/topic"
+import { catchError, cn } from "@/lib/utils"
+import { updateTopicSchema } from "@/lib/validations/topic"
 
 interface UpdateTopicFormProps {
-  topic: Topic & {
-    materials: {
-      topicId: Topic["id"]
-      materialId: Material["id"]
-      material: Material
-    }[]
-  }
+  topic: Exclude<Awaited<ReturnType<typeof getCourseTopic>>, undefined>
 }
 
-type Inputs = z.infer<typeof topicSchema>
+type Inputs = z.infer<typeof updateTopicSchema>
 
 export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
-  const materialStr = topic.materials
-    .map(({ material }) => material.link)
-    .join(", ")
-
   const form = useForm<Inputs>({
-    resolver: zodResolver(topicSchema),
+    resolver: zodResolver(updateTopicSchema),
     defaultValues: {
       name: topic.name ?? "",
       description: topic.description ?? "",
       youtubeUrl: topic.youtubeUrl ?? "",
-      materials: materialStr,
+      materials: topic.materials.map((mat) => mat.material),
     },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "materials",
   })
 
   function onSubmit(data: Inputs) {
@@ -69,8 +72,12 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
       }
     })
   }
-  // TODO update this form field same as add
 
+  function addMaterial() {
+    append({ type: "download", link: "", name: "" })
+  }
+
+  // TODO: update this form field same as add
   return (
     <Form {...form}>
       <form
@@ -103,17 +110,6 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           )}
         />
         <FormItem>
-          <FormLabel>Materials</FormLabel>
-          <FormControl>
-            <Textarea
-              placeholder="Type topic materials link here split by(,) ."
-              {...form.register("materials")}
-              defaultValue={materialStr ?? ""}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-        <FormItem>
           <FormLabel>Description</FormLabel>
           <FormControl>
             <Textarea
@@ -124,6 +120,83 @@ export function UpdateTopicForm({ topic }: UpdateTopicFormProps) {
           </FormControl>
           <FormMessage />
         </FormItem>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <FormLabel>Materials</FormLabel>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className={cn(fields.length > 0 ? "visible" : "hidden")}
+              onClick={addMaterial}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Material
+            </Button>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={cn("w-full", fields.length > 0 ? "hidden" : "visible")}
+            onClick={addMaterial}
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add Material
+          </Button>
+          {fields.map((field, index) => (
+            <div key={field.id} className="space-y-2">
+              <div className="flex items-start space-x-2">
+                <FormField
+                  control={form.control}
+                  name={`materials.${index}.link`}
+                  render={({ field }) => (
+                    <FormItem className="flex-grow">
+                      <FormControl>
+                        <Input placeholder="Enter a link" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`materials.${index}.type`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="download">Download</SelectItem>
+                          <SelectItem value="upload">Upload</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => remove(index)}
+                  aria-label="Remove link"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="flex space-x-2">
           <Button disabled={isPending}>
             {isPending && (

@@ -2,7 +2,7 @@ import * as z from "zod"
 
 export const materialSchema = z.object({
   name: z.string().optional().default(""),
-  url: z
+  link: z
     .string()
     .url({ message: "Please enter a valid URL" })
     .or(z.literal("")),

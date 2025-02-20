@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Plus, PlusCircle, X } from "lucide-react"
+import { PlusCircle, X } from "lucide-react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
@@ -20,18 +20,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { addTopic } from "@/lib/actions/topic"
-import { catchError, cn } from "@/lib/utils"
-import { topicSchema } from "@/lib/validations/topic"
-
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select"
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { addTopic } from "@/lib/actions/topic"
+import { catchError, cn } from "@/lib/utils"
+import { topicSchema } from "@/lib/validations/topic"
 
 type Inputs = z.infer<typeof topicSchema>
 
@@ -58,10 +57,7 @@ export function AddTopicForm() {
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await addTopic({
-          ...data,
-          courseId,
-        })
+        await addTopic(courseId, data)
 
         toast.success("Topic added successfully.")
 
@@ -73,7 +69,7 @@ export function AddTopicForm() {
   }
 
   function addMaterial() {
-    append({ type: "download", url: "", name: "" })
+    append({ type: "download", link: "", name: "" })
   }
 
   return (
@@ -153,7 +149,7 @@ export function AddTopicForm() {
               <div className="flex items-start space-x-2">
                 <FormField
                   control={form.control}
-                  name={`materials.${index}.url`}
+                  name={`materials.${index}.link`}
                   render={({ field }) => (
                     <FormItem className="flex-grow">
                       <FormControl>
@@ -203,7 +199,12 @@ export function AddTopicForm() {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             onClick={() =>
-              void form.trigger(["name", "youtubeUrl", "description"])
+              void form.trigger([
+                "name",
+                "youtubeUrl",
+                "description",
+                "materials",
+              ])
             }
             className="w-fit"
             disabled={isPending}
