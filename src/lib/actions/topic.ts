@@ -105,9 +105,20 @@ export async function addTopic(
     )
 
     if (insertedMaterials.length >= 1) {
-      const newTopicMaterials = insertedMaterials.map((material) => {
-        return { materialId: material.id, topicId: newTopic.id }
-      })
+      const uniqueInsertedMaterials = insertedMaterials.reduce(
+        (acc, material) => {
+          if (!acc.some((m) => m.id === material.id)) {
+            acc.push(material)
+          }
+          return acc
+        },
+        [] as typeof insertedMaterials
+      )
+
+      const newTopicMaterials = uniqueInsertedMaterials.map(({ id }) => ({
+        materialId: id,
+        topicId: newTopic.id,
+      }))
 
       await db.insert(topicMaterials).values(newTopicMaterials)
     }

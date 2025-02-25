@@ -1,6 +1,6 @@
 "use client"
 
-import { Download } from "lucide-react"
+import { UploadCloudIcon } from "lucide-react"
 
 import type { Material } from "@/db/schema"
 import { Button } from "@/components/ui/button"
@@ -10,20 +10,20 @@ interface TopicPlayerHeaderProps {
   materials: { material: Material }[]
 }
 
-export function DownloadMaterialButton({ materials }: TopicPlayerHeaderProps) {
+export function UploadMaterialButton({ materials }: TopicPlayerHeaderProps) {
   console.log(materials)
 
-  const downloadMaterial = materials
-    .filter(({ material }) => material.type === "download")
+  const uploadMaterials = materials
+    .filter(({ material }) => material.type === "upload")
     .map((item) => item.material)
 
   function openLinks() {
-    downloadMaterial.forEach((material) => {
+    uploadMaterials.forEach((material) => {
       window.open(material.link, "_blank")
     })
   }
 
-  const isDisabled = downloadMaterial.length === 0
+  const isDisabled = uploadMaterials.length === 0
 
   return (
     <Button
@@ -35,9 +35,9 @@ export function DownloadMaterialButton({ materials }: TopicPlayerHeaderProps) {
       )}
       disabled={isDisabled}
     >
-      <Download className="mr-2 h-4 w-4" />
-      Download Training Materials
-      <span className="sr-only">Download Training Materials</span>
+      <UploadCloudIcon className="mr-2 h-4 w-4" />
+      Upload Materials
+      <span className="sr-only">Upload Materials</span>
     </Button>
   )
 }

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { DownloadMaterialButton } from "@/app/(lobby)/_components/download-material-button"
+import { UploadMaterialButton } from "@/app/(lobby)/_components/upload-material-button"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card } from "@/components/ui/card"
 import { getTopic } from "@/lib/queries/topic"
@@ -41,8 +42,9 @@ export default async function TopicPage(props: UpdateTopicPageProps) {
       <h1 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         {topic.name}
       </h1>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center gap-2">
         <DownloadMaterialButton materials={topic.materials} />
+        <UploadMaterialButton materials={topic.materials} />
       </div>
     </>
   )
