@@ -84,27 +84,34 @@ export async function addTopic(
     throw new Error("Unauthorized")
   }
 
-  await db.transaction(async (tx) => {
-    const [newTopic] = await tx
-      .insert(topics)
-      .values({
-        ...input,
-        courseId,
-      })
-      .returning({ id: topics.id })
-
-    const insertedMaterials = await tx
-      .insert(materials)
-      .values(inputTopicMaterials)
-      .onConflictDoNothing()
-      .returning({ id: materials.id })
-
-    const newTopicMaterials = insertedMaterials.map((material) => {
-      return { materialId: material.id, topicId: newTopic.id }
+  const [newTopic] = await db
+    .insert(topics)
+    .values({
+      ...input,
+      courseId,
     })
+    .returning({ id: topics.id })
 
-    await tx.insert(topicMaterials).values(newTopicMaterials)
-  })
+  if (inputTopicMaterials.length >= 1) {
+    const insertedMaterials = await Promise.all(
+      inputTopicMaterials.map(async (material) => {
+        const [newMaterial] = await db
+          .insert(materials)
+          .values(material)
+          .onConflictDoUpdate({ target: materials.link, set: { name: "" } })
+          .returning({ id: materials.id })
+        return newMaterial
+      })
+    )
+
+    if (insertedMaterials.length >= 1) {
+      const newTopicMaterials = insertedMaterials.map((material) => {
+        return { materialId: material.id, topicId: newTopic.id }
+      })
+
+      await db.insert(topicMaterials).values(newTopicMaterials)
+    }
+  }
 
   revalidatePath(`/dashboard/courses/${courseId}/topics.`)
 }
