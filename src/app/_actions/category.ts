@@ -1,10 +1,10 @@
 "use server"
 
 import { unstable_cache } from "next/cache"
-import { asc, count, countDistinct, eq } from "drizzle-orm"
+import { and, asc, countDistinct, eq } from "drizzle-orm"
 
 import { db } from "@/db"
-import { categories, courseCategories } from "@/db/schema"
+import { categories, Category, courseCategories } from "@/db/schema"
 
 export async function getCategoryList() {
   return await unstable_cache(
@@ -37,4 +37,17 @@ export async function getCategoryList() {
       tags: ["category-list"],
     }
   )()
+}
+
+export async function getCategory(id: Category["id"]) {
+  try {
+    const item = await db.query.categories.findFirst({
+      where: and(eq(categories.id, id), eq(categories.isActive, true)),
+    })
+
+    return item ? item : null
+  } catch (err) {
+    console.error(err)
+    return null
+  }
 }
