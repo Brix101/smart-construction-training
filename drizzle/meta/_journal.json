@@ -22,6 +22,27 @@
       "when": 1740033990115,
       "tag": "0002_bent_rawhide_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740997827342,
+      "tag": "0003_closed_prism",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740998132888,
+      "tag": "0004_ancient_rocket_racer",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1740998830100,
+      "tag": "0005_fancy_stepford_cuckoos",
+      "breakpoints": true
     }
   ]
 }
