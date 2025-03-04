@@ -3,8 +3,9 @@
 import { unstable_cache } from "next/cache"
 import { and, asc, countDistinct, eq } from "drizzle-orm"
 
+import type { Category } from "@/db/schema"
 import { db } from "@/db"
-import { categories, Category, courseCategories } from "@/db/schema"
+import { categories, courseCategories } from "@/db/schema"
 
 export async function getCategoryList() {
   return await unstable_cache(
@@ -51,3 +52,18 @@ export async function getCategory(id: Category["id"]) {
     return null
   }
 }
+
+export async function getCategoryCourses(id: Category["id"]) {
+  try {
+    return await db.query.courseCategories.findMany({
+      where: eq(courseCategories.categoryId, id),
+      with: {
+        course: true,
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    return []
+  }
+}
+

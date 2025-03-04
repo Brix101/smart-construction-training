@@ -21,7 +21,7 @@ export type NewCourse = typeof courses.$inferInsert
 
 export const coursesRelations = relations(courses, ({ many }) => ({
   topics: many(topics),
-  categories: many(categories),
+  categories: many(courseCategories),
 }))
 
 export const topics = pgTable("topics", (t) => ({
@@ -118,7 +118,7 @@ export const categories = pgTable("categories", (t) => ({
 export type Category = typeof categories.$inferSelect
 
 export const categoryRelations = relations(categories, ({ many }) => ({
-  courses: many(courses),
+  courses: many(courseCategories),
 }))
 
 export const courseCategories = pgTable(
