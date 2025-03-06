@@ -30,6 +30,7 @@ import { addCategorySchema } from "@/lib/validations/category"
 
 export function AddCategoryForm() {
   const router = useRouter()
+  const [isUploading, setIsUploading] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
 
   // react-hook-form
@@ -96,9 +97,14 @@ export function AddCategoryForm() {
                         endpoint="imageUploader"
                         onClientUploadComplete={(res) => {
                           field.onChange(res[0].ufsUrl)
+                          setIsUploading(false)
                         }}
                         onUploadError={(error: Error) => {
+                          setIsUploading(false)
                           toast.error(error.message)
+                        }}
+                        onUploadBegin={() => {
+                          setIsUploading(true)
                         }}
                       />
                     </div>
@@ -138,7 +144,7 @@ export function AddCategoryForm() {
             </FormItem>
           )}
         />
-        <Button className="w-fit" disabled={isPending}>
+        <Button className="w-fit" disabled={isPending || isUploading}>
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

@@ -147,9 +147,6 @@ export function CategoriesTable({ transaction }: CategoriesTableProps) {
                   Edit
                 </Link>
               </DropdownMenuItem>
-              {/* <DropdownMenuItem asChild>
-                <Link href={`/topic/${row.original.id}`}>View</Link>
-              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
