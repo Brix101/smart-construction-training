@@ -1,4 +1,4 @@
-import { type SidebarNavItem } from "@/types"
+import type { SidebarNavItem } from "@/types"
 
 export interface DashboardConfig {
   sidebarNav: SidebarNavItem[]
@@ -16,6 +16,12 @@ export const dashboardConfig: DashboardConfig = {
       title: "Courses",
       href: "/dashboard/courses",
       icon: "library",
+      items: [],
+    },
+    {
+      title: "Categories",
+      href: "/dashboard/categories",
+      icon: "squareCode",
       items: [],
     },
     {

@@ -6,7 +6,7 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { env } from "@/env"
 import { searchParamsSchema } from "@/lib/validations/params"
 
-import { UsersTableShell } from "../_components/users-table-shell"
+import { UsersTableShell } from "./_components/users-table-shell"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
