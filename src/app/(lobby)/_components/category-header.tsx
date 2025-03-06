@@ -36,15 +36,10 @@ export async function CategoryHeader(props: CourseHeaderProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex w-full flex-col gap-4">
-        <div className="space-y-2">
-          <h2 className="line-clamp-1 text-2xl font-bold">{category.name}</h2>
-          <span className="m-0 min-h-4 text-base text-muted-foreground">
-            {category.description ?? `Explore ${category.name} courses`}
-          </span>
-        </div>
-        <Separator className="my-1.5" />
-      </div>
+      <h2 className="line-clamp-1 text-xl font-bold md:text-2xl">
+        {category.name}
+      </h2>
+      <Separator className="my-1.5" />
     </div>
   )
 }
@@ -68,7 +63,7 @@ export function CategoryHeaderSkeleton() {
       <div className="flex w-full flex-col gap-4">
         <div className="space-y-2">
           <Skeleton className="h-8 w-44" />
-          <Skeleton className="h-4 w-44" />
+          {/* <Skeleton className="h-4 w-44" /> */}
         </div>
         <Separator className="my-1.5" />
       </div>
