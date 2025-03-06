@@ -1,11 +1,7 @@
 import type { Metadata } from "next"
-import { redirect } from "next/navigation"
+import { redirect, unauthorized } from "next/navigation"
 
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import {
   Card,
@@ -16,6 +12,8 @@ import {
 } from "@/components/ui/card"
 import { env } from "@/env"
 import { getCacheduser } from "@/lib/actions/auth"
+
+import { AddCategoryForm } from "../_components/add-category-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -29,7 +27,7 @@ export default async function NewCategoryPage() {
   const user = await getCacheduser()
 
   if (!user) {
-    redirect("/sign-in")
+    unauthorized()
   }
 
   return (
@@ -48,7 +46,9 @@ export default async function NewCategoryPage() {
           <CardTitle className="text-2xl">Add Category</CardTitle>
           <CardDescription>Add a new category</CardDescription>
         </CardHeader>
-        <CardContent>{/* <AddcategoryForm /> */}</CardContent>
+        <CardContent>
+          <AddCategoryForm />
+        </CardContent>
       </Card>
     </Shell>
   )

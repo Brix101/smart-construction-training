@@ -1,41 +1,56 @@
 import type { Metadata } from "next"
+import React from "react"
 import Link from "next/link"
 
+import type { SearchParams } from "@/types"
+import { getCategoryTransaction } from "@/app/_actions/category"
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
-import { cn } from "@/lib/utils"
+
+import { CategoriesTable } from "./_components/categories-table"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  title: "Courses",
-  description: "Manage your courses settings",
+  title: "Categories",
+  description: "Manage your categories settings",
 }
 
 export const dynamic = "force-dynamic"
 
-export default function CategoriesPage() {
+interface CategoryPageProps {
+  searchParams: Promise<SearchParams>
+}
+
+export default async function CategoriesPage(props: CategoryPageProps) {
+  const searchParams = await props.searchParams
+  // Parse search params using zod schema
+
+  const transaction = getCategoryTransaction(searchParams)
+
   return (
     <Shell variant="sidebar">
-      <PageHeader id="courses-header" aria-labelledby="courses-header-heading">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <PageHeaderHeading size="sm" className="flex-1">
-            Categories
-          </PageHeaderHeading>
-          <Link
-            aria-label="Create course"
-            href="/dashboard/categories/new"
-            className={cn(
-              buttonVariants({
-                size: "sm",
-              })
-            )}
-          >
-            Add Category
-          </Link>
-        </div>
+      <PageHeader
+        id="categories-header"
+        aria-labelledby="categories-header-heading"
+      >
+        <PageHeaderHeading size="sm" className="flex-1">
+          Categories
+        </PageHeaderHeading>
       </PageHeader>
+      <React.Suspense
+        fallback={
+          <DataTableSkeleton
+            columnCount={6}
+            isNewRowCreatable={true}
+            isRowsDeletable={true}
+          />
+        }
+      >
+        <CategoriesTable transaction={transaction} />
+      </React.Suspense>
     </Shell>
   )
 }
