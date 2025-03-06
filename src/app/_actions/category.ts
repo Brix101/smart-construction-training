@@ -24,7 +24,7 @@ export async function getCategoryList() {
             courseCategories,
             eq(categories.id, courseCategories.categoryId)
           )
-          .groupBy(categories.id, courseCategories.courseId)
+          .groupBy(categories.id, courseCategories.categoryId)
           .where(eq(categories.isActive, true))
           .orderBy(asc(categories.name))
       } catch (error) {
@@ -66,4 +66,3 @@ export async function getCategoryCourses(id: Category["id"]) {
     return []
   }
 }
-

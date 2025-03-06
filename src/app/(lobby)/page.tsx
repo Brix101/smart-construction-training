@@ -6,7 +6,7 @@ import { Shell } from "@/components/shell"
 import {
   CategoryContent,
   CategoryContentSkeleton,
-} from "./_components/category-content"
+} from "./category/_components/category-content"
 
 export const dynamic = "force-dynamic"
 

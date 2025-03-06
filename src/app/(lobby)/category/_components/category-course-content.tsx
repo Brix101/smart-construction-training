@@ -1,6 +1,8 @@
 import type { getCategoryCourses } from "@/app/_actions/category"
-
-import { LobbyCourseCard, LobbyCourseCardSkeleton } from "./lobby-course-card"
+import {
+  LobbyCourseCard,
+  LobbyCourseCardSkeleton,
+} from "@/app/(lobby)/_components/lobby-course-card"
 
 interface CategoryCourseContentProps {
   categoryCoursesPromise: ReturnType<typeof getCategoryCourses>

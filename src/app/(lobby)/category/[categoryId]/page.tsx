@@ -6,11 +6,11 @@ import { Shell } from "@/components/shell"
 import {
   CategoryCourseContent,
   CategoryCourseContentSkeleton,
-} from "../../_components/category-course-content"
+} from "../_components/category-course-content"
 import {
   CategoryHeader,
   CategoryHeaderSkeleton,
-} from "../../_components/category-header"
+} from "../_components/category-header"
 
 export const dynamic = "force-dynamic"
 

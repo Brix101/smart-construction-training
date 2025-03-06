@@ -1,8 +1,9 @@
 import type { getCategoryList } from "@/app/_actions/category"
+import {
+  CategoryCard,
+  CategoryCardSkeleton,
+} from "@/app/(lobby)/_components/category-card"
 import { ContentSection } from "@/components/content-section"
-
-import { CategoryCard } from "./category-card"
-import { CategoryCardSkeleton } from "./category-card-skeleton"
 
 interface CategoryContentProps {
   categoriesPromises: ReturnType<typeof getCategoryList>

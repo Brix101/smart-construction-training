@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation"
 
-import { DownloadMaterialButton } from "@/app/(lobby)/_components/download-material-button"
-import { UploadMaterialButton } from "@/app/(lobby)/_components/upload-material-button"
+import {
+  DownloadMaterialButton,
+  UploadMaterialButton,
+} from "@/app/(lobby)/_components/material-button"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Card } from "@/components/ui/card"
 import { getTopic } from "@/lib/queries/topic"
