@@ -1,6 +1,5 @@
 "use client"
 
-import type { z } from "zod"
 import * as React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -9,6 +8,8 @@ import { XIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
+import type { AddCategoryInput } from "@/lib/validations/category"
+import { addCategory } from "@/app/_actions/category"
 import { Icons } from "@/components/icons"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button } from "@/components/ui/button"
@@ -25,17 +26,15 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { UploadButton } from "@/lib/uploadthing"
 import { catchError } from "@/lib/utils"
-import { createCategorySchema } from "@/lib/validations/category"
-
-type Inputs = z.infer<typeof createCategorySchema>
+import { addCategorySchema } from "@/lib/validations/category"
 
 export function AddCategoryForm() {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
   // react-hook-form
-  const form = useForm<Inputs>({
-    resolver: zodResolver(createCategorySchema),
+  const form = useForm<AddCategoryInput>({
+    resolver: zodResolver(addCategorySchema),
     defaultValues: {
       name: "",
       imgSrc: "",
@@ -43,11 +42,10 @@ export function AddCategoryForm() {
     },
   })
 
-  function onSubmit(data: Inputs) {
+  function onSubmit(data: AddCategoryInput) {
     startTransition(async () => {
       try {
-        // await addcategory({ ...data })
-        console.log(data)
+        await addCategory(data)
 
         form.reset()
         toast.success("Category added successfully.")

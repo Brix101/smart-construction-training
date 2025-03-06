@@ -1,8 +1,9 @@
+import type { z } from "zod"
 import { createInsertSchema } from "drizzle-zod"
 
 import { categories } from "@/db/schema"
 
-export const createCategorySchema = createInsertSchema(categories, {
+export const addCategorySchema = createInsertSchema(categories, {
   name: (s) => s.min(1, { message: "Category name is required." }).max(255),
   description: (s) => s.max(255),
 }).omit({
@@ -10,3 +11,5 @@ export const createCategorySchema = createInsertSchema(categories, {
   createdAt: true,
   updatedAt: true,
 })
+
+export type AddCategoryInput = z.infer<typeof addCategorySchema>

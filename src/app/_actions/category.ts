@@ -1,12 +1,23 @@
 "use server"
 
 import type { SearchParams } from "next/dist/server/request/search-params"
-import { unstable_cache, unstable_noStore } from "next/cache"
-import { and, asc, countDistinct, desc, eq, ilike, sql } from "drizzle-orm"
+import { revalidatePath, unstable_cache, unstable_noStore } from "next/cache"
+import {
+  and,
+  asc,
+  countDistinct,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  sql,
+} from "drizzle-orm"
 
 import type { Category } from "@/db/schema"
 import { db } from "@/db"
 import { categories, courseCategories } from "@/db/schema"
+import { checkRole } from "@/lib/roles"
+import { AddCategoryInput } from "@/lib/validations/category"
 import { searchParamsSchema } from "@/lib/validations/params"
 
 export async function getCategoryList() {
@@ -138,4 +149,40 @@ export async function getCategoryTransaction(searchParams: SearchParams) {
   })
 
   return transaction
+}
+
+export async function addCategory(input: AddCategoryInput) {
+  try {
+    if (!checkRole("admin")) {
+      throw new Error("Unauthorized")
+    }
+
+    await db.insert(categories).values(input)
+
+    revalidatePath("/dashboard/caregories")
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function deleteCategory(id: Category["id"]) {
+  const category = await getCategory(id)
+
+  if (!category) {
+    throw new Error("Category not found.")
+  }
+
+  await db.delete(categories).where(eq(categories.id, category.id))
+
+  revalidatePath(`/dashboard/categories`)
+}
+
+export async function deleteCategories(ids: Category["id"][]) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
+  await db.delete(categories).where(inArray(categories.id, ids))
+
+  revalidatePath(`/dashboard/categories`)
 }

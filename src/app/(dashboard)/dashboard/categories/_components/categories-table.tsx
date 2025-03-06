@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import type { getCategoryTransaction } from "@/app/_actions/category"
 import type { Category } from "@/db/schema"
 import type { ColumnDef } from "@tanstack/react-table"
+import { deleteCategories, deleteCategory } from "@/app/_actions/category"
 import { DataTable } from "@/components/data-table/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
@@ -154,18 +155,11 @@ export function CategoriesTable({ transaction }: CategoriesTableProps) {
                 onClick={() => {
                   startTransition(() => {
                     row.toggleSelected(false)
-                    //TODO: implement deleteCategory
-                    // toast.promise(
-                    //   deleteCategory({
-                    //     id: row.original.id,
-                    //     courseId,
-                    //   }),
-                    //   {
-                    //     loading: "Deleting...",
-                    //     success: () => "Category deleted successfully.",
-                    //     error: (err: unknown) => catchError(err),
-                    //   }
-                    // )
+                    toast.promise(deleteCategory(row.original.id), {
+                      loading: "Deleting...",
+                      success: () => "Category deleted successfully.",
+                      error: (err: unknown) => catchError(err),
+                    })
                   })
                 }}
                 disabled={isPending}
@@ -182,25 +176,17 @@ export function CategoriesTable({ transaction }: CategoriesTableProps) {
   )
 
   function deleteSelectedRows() {
-    toast.promise(
-      Promise.all(
-        selectedRowIds.map((id) => {
-          // TODO: implement deleteCategory
-          console.log(id)
-        })
-      ),
-      {
-        loading: "Deleting...",
-        success: () => {
-          setSelectedRowIds([])
-          return "Category deleted successfully."
-        },
-        error: (err: unknown) => {
-          setSelectedRowIds([])
-          return catchError(err)
-        },
-      }
-    )
+    toast.promise(deleteCategories(selectedRowIds), {
+      loading: "Deleting...",
+      success: () => {
+        setSelectedRowIds([])
+        return "Categories deleted successfully."
+      },
+      error: (err: unknown) => {
+        setSelectedRowIds([])
+        return catchError(err)
+      },
+    })
   }
 
   return (
