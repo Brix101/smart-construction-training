@@ -42,7 +42,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
     defaultValues: {
       name: category.name,
       imgSrc: category.imgSrc,
-      description: category.description,
+      description: category.description ?? "",
     },
   })
 

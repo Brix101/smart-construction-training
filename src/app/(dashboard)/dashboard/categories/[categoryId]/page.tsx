@@ -2,7 +2,6 @@ import React from "react"
 import { type Metadata } from "next"
 
 import { getCategory } from "@/app/_actions/category"
-import { Shell } from "@/components/shell"
 import { env } from "@/env"
 
 import {
@@ -28,10 +27,8 @@ export default async function CategoryPage(props: CategoryPageProps) {
   const categoryPromise = getCategory(categoryId)
 
   return (
-    <Shell variant={"sidebar"}>
-      <React.Suspense fallback={<CategoryContainerLoader />}>
-        <CategoryContainer categoryPromise={categoryPromise} />
-      </React.Suspense>
-    </Shell>
+    <React.Suspense fallback={<CategoryContainerLoader />}>
+      <CategoryContainer categoryPromise={categoryPromise} />
+    </React.Suspense>
   )
 }

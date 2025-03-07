@@ -1,5 +1,5 @@
 import React from "react"
-import { redirect } from "next/navigation"
+import { redirect, unauthorized } from "next/navigation"
 
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
@@ -24,7 +24,7 @@ export default async function CourseLayout(props: CourseLayoutProps) {
   const coursesPromise = getCourses()
 
   if (!user) {
-    redirect("/sign-in")
+    unauthorized()
   }
 
   return (
