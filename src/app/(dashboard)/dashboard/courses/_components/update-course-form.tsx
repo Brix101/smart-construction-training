@@ -2,7 +2,6 @@
 
 import type { z } from "zod"
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -57,6 +56,7 @@ export function UpdateCourseForm({ course, categories }: AddCourseFormProps) {
     startTransition(async () => {
       try {
         await updateCourse(course.id, data)
+        toast.success("Course updated successfully.")
       } catch (err) {
         catchError(err)
       }
