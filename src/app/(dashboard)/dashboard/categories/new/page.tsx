@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { redirect, unauthorized } from "next/navigation"
+import { unauthorized } from "next/navigation"
 
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
