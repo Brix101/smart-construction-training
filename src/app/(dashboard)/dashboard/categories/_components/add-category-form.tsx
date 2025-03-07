@@ -8,7 +8,7 @@ import { XIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import type { AddCategoryInput } from "@/lib/validations/category"
+import type { CategoryInput } from "@/lib/validations/category"
 import { addCategory } from "@/app/_actions/category"
 import { Icons } from "@/components/icons"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
@@ -34,7 +34,7 @@ export function AddCategoryForm() {
   const [isPending, startTransition] = React.useTransition()
 
   // react-hook-form
-  const form = useForm<AddCategoryInput>({
+  const form = useForm<CategoryInput>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
       name: "",
@@ -43,7 +43,7 @@ export function AddCategoryForm() {
     },
   })
 
-  function onSubmit(data: AddCategoryInput) {
+  function onSubmit(data: CategoryInput) {
     startTransition(async () => {
       try {
         await addCategory(data)
