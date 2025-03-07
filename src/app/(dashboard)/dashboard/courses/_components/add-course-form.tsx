@@ -7,7 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
+import type { Category } from "@/db/schema"
 import { Icons } from "@/components/icons"
+import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -25,7 +27,11 @@ import { courseSchema } from "@/lib/validations/course"
 
 type Inputs = z.infer<typeof courseSchema>
 
-export function AddCourseForm() {
+interface AddCourseFormProps {
+  categories: Category[]
+}
+
+export function AddCourseForm({ categories }: AddCourseFormProps) {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
@@ -36,6 +42,7 @@ export function AddCourseForm() {
       name: "",
       level: 1,
       description: "",
+      categories: [],
     },
   })
 
@@ -53,6 +60,11 @@ export function AddCourseForm() {
     })
   }
 
+  const selectOptions = categories.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }))
+
   return (
     <Form {...form}>
       <form
@@ -67,6 +79,27 @@ export function AddCourseForm() {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="Type course name here." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categories</FormLabel>
+              <FormControl>
+                <MultiSelect
+                  options={selectOptions}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  placeholder="Select options"
+                  variant="inverted"
+                  animation={2}
+                  maxCount={3}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

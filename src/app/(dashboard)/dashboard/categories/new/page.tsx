@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { env } from "@/env"
-import { getCacheduser } from "@/lib/actions/auth"
+import { checkRole } from "@/lib/roles"
 
 import { AddCategoryForm } from "../_components/add-category-form"
 
@@ -24,9 +24,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"
 
 export default async function NewCategoryPage() {
-  const user = await getCacheduser()
-
-  if (!user) {
+  if (!checkRole("admin")) {
     unauthorized()
   }
 

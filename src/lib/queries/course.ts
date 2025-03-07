@@ -52,6 +52,7 @@ export async function getCourse(courseId: Course["id"]) {
           where: eq(topics.isActive, true),
           orderBy: sql`COALESCE(SUBSTRING(${topics.name} FROM '^(\\d+)')::INTEGER,99999999)`,
         },
+        categories: true,
       },
     })
 

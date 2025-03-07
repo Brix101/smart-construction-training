@@ -1,9 +1,16 @@
+import { unauthorized } from "next/navigation"
+
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
+import { checkRole } from "@/lib/roles"
 
 export default async function CourseLayout({
   children,
 }: React.PropsWithChildren) {
+  if (!checkRole("admin")) {
+    unauthorized()
+  }
+
   return (
     <Shell variant="sidebar">
       <PageHeader id="users-header" aria-labelledby="users-header-heading">

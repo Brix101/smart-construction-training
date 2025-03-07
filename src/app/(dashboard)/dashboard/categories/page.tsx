@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
 import React from "react"
-import Link from "next/link"
+import { unauthorized } from "next/navigation"
 
 import type { SearchParams } from "@/types"
 import { getCategoryTransaction } from "@/app/_actions/category"
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
-import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
+import { checkRole } from "@/lib/roles"
 
 import { CategoriesTable } from "./_components/categories-table"
 
@@ -29,6 +29,10 @@ export default async function CategoriesPage(props: CategoryPageProps) {
   // Parse search params using zod schema
 
   const transaction = getCategoryTransaction(searchParams)
+
+  if (!checkRole("admin")) {
+    unauthorized()
+  }
 
   return (
     <Shell variant="sidebar">

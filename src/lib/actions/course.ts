@@ -10,7 +10,7 @@ import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 import type { Course } from "@/db/schema"
 import type { courseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
-import { courses, topics } from "@/db/schema"
+import { courseCategories, courses, topics } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
 import { updateCourseSchema } from "@/lib/validations/course"
 
@@ -91,10 +91,22 @@ export async function addCourse(input: z.infer<typeof courseSchema>) {
       throw new Error("Unauthorized")
     }
 
-    await db.insert(courses).values({
-      name: input.name,
-      description: input.description,
-    })
+    const [newCourse] = await db
+      .insert(courses)
+      .values({
+        name: input.name,
+        description: input.description,
+      })
+      .returning()
+
+    if (input.categories.length > 0) {
+      const cc = input.categories.map((categoryId) => ({
+        categoryId,
+        courseId: newCourse.id,
+      }))
+
+      await db.insert(courseCategories).values(cc)
+    }
 
     revalidatePath("/dashboard/courses")
   } catch (error) {

@@ -5,17 +5,16 @@ import { getCategories } from "@/app/_actions/category"
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getCacheduser } from "@/lib/actions/auth"
+import { checkRole } from "@/lib/roles"
 
 import { CategorySwitcher } from "../_components/category-switcher"
 
 export default async function CategoryLayout(props: React.PropsWithChildren) {
   const { children } = props
 
-  const user = await getCacheduser()
   const categoriesPromise = getCategories()
 
-  if (!user) {
+  if (!checkRole("admin")) {
     unauthorized()
   }
 
