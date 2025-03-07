@@ -14,11 +14,33 @@ import {
 } from "drizzle-orm"
 
 import type { Category } from "@/db/schema"
+import type { CategoryInput } from "@/lib/validations/category"
 import { db } from "@/db"
 import { categories, courseCategories } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
-import { CategoryInput } from "@/lib/validations/category"
 import { searchParamsSchema } from "@/lib/validations/params"
+
+export async function getCategories() {
+  return await unstable_cache(
+    async () => {
+      try {
+        return await db
+          .select()
+          .from(categories)
+          .where(eq(categories.isActive, true))
+          .orderBy(asc(categories.name))
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+    },
+    ["categories"],
+    {
+      revalidate: 3600, // every hour
+      tags: ["categories"],
+    }
+  )()
+}
 
 export async function getCategoryList() {
   return await unstable_cache(

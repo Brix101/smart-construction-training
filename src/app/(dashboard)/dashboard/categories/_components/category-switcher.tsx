@@ -9,7 +9,7 @@ import {
   PlusCircledIcon,
 } from "@radix-ui/react-icons"
 
-import type { getCategoryList } from "@/app/_actions/category"
+import type { getCategories } from "@/app/_actions/category"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils"
 
 interface categorySwitcherProps
   extends React.ComponentPropsWithoutRef<typeof PopoverTrigger> {
-  categoriesPromise: ReturnType<typeof getCategoryList>
+  categoriesPromise: ReturnType<typeof getCategories>
   dashboardRedirectPath: string
 }
 
@@ -46,8 +46,8 @@ export function CategorySwitcher({
   const [isOpen, setIsOpen] = React.useState(false)
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
-  const categorys = React.use(categoriesPromise)
-  const selectedCategory = categorys.find(
+  const categories = React.use(categoriesPromise)
+  const activeCategory = categories.find(
     (category) => category.id === categoryId
   )
 
@@ -68,7 +68,7 @@ export function CategorySwitcher({
           >
             <CircleIcon className="mr-2 h-4 w-4" aria-hidden="true" />
             <span className="line-clamp-1">
-              {selectedCategory?.name ?? "Select a category"}
+              {activeCategory?.name ?? "Select a category"}
             </span>
             <CaretSortIcon
               className="ml-auto h-4 w-4 shrink-0 opacity-50"
@@ -82,7 +82,7 @@ export function CategorySwitcher({
               <CommandInput placeholder="Search category..." />
               <CommandEmpty>No category found.</CommandEmpty>
               <CommandGroup>
-                {categorys.map((category) => (
+                {categories.map((category) => (
                   <CommandItem
                     key={category.id}
                     onSelect={() => {
@@ -102,7 +102,7 @@ export function CategorySwitcher({
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedCategory?.id === category.id
+                        activeCategory?.id === category.id
                           ? "opacity-100"
                           : "opacity-0"
                       )}

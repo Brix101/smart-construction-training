@@ -1,7 +1,7 @@
 import React from "react"
 import { unauthorized } from "next/navigation"
 
-import { getCategoryList } from "@/app/_actions/category"
+import { getCategories } from "@/app/_actions/category"
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -13,7 +13,7 @@ export default async function CategoryLayout(props: React.PropsWithChildren) {
   const { children } = props
 
   const user = await getCacheduser()
-  const categoriesPromise = getCategoryList()
+  const categoriesPromise = getCategories()
 
   if (!user) {
     unauthorized()
