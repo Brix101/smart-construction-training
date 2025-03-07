@@ -17,7 +17,7 @@ import type { Category } from "@/db/schema"
 import { db } from "@/db"
 import { categories, courseCategories } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
-import { AddCategoryInput } from "@/lib/validations/category"
+import { CategoryInput } from "@/lib/validations/category"
 import { searchParamsSchema } from "@/lib/validations/params"
 
 export async function getCategoryList() {
@@ -151,7 +151,7 @@ export async function getCategoryTransaction(searchParams: SearchParams) {
   return transaction
 }
 
-export async function addCategory(input: AddCategoryInput) {
+export async function addCategory(input: CategoryInput) {
   try {
     if (!checkRole("admin")) {
       throw new Error("Unauthorized")
@@ -160,6 +160,21 @@ export async function addCategory(input: AddCategoryInput) {
     await db.insert(categories).values(input)
 
     revalidatePath("/dashboard/caregories")
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function updateCategory(id: Category["id"], input: CategoryInput) {
+  try {
+    if (!checkRole("admin")) {
+      throw new Error("Unauthorized")
+    }
+
+    await db.update(categories).set(input).where(eq(categories.id, id))
+
+    revalidatePath(`/dashboard/categories/${id}`)
+    revalidatePath(`/dashboard/categories`)
   } catch (error) {
     throw error
   }

@@ -107,7 +107,7 @@ export const categories = pgTable("categories", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   name: t.varchar({ length: 256 }).unique().notNull(),
   description: t.text().notNull(),
-  imgSrc: t.text(),
+  imgSrc: t.text().notNull(),
   isActive: t.boolean().notNull().default(true),
   createdAt: t.timestamp().defaultNow().notNull(),
   updatedAt: t

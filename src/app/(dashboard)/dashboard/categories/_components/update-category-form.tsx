@@ -2,14 +2,14 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { XIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import type { AddCategoryInput } from "@/lib/validations/category"
-import { addCategory } from "@/app/_actions/category"
+import type { Category } from "@/db/schema"
+import type { CategoryInput } from "@/lib/validations/category"
+import { updateCategory } from "@/app/_actions/category"
 import { Icons } from "@/components/icons"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button } from "@/components/ui/button"
@@ -28,29 +28,30 @@ import { UploadButton } from "@/lib/uploadthing"
 import { catchError } from "@/lib/utils"
 import { categorySchema } from "@/lib/validations/category"
 
-export function AddCategoryForm() {
-  const router = useRouter()
+interface UpdateCategoryFormProps {
+  category: Category
+}
+
+export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
   const [isUploading, setIsUploading] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
 
   // react-hook-form
-  const form = useForm<AddCategoryInput>({
+  const form = useForm<CategoryInput>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: "",
-      imgSrc: "",
-      description: "",
+      name: category.name,
+      imgSrc: category.imgSrc,
+      description: category.description,
     },
   })
 
-  function onSubmit(data: AddCategoryInput) {
+  function onSubmit(data: CategoryInput) {
     startTransition(async () => {
       try {
-        await addCategory(data)
+        await updateCategory(category.id, data)
 
-        form.reset()
-        toast.success("Category added successfully.")
-        router.push("/dashboard/categories")
+        toast.success("Category Updated successfully.")
       } catch (err) {
         catchError(err)
       }
@@ -144,16 +145,25 @@ export function AddCategoryForm() {
             </FormItem>
           )}
         />
-        <Button className="w-fit" disabled={isPending || isUploading}>
-          {isPending && (
-            <Icons.spinner
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
-          )}
-          Add category
-          <span className="sr-only">Add category</span>
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          {/* <LoadingButton */}
+          {/*   formAction={deleteCategory.bind(null, category.id)} */}
+          {/*   variant="destructive" */}
+          {/* > */}
+          {/*   Delete category */}
+          {/*   <span className="sr-only">Delete category</span> */}
+          {/* </LoadingButton> */}
+          <Button className="w-fit" disabled={isPending || isUploading}>
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Update category
+            <span className="sr-only">Update category</span>
+          </Button>
+        </div>
       </form>
     </Form>
   )
