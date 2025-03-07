@@ -2,11 +2,12 @@ import type { Metadata } from "next"
 import * as React from "react"
 import { clerkClient } from "@clerk/nextjs/server"
 
+import type { SearchParams } from "@/types"
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton"
 import { env } from "@/env"
-import { searchParamsSchema } from "@/lib/validations/params"
+import { userSearchParamsSchema } from "@/lib/validations/params"
 
-import { UsersTableShell } from "../_components/users-table-shell"
+import { UsersTableShell } from "./_components/users-table-shell"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -15,16 +16,15 @@ export const metadata: Metadata = {
 }
 
 interface UsersPageProps {
-  searchParams: Promise<{
-    [key: string]: string | string[] | undefined
-  }>
+  searchParams: Promise<SearchParams>
 }
 
 export const dynamic = "force-dynamic"
 
 export default async function UsersPage(props: UsersPageProps) {
   const searchParams = await props.searchParams
-  const { page, per_page, firstName } = searchParamsSchema.parse(searchParams)
+  const { page, per_page, firstName } =
+    userSearchParamsSchema.parse(searchParams)
 
   // Fallback page for invalid page numbers
   const pageAsNumber = Number(page)

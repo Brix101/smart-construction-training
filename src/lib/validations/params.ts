@@ -7,5 +7,8 @@ export const searchParamsSchema = z.object({
   to: z.string().optional(),
   sort: z.string().optional().default("createdAt.desc"),
   name: z.string().optional(),
+})
+
+export const userSearchParamsSchema = searchParamsSchema.extend({
   firstName: z.string().optional(),
 })

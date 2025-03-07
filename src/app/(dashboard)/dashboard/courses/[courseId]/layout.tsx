@@ -1,13 +1,13 @@
 import React from "react"
-import { redirect } from "next/navigation"
+import { unauthorized } from "next/navigation"
 
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { CourseSwitcher } from "@/components/pagers/course-switcher"
 import { CourseTabs } from "@/components/pagers/course-tabs"
 import { Shell } from "@/components/shell"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getCacheduser } from "@/lib/actions/auth"
 import { getCourses } from "@/lib/actions/course"
+import { checkRole } from "@/lib/roles"
 
 interface CourseLayoutProps extends React.PropsWithChildren {
   params: Promise<{
@@ -20,11 +20,10 @@ export default async function CourseLayout(props: CourseLayoutProps) {
 
   const { children } = props
 
-  const user = await getCacheduser()
   const coursesPromise = getCourses()
 
-  if (!user) {
-    redirect("/sign-in")
+  if (!checkRole("admin")) {
+    unauthorized()
   }
 
   return (

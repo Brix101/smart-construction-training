@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { SignOutButton } from "@clerk/nextjs"
 import { DashboardIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons"
 
 import type { ButtonProps } from "@/components/ui/button"
@@ -102,12 +103,13 @@ export function AuthDropdown({
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/sign-out">
-            <ExitIcon className="mr-2 h-4 w-4" aria-hidden="true" />
-            Log out
-            <DropdownMenuShortcut></DropdownMenuShortcut>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </Link>
+          <SignOutButton redirectUrl="/sign-in">
+            <div>
+              <ExitIcon className="mr-2 h-4 w-4" aria-hidden="true" />
+              Log out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </div>
+          </SignOutButton>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

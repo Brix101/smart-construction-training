@@ -1,12 +1,8 @@
 import type { Metadata } from "next"
-import { redirect } from "next/navigation"
+import { unauthorized } from "next/navigation"
 
-import { AddCourseForm } from "@/components/forms/add-course-form"
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header"
+import { getCategories } from "@/app/_actions/category"
+import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import {
   Card,
@@ -16,7 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { env } from "@/env"
-import { getCacheduser } from "@/lib/actions/auth"
+import { checkRole } from "@/lib/roles"
+
+import { AddCourseForm } from "../_components/add-course-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -27,11 +25,10 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"
 
 export default async function NewCoursePage() {
-  const user = await getCacheduser()
-
-  if (!user) {
-    redirect("/sign-in")
+  if (!checkRole("admin")) {
+    unauthorized()
   }
+  const categories = await getCategories()
 
   return (
     <Shell variant="sidebar">
@@ -40,9 +37,6 @@ export default async function NewCoursePage() {
         aria-labelledby="new-course-page-header-heading"
       >
         <PageHeaderHeading size="sm">New Course</PageHeaderHeading>
-        <PageHeaderDescription size="sm">
-          Add a new course to your account
-        </PageHeaderDescription>
       </PageHeader>
       <Card
         id="new-course-page-form-container"
@@ -50,10 +44,10 @@ export default async function NewCoursePage() {
       >
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Add course</CardTitle>
-          <CardDescription>Add a new course to your account</CardDescription>
+          <CardDescription>Add a new course</CardDescription>
         </CardHeader>
         <CardContent>
-          <AddCourseForm />
+          <AddCourseForm categories={categories} />
         </CardContent>
       </Card>
     </Shell>

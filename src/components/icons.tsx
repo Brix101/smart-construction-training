@@ -6,7 +6,7 @@ import {
   ImageIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons"
-import { LibrarySquare, UsersIcon } from "lucide-react"
+import { LibrarySquare, SquareCodeIcon, UsersIcon } from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -17,6 +17,7 @@ export const Icons = {
   placeholder: ImageIcon,
   magnifyingGlass: MagnifyingGlassIcon,
   home: HomeIcon,
+  squareCode: SquareCodeIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
   logo: (props: IconProps) => (

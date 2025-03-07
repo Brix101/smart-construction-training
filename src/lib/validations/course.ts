@@ -4,6 +4,10 @@ export const courseSchema = z.object({
   name: z.string().min(3).max(50),
   level: z.coerce.number(),
   description: z.string().optional(),
+  categories: z
+    .array(z.string().min(1))
+    .min(1)
+    .nonempty("Please select at least one category."),
 })
 
 export const getCourseSchema = z.object({
@@ -20,9 +24,6 @@ export const getCoursesSchema = z.object({
   userId: z.string().optional(),
 })
 
-export const updateCourseSchema = z.object({
-  name: z.string().min(3).max(50),
-  level: z.coerce.number(),
+export const updateCourseSchema = courseSchema.extend({
   isPublished: z.boolean(),
-  description: z.string().optional(),
 })

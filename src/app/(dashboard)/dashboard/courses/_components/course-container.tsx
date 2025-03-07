@@ -1,9 +1,9 @@
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import type { getCourse } from "@/lib/queries/course"
+import type { getCourse } from "@/app/_actions/course"
+import { getCategories } from "@/app/_actions/category"
 import { PublishCourseButton } from "@/components/activate-course-button"
-import { LoadingButton } from "@/components/loading-button"
 import {
   Card,
   CardContent,
@@ -11,12 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
 import { env } from "@/env"
-import { deleteCourse, updateCourse } from "@/lib/actions/course"
+
+import { UpdateCourseForm } from "./update-course-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -34,6 +31,8 @@ export default async function CourseContainer(props: CourseContainerProps) {
   if (!course) {
     notFound()
   }
+
+  const categories = await getCategories()
 
   return (
     <div className="space-y-10">
@@ -62,72 +61,7 @@ export default async function CourseContainer(props: CourseContainerProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            action={updateCourse.bind(null, course.id)}
-            className="grid w-full max-w-xl gap-5"
-          >
-            {course.isPublished && (
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="update-couse-published">Published</Label>
-                <Switch
-                  id="update-course-published"
-                  name="isPublished"
-                  defaultChecked={course.isPublished}
-                />
-              </div>
-            )}
-            <div className="grid gap-2.5">
-              <Label htmlFor="update-course-name">Name</Label>
-              <Input
-                id="update-course-name"
-                aria-describedby="update-course-name-description"
-                name="name"
-                required
-                minLength={3}
-                maxLength={50}
-                placeholder="Type course name here."
-                defaultValue={course.name}
-              />
-            </div>
-            <div className="grid gap-2.5">
-              <Label htmlFor="update-course-name">Level</Label>
-              <Input
-                id="update-course-name"
-                aria-describedby="update-course-name-description"
-                name="level"
-                required
-                type="number"
-                min={1}
-                placeholder="Type course level here."
-                defaultValue={course.level}
-              />
-            </div>
-            <div className="grid gap-2.5">
-              <Label htmlFor="update-course-description">Description</Label>
-              <Textarea
-                id="update-course-description"
-                aria-describedby="update-course-description-description"
-                name="description"
-                minLength={3}
-                maxLength={255}
-                placeholder="Type course description here."
-                defaultValue={course.description ?? ""}
-              />
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <LoadingButton>
-                Update course
-                <span className="sr-only">Update course</span>
-              </LoadingButton>
-              <LoadingButton
-                formAction={deleteCourse.bind(null, course.id)}
-                variant="destructive"
-              >
-                Delete course
-                <span className="sr-only">Delete course</span>
-              </LoadingButton>
-            </div>
-          </form>
+          <UpdateCourseForm course={course} categories={categories} />
         </CardContent>
       </Card>
     </div>

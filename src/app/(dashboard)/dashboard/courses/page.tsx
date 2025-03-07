@@ -1,19 +1,22 @@
 import type { Metadata } from "next"
 import * as React from "react"
 import Link from "next/link"
+import { unauthorized } from "next/navigation"
 
-import { CourseAlertCount } from "@/app/(dashboard)/_components/course-alert-count"
-import CourseAlertSkeleton from "@/app/(dashboard)/_components/course-alert-skeleton"
-import {
-  CourseListContainer,
-  CourseListContainerLoader,
-} from "@/app/(dashboard)/_components/course-list-container"
 import { PageHeader, PageHeaderHeading } from "@/components/page-header"
 import { Shell } from "@/components/shell"
 import { buttonVariants } from "@/components/ui/button"
 import { env } from "@/env"
 import { getCourseAlertCount, getCourses } from "@/lib/actions/course"
+import { checkRole } from "@/lib/roles"
 import { cn } from "@/lib/utils"
+
+import { CourseAlertCount } from "./_components/course-alert-count"
+import CourseAlertSkeleton from "./_components/course-alert-skeleton"
+import {
+  CourseListContainer,
+  CourseListContainerLoader,
+} from "./_components/course-list-container"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -26,6 +29,10 @@ export const dynamic = "force-dynamic"
 export default async function CoursesPage() {
   const coursesPromise = getCourses()
   const alertCountPromise = getCourseAlertCount()
+
+  if (!checkRole("admin")) {
+    unauthorized()
+  }
 
   return (
     <Shell variant="sidebar">

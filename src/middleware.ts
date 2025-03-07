@@ -3,9 +3,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
-  "/signup(.*)",
-  "/sso-callback(.*)",
-  "/waitlist",
+  "/sign-up(.*)",
+  "/api/uploadthing(.*)",
 ])
 
 const isAdminRoute = createRouteMatcher([
