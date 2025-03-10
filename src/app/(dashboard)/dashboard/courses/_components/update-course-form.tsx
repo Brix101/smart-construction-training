@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import type { Category, Course } from "@/db/schema"
-import { updateCourse } from "@/app/_actions/course"
+import { deleteCourse, updateCourse } from "@/app/_actions/course"
 import { Icons } from "@/components/icons"
 import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button"
@@ -165,16 +165,37 @@ export function UpdateCourseForm({ course, categories }: AddCourseFormProps) {
             </FormItem>
           )}
         />
-        <Button className="w-fit" disabled={isPending}>
-          {isPending && (
-            <Icons.spinner
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
-          )}
-          Update Course
-          <span className="sr-only">Update Course</span>
-        </Button>
+        <div className="flex gap-4">
+          <Button className="w-fit" disabled={isPending}>
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Update Course
+            <span className="sr-only">Update Course</span>
+          </Button>
+          <Button
+            className="w-fit"
+            variant="destructive"
+            onClick={() => {
+              startTransition(async () => {
+                await deleteCourse(course.id)
+              })
+            }}
+            disabled={isPending}
+          >
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Delete Topic
+            <span className="sr-only">Delete topic</span>
+          </Button>
+        </div>
       </form>
     </Form>
   )

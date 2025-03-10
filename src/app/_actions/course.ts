@@ -1,6 +1,8 @@
 "use server"
 
 import type { z } from "zod"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { and, eq, not, sql } from "drizzle-orm"
 
 import type { Course } from "@/db/schema"
@@ -93,4 +95,30 @@ export async function updateCourse(
   }
 
   // revalidatePath(`/dashboard/courses/${id}`)
+}
+
+export async function deleteCourse(courseId: Course["id"]) {
+  if (!checkRole("admin")) {
+    throw new Error("Unauthorized")
+  }
+
+  const course = await db.query.courses.findFirst({
+    where: eq(courses.id, courseId),
+    columns: {
+      id: true,
+    },
+  })
+
+  if (!course) {
+    throw new Error("Course not found")
+  }
+
+  await db.delete(courses).where(eq(courses.id, courseId))
+
+  // Delete all topics of this course
+  await db.delete(topics).where(eq(topics.courseId, courseId))
+
+  const path = "/dashboard/courses"
+  revalidatePath(path)
+  redirect(path)
 }

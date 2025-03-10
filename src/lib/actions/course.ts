@@ -174,29 +174,3 @@ export async function updateCourse(courseId: Course["id"], fd: FormData) {
 
   revalidatePath(`/dashboard/courses/${courseId}`)
 }
-
-export async function deleteCourse(courseId: Course["id"]) {
-  if (!checkRole("admin")) {
-    throw new Error("Unauthorized")
-  }
-
-  const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-    columns: {
-      id: true,
-    },
-  })
-
-  if (!course) {
-    throw new Error("Course not found")
-  }
-
-  await db.delete(courses).where(eq(courses.id, courseId))
-
-  // Delete all topics of this course
-  await db.delete(topics).where(eq(topics.courseId, courseId))
-
-  const path = "/dashboard/courses"
-  revalidatePath(path)
-  redirect(path)
-}
