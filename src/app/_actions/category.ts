@@ -21,25 +21,16 @@ import { checkRole } from "@/lib/roles"
 import { searchParamsSchema } from "@/lib/validations/params"
 
 export async function getCategories() {
-  return await unstable_cache(
-    async () => {
-      try {
-        return await db
-          .select()
-          .from(categories)
-          .where(eq(categories.isActive, true))
-          .orderBy(asc(categories.name))
-      } catch (error) {
-        console.error(error)
-        return []
-      }
-    },
-    ["categories"],
-    {
-      revalidate: 3600, // every hour
-      tags: ["categories"],
-    }
-  )()
+  try {
+    return await db
+      .select()
+      .from(categories)
+      .where(eq(categories.isActive, true))
+      .orderBy(asc(categories.name))
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 export async function getCategoryList() {
