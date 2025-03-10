@@ -2,7 +2,6 @@
 
 import type { z } from "zod"
 import { revalidatePath, unstable_cache } from "next/cache"
-import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
 import { NeonDbError } from "@neondatabase/serverless"
 import { and, asc, eq, lte, not, sql } from "drizzle-orm"
@@ -10,7 +9,7 @@ import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 import type { Course } from "@/db/schema"
 import type { courseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
-import { courseCategories, courses, topics } from "@/db/schema"
+import { courseCategories, courses } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
 import { updateCourseSchema } from "@/lib/validations/course"
 
@@ -173,30 +172,4 @@ export async function updateCourse(courseId: Course["id"], fd: FormData) {
     .where(eq(courses.id, courseId))
 
   revalidatePath(`/dashboard/courses/${courseId}`)
-}
-
-export async function deleteCourse(courseId: Course["id"]) {
-  if (!checkRole("admin")) {
-    throw new Error("Unauthorized")
-  }
-
-  const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-    columns: {
-      id: true,
-    },
-  })
-
-  if (!course) {
-    throw new Error("Course not found")
-  }
-
-  await db.delete(courses).where(eq(courses.id, courseId))
-
-  // Delete all topics of this course
-  await db.delete(topics).where(eq(topics.courseId, courseId))
-
-  const path = "/dashboard/courses"
-  revalidatePath(path)
-  redirect(path)
 }

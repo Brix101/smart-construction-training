@@ -1,7 +1,7 @@
 "use server"
 
 import type { SearchParams } from "next/dist/server/request/search-params"
-import { revalidatePath, unstable_cache, unstable_noStore } from "next/cache"
+import { revalidatePath, unstable_noStore } from "next/cache"
 import {
   and,
   asc,
@@ -21,58 +21,40 @@ import { checkRole } from "@/lib/roles"
 import { searchParamsSchema } from "@/lib/validations/params"
 
 export async function getCategories() {
-  return await unstable_cache(
-    async () => {
-      try {
-        return await db
-          .select()
-          .from(categories)
-          .where(eq(categories.isActive, true))
-          .orderBy(asc(categories.name))
-      } catch (error) {
-        console.error(error)
-        return []
-      }
-    },
-    ["categories"],
-    {
-      revalidate: 3600, // every hour
-      tags: ["categories"],
-    }
-  )()
+  try {
+    return await db
+      .select()
+      .from(categories)
+      .where(eq(categories.isActive, true))
+      .orderBy(asc(categories.name))
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 export async function getCategoryList() {
-  return await unstable_cache(
-    async () => {
-      try {
-        return await db
-          .select({
-            id: categories.id,
-            name: categories.name,
-            imgSrc: categories.imgSrc,
-            description: categories.description,
-            courseCount: countDistinct(courseCategories.courseId),
-          })
-          .from(categories)
-          .leftJoin(
-            courseCategories,
-            eq(categories.id, courseCategories.categoryId)
-          )
-          .groupBy(categories.id, courseCategories.categoryId)
-          .where(eq(categories.isActive, true))
-          .orderBy(asc(categories.name))
-      } catch (error) {
-        console.error(error)
-        return []
-      }
-    },
-    ["category-list"],
-    {
-      revalidate: 3600, // every hour
-      tags: ["category-list"],
-    }
-  )()
+  try {
+    return await db
+      .select({
+        id: categories.id,
+        name: categories.name,
+        imgSrc: categories.imgSrc,
+        description: categories.description,
+        courseCount: countDistinct(courseCategories.courseId),
+      })
+      .from(categories)
+      .leftJoin(
+        courseCategories,
+        eq(categories.id, courseCategories.categoryId)
+      )
+      .groupBy(categories.id, courseCategories.categoryId)
+      .where(eq(categories.isActive, true))
+      .orderBy(asc(categories.name))
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 export async function getCategory(id: Category["id"]) {
