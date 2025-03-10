@@ -2,7 +2,6 @@
 
 import type { z } from "zod"
 import { revalidatePath, unstable_cache } from "next/cache"
-import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
 import { NeonDbError } from "@neondatabase/serverless"
 import { and, asc, eq, lte, not, sql } from "drizzle-orm"
@@ -10,7 +9,7 @@ import { and, asc, eq, lte, not, sql } from "drizzle-orm"
 import type { Course } from "@/db/schema"
 import type { courseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
-import { courseCategories, courses, topics } from "@/db/schema"
+import { courseCategories, courses } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
 import { updateCourseSchema } from "@/lib/validations/course"
 
