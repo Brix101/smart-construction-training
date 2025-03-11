@@ -33,6 +33,8 @@ export function catchError(err: unknown) {
     })
     return toast(errors.join("\n"))
   } else if (err instanceof Error) {
+    if (err.message === "NEXT_REDIRECT") return
+
     return toast(err.message)
   } else {
     return toast("Something went wrong, please try again later.")

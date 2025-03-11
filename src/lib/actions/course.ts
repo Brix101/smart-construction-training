@@ -2,6 +2,7 @@
 
 import type { z } from "zod"
 import { revalidatePath, unstable_cache } from "next/cache"
+import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
 import { NeonDbError } from "@neondatabase/serverless"
 import { and, asc, eq, lte, not, sql } from "drizzle-orm"
@@ -112,6 +113,7 @@ export async function addCourse(input: z.infer<typeof courseSchema>) {
     }
 
     revalidatePath("/dashboard/courses")
+    redirect("/dashboard/courses")
   } catch (error) {
     if (error instanceof NeonDbError) {
       switch (error.code) {
