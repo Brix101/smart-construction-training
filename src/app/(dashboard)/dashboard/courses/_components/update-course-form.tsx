@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import type { Category, Course } from "@/db/schema"
 import { deleteCourse, updateCourse } from "@/app/_actions/course"
 import { Icons } from "@/components/icons"
+import { LoadingButton } from "@/components/loading-button"
 import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button"
 import {
@@ -166,16 +167,6 @@ export function UpdateCourseForm({ course, categories }: AddCourseFormProps) {
           )}
         />
         <div className="flex gap-4">
-          <Button className="w-fit" disabled={isPending}>
-            {isPending && (
-              <Icons.spinner
-                className="mr-2 h-4 w-4 animate-spin"
-                aria-hidden="true"
-              />
-            )}
-            Update Course
-            <span className="sr-only">Update Course</span>
-          </Button>
           <Button
             className="w-fit"
             variant="destructive"
@@ -194,6 +185,16 @@ export function UpdateCourseForm({ course, categories }: AddCourseFormProps) {
             )}
             Delete Course
             <span className="sr-only">Delete Course</span>
+          </Button>
+          <Button className="w-fit" disabled={isPending}>
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Update Course
+            <span className="sr-only">Update Course</span>
           </Button>
         </div>
       </form>
