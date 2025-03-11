@@ -13,10 +13,15 @@ export async function CategoryCourseContent(props: CategoryCourseContentProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      {categoryCourses.map(({ course }) => (
+      {categoryCourses.map((course) => (
         <LobbyCourseCard
           key={course.id}
-          course={course}
+          course={{
+            id: course.id!,
+            name: course.name!,
+            description: course.description!,
+            imgSrc: course.imgSrc!,
+          }}
           href={`/course/${course.id}`}
         />
       ))}

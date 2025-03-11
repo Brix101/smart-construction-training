@@ -3,12 +3,12 @@
 import type { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { and, eq, not, sql } from "drizzle-orm"
+import { and, eq, inArray, not, sql } from "drizzle-orm"
 
 import type { Course } from "@/db/schema"
 import type { updateCourseSchema } from "@/lib/validations/course"
 import { db } from "@/db"
-import { courseCategories, courses, topics } from "@/db/schema"
+import { courseCategories, courses, topicMaterials, topics } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
 
 export async function getCourse(courseId: Course["id"]) {
@@ -107,24 +107,27 @@ export async function deleteCourse(courseId: Course["id"]) {
     columns: {
       id: true,
     },
+    with: {
+      topics: true,
+    },
   })
 
   if (!course) {
     throw new Error("Course not found")
   }
 
-  // await db.delete(courses).where(eq(courses.id, courseId))
-  await db
-    .update(courses)
-    .set({ isActive: false })
-    .where(eq(courses.id, courseId))
+  const topicIds = course.topics.map((topic) => topic.id)
 
-  // Delete all topics of this course
-  // await db.delete(topics).where(eq(topics.courseId, courseId))
-  await db
-    .update(topics)
-    .set({ isActive: false })
-    .where(eq(topics.courseId, courseId))
+  await db.transaction(async (tx) => {
+    if (topicIds.length > 0) {
+      await tx
+        .delete(topicMaterials)
+        .where(inArray(topicMaterials.topicId, topicIds))
+
+      await tx.delete(topics).where(inArray(topics.id, topicIds))
+    }
+    await tx.delete(courses).where(eq(courses.id, courseId))
+  })
 
   const path = "/dashboard/courses"
   revalidatePath(path)
