@@ -14,7 +14,12 @@ import { getRandomPatternStyle } from "@/lib/generate-pattern"
 import { cn } from "@/lib/utils"
 
 interface LobbyCourseCardProps {
-  course: Course
+  course: {
+    id?: Course["id"]
+    imgSrc?: string
+    name: string
+    description?: string
+  }
   href: string
   isDisabled?: boolean
 }
@@ -37,7 +42,7 @@ export function LobbyCourseCard({
           {course.imgSrc ? (
             <Image
               src={course.imgSrc}
-              alt={course.name}
+              alt={course.name!}
               className="object-cover"
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               fill
@@ -46,7 +51,7 @@ export function LobbyCourseCard({
           ) : (
             <div
               className="h-full rounded-t-md border-b"
-              style={getRandomPatternStyle(course.id)}
+              style={getRandomPatternStyle(course.id!)}
             />
           )}
         </AspectRatio>

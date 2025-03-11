@@ -16,7 +16,7 @@ import {
 import type { Category } from "@/db/schema"
 import type { CategoryInput } from "@/lib/validations/category"
 import { db } from "@/db"
-import { categories, courseCategories } from "@/db/schema"
+import { categories, courseCategories, courses } from "@/db/schema"
 import { checkRole } from "@/lib/roles"
 import { searchParamsSchema } from "@/lib/validations/params"
 
@@ -72,12 +72,33 @@ export async function getCategory(id: Category["id"]) {
 
 export async function getCategoryCourses(id: Category["id"]) {
   try {
-    return await db.query.courseCategories.findMany({
-      where: eq(courseCategories.categoryId, id),
-      with: {
-        course: true,
-      },
-    })
+    // return await db.query.courseCategories.findMany({
+    //   where: eq(courseCategories.categoryId, id),
+    //   with: {
+    //     course: {
+    //       where: eq(courses.isPublished, true),
+    //       orderBy: sql`COALESCE(SUBSTRING(${courses.name} FROM '^(\\d+)')::INTEGER,99999999)`,
+    //     },
+    //   },
+    // })
+
+    return await db
+      .select({
+        id: courses.id,
+        name: courses.name,
+        description: courses.description,
+        level: courses.level,
+        imgSrc: courses.imgSrc,
+        isPublished: courses.isPublished,
+        isActive: courses.isActive,
+        sequence: courses.sequence,
+        createdAt: courses.createdAt,
+        updatedAt: courses.updatedAt,
+      })
+      .from(courseCategories)
+      .leftJoin(courses, eq(courses.id, courseCategories.courseId))
+      .orderBy(asc(courses.name))
+      .where(eq(courseCategories.categoryId, id))
   } catch (err) {
     console.error(err)
     return []
