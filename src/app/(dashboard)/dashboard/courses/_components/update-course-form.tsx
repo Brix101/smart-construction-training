@@ -9,7 +9,6 @@ import { toast } from "sonner"
 import type { Category, Course } from "@/db/schema"
 import { deleteCourse, updateCourse } from "@/app/_actions/course"
 import { Icons } from "@/components/icons"
-import { LoadingButton } from "@/components/loading-button"
 import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button"
 import {
