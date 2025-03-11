@@ -113,10 +113,18 @@ export async function deleteCourse(courseId: Course["id"]) {
     throw new Error("Course not found")
   }
 
-  await db.delete(courses).where(eq(courses.id, courseId))
+  // await db.delete(courses).where(eq(courses.id, courseId))
+  await db
+    .update(courses)
+    .set({ isActive: false })
+    .where(eq(courses.id, courseId))
 
   // Delete all topics of this course
-  await db.delete(topics).where(eq(topics.courseId, courseId))
+  // await db.delete(topics).where(eq(topics.courseId, courseId))
+  await db
+    .update(topics)
+    .set({ isActive: false })
+    .where(eq(topics.courseId, courseId))
 
   const path = "/dashboard/courses"
   revalidatePath(path)
