@@ -2,7 +2,6 @@
 
 import type { z } from "zod"
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -32,7 +31,6 @@ interface AddCourseFormProps {
 }
 
 export function AddCourseForm({ categories }: AddCourseFormProps) {
-  const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
   // react-hook-form
@@ -50,10 +48,6 @@ export function AddCourseForm({ categories }: AddCourseFormProps) {
     startTransition(async () => {
       try {
         await addCourse({ ...data })
-
-        form.reset()
-        toast.success("Course added successfully.")
-        router.push("/dashboard/courses")
       } catch (err) {
         catchError(err)
       }
