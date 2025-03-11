@@ -192,8 +192,8 @@ export function UpdateCourseForm({ course, categories }: AddCourseFormProps) {
                 aria-hidden="true"
               />
             )}
-            Delete Topic
-            <span className="sr-only">Delete topic</span>
+            Delete Course
+            <span className="sr-only">Delete Course</span>
           </Button>
         </div>
       </form>
