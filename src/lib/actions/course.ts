@@ -51,7 +51,11 @@ export async function getCourses() {
 
   return await unstable_cache(
     async () => {
-      return db.select().from(courses).orderBy(asc(courses.name))
+      // return db.select().from(courses).orderBy(asc(courses.name))
+      return db.query.courses.findMany({
+        orderBy: asc(courses.name),
+        where: eq(courses.isActive, true),
+      })
     },
     ["all-courses"],
     {
